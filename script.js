@@ -2,7 +2,6 @@ const API_URL = "database.json";
 const WEATHER_API = "https://api.open-meteo.com/v1/forecast?latitude=50.2699&longitude=34.3961&daily=temperature_2m_max,temperature_2m_min,weathercode&hourly=weathercode&timezone=Europe/Kiev&forecast_days=2";
 const DAYS_UA = ["понеділок", "вівторок", "середа", "четвер", "п'ятниця", "субота", "неділя"];
 
-// --- SVGs ---
 const calendarSVG = `<svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/></svg>`;
 const clockSVG = `<svg class="loader-clock" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="3s" repeatCount="indefinite"/></path></svg>`;
 const powerOffSVG = `<svg class="icon-pwr" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2.5"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/></svg>`;
@@ -39,7 +38,7 @@ async function fetchData() {
     const now = Date.now();
     try {
         const r = await fetch(`${API_URL}?t=${now}`);
-        if (!r.ok) throw new Error("Network error");
+        if (!r.ok) throw new Error();
         db = await r.json();
         localStorage.setItem('db_cache', JSON.stringify(db));
         localStorage.setItem('db_cache_time', now.toString());
@@ -47,10 +46,7 @@ async function fetchData() {
         if (curQ) { calculateTimerData(); render(); }
     } catch (e) {
         const cached = localStorage.getItem('db_cache');
-        if (cached) {
-            db = JSON.parse(cached);
-            if (curQ) { calculateTimerData(); render(); }
-        }
+        if (cached) { db = JSON.parse(cached); if (curQ) { calculateTimerData(); render(); } }
         document.getElementById('status').innerText = "Офлайн / Кеш";
     }
 }
@@ -84,9 +80,7 @@ function calculateTimerData() {
     let cur = allEvents.find(ev => nowM >= ev.start && nowM < ev.end);
     if (cur && cur.end === 1440) {
         const nextSlot = allEvents.find(ev => ev.start === 1440);
-        if (nextSlot && nextSlot.type === cur.type) {
-            cur = { ...cur, end: nextSlot.end };
-        }
+        if (nextSlot && nextSlot.type === cur.type) { cur = { ...cur, end: nextSlot.end }; }
     }
     timerData = cur ? { endTime: cur.end, type: cur.type } : null;
 }
@@ -103,12 +97,8 @@ function updateFlipTimer() {
         if (diff >= 0) {
             h = Math.floor(diff / 3600); m = Math.floor((diff % 3600) / 60); s = diff % 60;
             label = timerData.type === 'off' ? "До ввімкнення:" : "До відключення:";
-        } else {
-            calculateTimerData(); return;
-        }
-    } else {
-        h = now.getHours(); m = now.getMinutes(); s = now.getSeconds(); label = "Поточний час:";
-    }
+        } else { calculateTimerData(); return; }
+    } else { h = now.getHours(); m = now.getMinutes(); s = now.getSeconds(); label = "Поточний час:"; }
     if (!cont.querySelector('.flip-clock')) {
         cont.innerHTML = `<div class="timer-wrapper"><div class="timer-label"></div><div class="flip-clock">
             <div class="flip-unit"><div class="flip-pair"><div class="roll-digit-container"><div id="h1" class="roll-digit-strip"></div></div><div class="roll-digit-container"><div id="h2" class="roll-digit-strip"></div></div></div><div class="unit-desc">год</div></div>
@@ -147,7 +137,7 @@ function setDigit(id, v) { const s = document.getElementById(id); if (s) s.style
 function render() {
     if (!db || !curQ || !db.queues || !db.queues[curQ]) {
         const cl = document.getElementById('content-list');
-        if(cl) cl.innerHTML = `<div class="no-actual">Дані завантажуються або відсутні...</div>`;
+        if(cl) cl.innerHTML = `<div class="no-actual">Дані завантажуються...</div>`;
         return;
     }
     const now = new Date();
@@ -166,11 +156,7 @@ function render() {
         const cl = document.getElementById('content-list');
         const cv = document.getElementById('content-visual');
         if (cl) { cl.innerHTML = msg; cl.classList.toggle('hidden', viewMode !== 1); }
-        if (cv) { 
-            const hg = document.getElementById('hours-grid');
-            if (hg) hg.innerHTML = msg;
-            cv.classList.toggle('hidden', viewMode !== 2); 
-        }
+        if (cv) { const hg = document.getElementById('hours-grid'); if (hg) hg.innerHTML = msg; cv.classList.toggle('hidden', viewMode !== 2); }
         return;
     }
     const slots = scheduleForDay.map(val => {
@@ -290,10 +276,7 @@ async function fetchWeather() {
         };
         localStorage.setItem('weatherCache', JSON.stringify(weatherData));
         if (curQ) render();
-    } catch (e) {
-        const c = localStorage.getItem('weatherCache');
-        if (c) { weatherData = JSON.parse(c); if (curQ) render(); }
-    }
+    } catch (e) { const c = localStorage.getItem('weatherCache'); if (c) { weatherData = JSON.parse(c); if (curQ) render(); } }
 }
 
 function cleanOldClicks() {
@@ -329,6 +312,7 @@ function openGoogleCalendar(slot, isToday, type) {
 
 function registerSW() {
     if (!('serviceWorker' in navigator)) return;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { window.location.reload(); });
     navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(reg => {
         reg.addEventListener('updatefound', () => {
             const w = reg.installing;
