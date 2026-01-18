@@ -115,7 +115,7 @@ def run_bot():
                 future_hours += int(duration)
 
     notified = False
-    for ev in merged:
+    for i, ev in enumerate(merged):
         start_s, end_s = format_time_display(ev['start']), format_time_display(ev['end'])
         
         if ev['start'] <= now_m < ev['end']:
@@ -123,7 +123,13 @@ def run_bot():
             print(f"Перевірка [{start_s}-{end_s}]: Ми в блоці. До ВВІМКНЕННЯ: {int(diff)} хв.")
             if 0 < diff <= 30:
                 print(f"==> УМОВА 30 ХВ: Надсилаю про світло")
-                send_notif(current_time_str, days_ukr_cap[today_dow], ev['start'], ev['end'], diff, past_count, past_hours, future_count, future_hours, "on")
+                # Для увімкнення знаходимо наступну подію (наступне вимкнення)
+                # Обмежуємо до 24 годин якщо це остання подія в графіку
+                if i + 1 < len(merged):
+                    next_off_start = merged[i + 1]['start']
+                else:
+                    next_off_start = min(ev['end'] + 1440, (now.hour * 60 + now.minute) + 1440)
+                send_notif(current_time_str, days_ukr_cap[today_dow], ev['end'], next_off_start, diff, past_count, past_hours, future_count, future_hours, "on")
                 notified = True
                 break
         elif ev['start'] > now_m:
@@ -139,18 +145,24 @@ def run_bot():
         print("Підсумок: Подій у вікні 30 хв не знайдено. Бот завершив роботу.")
 
 def send_notif(cur_time, day, start, end, diff, p_c, p_h, f_c, f_h, type):
-    icon = get_time_icon(start if type == "off" else end)
-    status = "вимкнуть світло\\! ⚡" if type == "off" else "увімкнуть світло\\! 💡"
-    
     # Формуємо час початку та кінця
     start_time = escape_markdown_v2(format_time_display(start))
     end_time = escape_markdown_v2(format_time_display(end))
     duration = escape_markdown_v2(calculate_duration_from_min(start, end))
     
+    if type == "off":
+        icon = get_time_icon(start)
+        status = "вимкнуть світло\\! ⚡"
+        event_label = "Вимкнення"
+    else:  # type == "on"
+        icon = get_time_icon(end)
+        status = "увімкнуть світло\\! 💡"
+        event_label = "Увімкнення"
+    
     msg = (
         f"{icon} *Увага\\! Менше ніж за {escape_markdown_v2(str(int(diff)))} хвилин {status}*\n\n"
         f"📅 {escape_markdown_v2(day)}, {escape_markdown_v2(cur_time)}\n"
-        f"⏰ Вимкнення: {start_time} \\- {end_time} \\({duration}\\)\n\n"
+        f"⏰ {event_label}: {start_time} \\- {end_time} \\({duration}\\)\n\n"
         f"{get_random_tip(type)}\n\n"
         f"📊 Графік: https://mixaua\\.github\\.io/Grafik/"
     )
