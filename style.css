@@ -698,15 +698,30 @@ h1 {
 /* Calendar button state */
 .no-anim { animation: none !important; opacity: 0.7; }
 
-/* Стиль для посилання на Телеграм у довідці */
+/* Стиль посилання на Telegram */
 .wiki-link-tg {
     color: #0088cc;
     text-decoration: none;
-    font-weight: bold;
-    transition: color 0.2s ease;
+    font-weight: 600;
 }
 
 .wiki-link-tg:hover {
-    color: #005580;
     text-decoration: underline;
+}
+
+/* Стиль для попередження про динамічні зміни */
+.wiki-warning {
+    font-size: 0.9em;
+    color: #666;
+    font-style: italic;
+    border-left: 3px solid #ffd700; /* Золотиста лінія збоку для акценту */
+    padding-left: 10px;
+    margin-top: 10px;
+}
+
+/* Невеличкий розділювач всередині довідки */
+.separator-mini {
+    height: 1px;
+    background: #eee;
+    margin: 15px 0;
 }
