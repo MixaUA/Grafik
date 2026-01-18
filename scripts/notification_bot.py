@@ -141,17 +141,16 @@ def run_bot():
 def send_notif(cur_time, day, start, end, diff, p_c, p_h, f_c, f_h, type):
     icon = get_time_icon(start if type == "off" else end)
     status = "вимкнуть світло\\! ⚡" if type == "off" else "увімкнуть світло\\! 💡"
+    
+    # Формуємо час початку та кінця
+    start_time = escape_markdown_v2(format_time_display(start))
+    end_time = escape_markdown_v2(format_time_display(end))
+    duration = escape_markdown_v2(calculate_duration_from_min(start, end))
+    
     msg = (
-        f"{icon} *Увага\\! Скоро {status}*\n\n"
+        f"{icon} *Увага\\! Менше ніж за {escape_markdown_v2(str(int(diff)))} хвилин {status}*\n\n"
         f"📅 {escape_markdown_v2(day)}, {escape_markdown_v2(cur_time)}\n"
-        f"⏰ *Залишилось:* {escape_markdown_v2(str(int(diff)))} хв\\.\n\n"
-        f"📋 *За графіком:*\n"
-        f"   • Вимкнення: {escape_markdown_v2(format_time_display(start))}\n"
-        f"   • Увімкнення: {escape_markdown_v2(format_time_display(end))}\n"
-        f"   • Тривалість: {escape_markdown_v2(calculate_duration_from_min(start, end))}\n\n"
-        f"📊 *Сьогодні:*\n"
-        f"   • Було: {escape_markdown_v2(str(p_c))} \\({escape_markdown_v2(str(p_h))} год\\.\\)\n"
-        f"   • Буде ще: {escape_markdown_v2(str(f_c))} \\({escape_markdown_v2(str(f_h))} год\\.\\)\n\n"
+        f"⏰ Вимкнення: {start_time} \\- {end_time} \\({duration}\\)\n\n"
         f"{get_random_tip(type)}\n\n"
         f"📊 Графік: https://mixaua\\.github\\.io/Grafik/"
     )
