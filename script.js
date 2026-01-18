@@ -1,5 +1,5 @@
 const API_URL = "database.json";
-const WEATHER_API = "https://api.open-meteo.com/v1/forecast?latitude=50.2699&longitude=34.3961&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Europe/Kiev&forecast_days=2";
+const WEATHER_API = "https://api.open-meteo.com/v1/forecast?latitude=50.2699&longitude=34.3961&daily=temperature_2m_max,temperature_2m_min,weathercode&hourly=weathercode&timezone=Europe/Kiev&forecast_days=2";
 const DAYS_UA = ["понеділок", "вівторок", "середа", "четвер", "п'ятниця", "субота", "неділя"];
 
 // --- SVGs ---
@@ -17,23 +17,18 @@ const weatherIcons = {
     fog: `<svg viewBox="0 0 64 64"><path d="M47.7,35.4c0-4.6-3.7-8.2-8.2-8.2c-1,0-1.9,0.2-2.8,0.5c-0.3-3.4-3.1-6.2-6.6-6.2c-3.7,0-6.7,3-6.7,6.7c0,0.8,0.2,1.6,0.4,2.3    c-0.3-0.1-0.7-0.1-1-0.1c-3.7,0-6.7,3-6.7,6.7c0,3.6,2.9,6.6,6.5,6.7l17.2,0C44.2,43.3,47.7,39.8,47.7,35.4z" fill="white" stroke="black" stroke-linejoin="round" stroke-width="1.2" transform="translate(-2,-11)"/><g transform="translate(12, 45)"><line fill="none" stroke="black" stroke-linecap="round" stroke-width="1.5" x1="0" y1="0" x2="40" y2="0" stroke-dasharray="4,4"><animateTransform attributeName="transform" type="translate" values="0 0; 2 0; -2 0; 0 0" dur="3.5s" repeatCount="indefinite" additive="sum"/></line><line fill="none" stroke="black" stroke-linecap="round" stroke-width="1.5" x1="0" y1="8" x2="35" y2="8" stroke-dasharray="4,4"><animateTransform attributeName="transform" type="translate" values="0 0; -2 0; 2 0; 0 0" dur="4s" repeatCount="indefinite" additive="sum" begin="0.3s"/></line></g></svg>`
 };
 
-// --- State ---
 let db = null, curQ = localStorage.getItem('selectedQueue');
 let dayIdx = 0, viewMode = 1;
 let weatherData = null, timerData = null;
 let clickedSlots = JSON.parse(localStorage.getItem('clickedSlots')) || {};
 
-// --- Initialization ---
 async function init() {
     document.getElementById('year').innerText = new Date().getFullYear();
     updateFlipTimer();
-
     await fetchData(); 
     renderGrid();
     if (curQ) selectQ(curQ);
-
     await fetchWeather();
-
     setInterval(updateFlipTimer, 1000);
     setInterval(() => { if (curQ && db) { calculateTimerData(); render(); } }, 60000);
     setInterval(async () => { if (curQ) await fetchData(); }, 1200000); 
@@ -46,11 +41,9 @@ async function fetchData() {
         const r = await fetch(`${API_URL}?t=${now}`);
         if (!r.ok) throw new Error("Network error");
         db = await r.json();
-
         localStorage.setItem('db_cache', JSON.stringify(db));
         localStorage.setItem('db_cache_time', now.toString());
         document.getElementById('status').innerText = `Оновлено: ${db.update_time}`;
-
         if (curQ) { calculateTimerData(); render(); }
     } catch (e) {
         const cached = localStorage.getItem('db_cache');
@@ -62,22 +55,16 @@ async function fetchData() {
     }
 }
 
-// --- Logic ---
 function calculateTimerData() {
     if (!db || !curQ || !db.queues || !db.queues[curQ]) return;
-
     const now = new Date();
-    const todayDow = (now.getDay() + 6) % 7; // 0=Mon, 1=Tue, ..., 6=Sun
+    const todayDow = (now.getDay() + 6) % 7;
     const allEvents = [];
-
-    // Build a 48-hour timeline from today and tomorrow
     for (let dayOffset = 0; dayOffset <= 1; dayOffset++) {
         const targetDow = (todayDow + dayOffset) % 7;
         const dayName = DAYS_UA[targetDow];
         const scheduleForDay = db.queues[curQ][dayName];
-
         if (!scheduleForDay || scheduleForDay.length === 0) continue;
-
         const slots = scheduleForDay.map(val => {
             const [s, e] = val.split('-').map(t => {
                 const [h, m] = t.split(':').map(Number);
@@ -85,7 +72,6 @@ function calculateTimerData() {
             });
             return { start: s + (dayOffset * 1440), end: (e === 0 ? 1440 : e) + (dayOffset * 1440), type: 'off' };
         });
-
         let last = dayOffset * 1440;
         slots.sort((a, b) => a.start - b.start).forEach(s => {
             if (s.start > last) allEvents.push({ start: last, end: s.start, type: 'on' });
@@ -94,44 +80,35 @@ function calculateTimerData() {
         });
         if (last < (dayOffset + 1) * 1440) allEvents.push({ start: last, end: (dayOffset + 1) * 1440, type: 'on' });
     }
-
     const nowM = now.getHours() * 60 + now.getMinutes();
     let cur = allEvents.find(ev => nowM >= ev.start && nowM < ev.end);
-
     if (cur && cur.end === 1440) {
         const nextSlot = allEvents.find(ev => ev.start === 1440);
         if (nextSlot && nextSlot.type === cur.type) {
             cur = { ...cur, end: nextSlot.end };
         }
     }
-    
     timerData = cur ? { endTime: cur.end, type: cur.type } : null;
 }
 
-// --- Timers & UI ---
 function updateFlipTimer() {
     const cont = document.getElementById('timer-container');
     if (!cont) return;
     const now = new Date();
     let h, m, s, label;
-
     if (curQ && timerData) {
         const nowInSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
         let endInSeconds = timerData.endTime * 60;
-        
         let diff = endInSeconds - nowInSeconds;
-
         if (diff >= 0) {
             h = Math.floor(diff / 3600); m = Math.floor((diff % 3600) / 60); s = diff % 60;
             label = timerData.type === 'off' ? "До ввімкнення:" : "До відключення:";
         } else {
             calculateTimerData(); return;
         }
-
     } else {
         h = now.getHours(); m = now.getMinutes(); s = now.getSeconds(); label = "Поточний час:";
     }
-
     if (!cont.querySelector('.flip-clock')) {
         cont.innerHTML = `<div class="timer-wrapper"><div class="timer-label"></div><div class="flip-clock">
             <div class="flip-unit"><div class="flip-pair"><div class="roll-digit-container"><div id="h1" class="roll-digit-strip"></div></div><div class="roll-digit-container"><div id="h2" class="roll-digit-strip"></div></div></div><div class="unit-desc">год</div></div>
@@ -142,12 +119,10 @@ function updateFlipTimer() {
             document.getElementById(id).innerHTML = Array.from({ length: 10 }, (_, i) => `<div class="roll-num">${i}</div>`).join('');
         });
     }
-
     setDigit('h1', Math.floor(h / 10)); setDigit('h2', h % 10);
     setDigit('m1', Math.floor(m / 10)); setDigit('m2', m % 10);
     setDigit('s1', Math.floor(s / 10)); setDigit('s2', s % 10);
     const tL = cont.querySelector('.timer-label'); if (tL) tL.textContent = label;
-
     updateGridMarker();
 }
 
@@ -158,11 +133,8 @@ function updateGridMarker() {
     }
     const h = new Date().getHours(), currentId = `hcell-${h}`;
     const active = document.querySelector('.hour-cell.current');
-
     if (active && active.id === currentId) return;
-
     if (active) { active.classList.remove('current'); active.querySelector('.current-dot')?.remove(); }
-
     const newActive = document.getElementById(currentId);
     if (newActive) {
         newActive.classList.add('current');
@@ -178,20 +150,17 @@ function render() {
         if(cl) cl.innerHTML = `<div class="no-actual">Дані завантажуються або відсутні...</div>`;
         return;
     }
-
     const now = new Date();
     const nowM = now.getHours() * 60 + now.getMinutes();
     const todayDow = (now.getDay() + 6) % 7;
     const targetDow = (todayDow + dayIdx) % 7;
     const dayName = DAYS_UA[targetDow];
     const scheduleForDay = db.queues[curQ][dayName];
-
     const elT = document.getElementById('weatherToday'), elTom = document.getElementById('weatherTomorrow');
     if (weatherData && elT && elTom) {
         elT.innerHTML = `${getWeatherIcon(weatherData.today.code)} <span class="temp-range">${fmtTemp(weatherData.today.max)} / ${fmtTemp(weatherData.today.min)}</span>`;
         elTom.innerHTML = `${getWeatherIcon(weatherData.tomorrow.code)} <span class="temp-range">${fmtTemp(weatherData.tomorrow.max)} / ${fmtTemp(weatherData.tomorrow.min)}</span>`;
     }
-
     if (!scheduleForDay || scheduleForDay.length === 0) {
         const msg = `<div class="no-actual">Графік на ${dayIdx === 0 ? 'сьогодні' : 'завтра'} очікується</div>`;
         const cl = document.getElementById('content-list');
@@ -204,19 +173,16 @@ function render() {
         }
         return;
     }
-
     const slots = scheduleForDay.map(val => {
         const [s, e] = val.split('-').map(t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; });
         return { start: s, end: (e === 0 ? 1440 : e), type: 'off', raw: val };
     }).sort((a, b) => a.start - b.start);
-
     let full = [], last = 0;
     slots.forEach(s => {
         if (s.start > last) full.push({ start: last, end: s.start, type: 'on', raw: `${minToTime(last)}-${minToTime(s.start)}` });
         full.push(s); last = s.end;
     });
     if (last < 1440) full.push({ start: last, end: 1440, type: 'on', raw: `${minToTime(last)}-${minToTime(1440)}` });
-
     renderList(full, nowM, now);
     renderVisual(slots, nowM);
 }
@@ -224,18 +190,15 @@ function render() {
 function renderList(full, nowM, now) {
     const cont = document.getElementById('content-list'); if (!cont) return;
     cont.classList.toggle('hidden', viewMode !== 1);
-
     const display = full.filter(ev => dayIdx === 0 ? ev.end > nowM : true);
     const d = new Date(); if (dayIdx === 1) d.setDate(d.getDate() + 1);
     const dateStr = d.toISOString().split('T')[0];
-
     cont.innerHTML = display.map(ev => {
         const s = minToTime(ev.start), e = minToTime(ev.end), dur = (ev.end - ev.start) / 60;
         const isCur = dayIdx === 0 && nowM >= ev.start && nowM < ev.end;
         const isLocked = dayIdx === 0 && (ev.start - nowM <= 60);
         const slotId = btoa(unescape(encodeURIComponent(`${dateStr}-${curQ}-${ev.raw || (s + e)}`))).replace(/=/g, '');
         const hasClicked = clickedSlots.hasOwnProperty(slotId);
-
         return `<div class="slot ${ev.type} ${isCur ? 'current' : ''}">
             <div class="time-box"><span class="time">${s}-${e}</span></div>
             <div class="slot-right">
@@ -255,7 +218,6 @@ function renderVisual(slots, nowM) {
     const cont = document.getElementById('content-visual'); if (!cont) return;
     cont.classList.toggle('hidden', viewMode !== 2);
     const grid = document.getElementById('hours-grid');
-
     let html = '';
     for (let h = 0; h < 24; h++) {
         const hS = h * 60, hE = (h + 1) * 60;
@@ -271,7 +233,6 @@ function renderVisual(slots, nowM) {
     grid.innerHTML = html;
 }
 
-// --- Helpers & Others ---
 function fmtTemp(t) { return t > 0 ? `+${t}°` : `${t}°`; }
 function minToTime(m) { return `${Math.floor(m / 60 % 24).toString().padStart(2, '0')}:${(m % 60).toString().padStart(2, '0')}`; }
 function getWeatherIcon(code) {
@@ -308,11 +269,24 @@ async function fetchWeather() {
         const r = await fetch(WEATHER_API);
         if (!r.ok) throw new Error();
         const data = await r.json();
-        if (!data.daily?.weathercode) return;
+        function getDominantCode(dayIndex) {
+            if (!data.hourly?.weathercode?.length) return data.daily?.weathercode?.[dayIndex] ?? 3;
+            const startHour = 10, endHour = 16, dayOffset = dayIndex * 24;
+            const dayCodes = data.hourly.weathercode.slice(dayOffset + startHour, dayOffset + endHour + 1);
+            if (!dayCodes.length) return data.daily?.weathercode?.[dayIndex] ?? 3;
+            const counts = {};
+            let maxCount = 0, dominantCode = dayCodes[0];
+            for (const code of dayCodes) {
+                counts[code] = (counts[code] || 0) + 1;
+                if (counts[code] > maxCount) { maxCount = counts[code]; dominantCode = code; }
+            }
+            if (counts[0] && counts[0] >= (dayCodes.length / 2)) return 0;
+            return dominantCode;
+        }
         weatherData = {
             timestamp: Date.now(),
-            today: { max: Math.round(data.daily.temperature_2m_max[0]), min: Math.round(data.daily.temperature_2m_min[0]), code: data.daily.weathercode[0] },
-            tomorrow: { max: Math.round(data.daily.temperature_2m_max[1]), min: Math.round(data.daily.temperature_2m_min[1]), code: data.daily.weathercode[1] }
+            today: { max: Math.round(data.daily.temperature_2m_max[0]), min: Math.round(data.daily.temperature_2m_min[0]), code: getDominantCode(0) },
+            tomorrow: { max: Math.round(data.daily.temperature_2m_max[1]), min: Math.round(data.daily.temperature_2m_min[1]), code: getDominantCode(1) }
         };
         localStorage.setItem('weatherCache', JSON.stringify(weatherData));
         if (curQ) render();
@@ -322,7 +296,6 @@ async function fetchWeather() {
     }
 }
 
-// Calendar & SW
 function cleanOldClicks() {
     const now = Date.now();
     for (const k in clickedSlots) if (now - clickedSlots[k] > 172800000) delete clickedSlots[k];
