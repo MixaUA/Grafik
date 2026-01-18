@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mykolaivka-app-cache-v0.1';
+const CACHE_NAME = 'mykolaivka-app-cache-v0.2';
 const API_CACHE_NAME = 'mykolaivka-api-cache-v1';
 
 const urlsToCache = [
