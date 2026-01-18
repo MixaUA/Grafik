@@ -124,11 +124,11 @@ def run_bot():
             if 0 < diff <= 30:
                 print(f"==> УМОВА 30 ХВ: Надсилаю про світло")
                 # Для увімкнення знаходимо наступну подію (наступне вимкнення)
-                # Обмежуємо до 24 годин якщо це остання подія в графіку
                 if i + 1 < len(merged):
                     next_off_start = merged[i + 1]['start']
                 else:
-                    next_off_start = min(ev['end'] + 1440, (now.hour * 60 + now.minute) + 1440)
+                    # Якщо наступної події немає - показуємо до кінця поточної доби (00:00)
+                    next_off_start = 1440
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['end'], next_off_start, diff, past_count, past_hours, future_count, future_hours, "on")
                 notified = True
                 break
