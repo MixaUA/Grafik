@@ -697,3 +697,16 @@ h1 {
 
 /* Calendar button state */
 .no-anim { animation: none !important; opacity: 0.7; }
+
+/* Стиль для посилання на Телеграм у довідці */
+.wiki-link-tg {
+    color: #0088cc;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.wiki-link-tg:hover {
+    color: #005580;
+    text-decoration: underline;
+}
