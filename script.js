@@ -256,20 +256,28 @@ async function fetchWeather() {
         if (!r.ok) throw new Error();
         const data = await r.json();
         function getDominantCode(dayIndex) {
-            if (!data.hourly?.weathercode?.length) return data.daily?.weathercode?.[dayIndex] ?? 3;
-            const startHour = 10, endHour = 16, dayOffset = dayIndex * 24;
-            const dayCodes = data.hourly.weathercode.slice(dayOffset + startHour, dayOffset + endHour + 1);
-            if (!dayCodes.length) return data.daily?.weathercode?.[dayIndex] ?? 3;
-            const counts = {};
-            let maxCount = 0, dominantCode = dayCodes[0];
-            for (const code of dayCodes) {
-                counts[code] = (counts[code] || 0) + 1;
-                if (counts[code] > maxCount) { maxCount = counts[code]; dominantCode = code; }
-            }
-            if (counts[0] && counts[0] >= (dayCodes.length / 2)) return 0;
-            return dominantCode;
-        }
-        weatherData = {
+    if (!data.hourly?.weathercode?.length) return data.daily?.weathercode?.[dayIndex] ?? 3;
+    const startHour = 10, endHour = 16, dayOffset = dayIndex * 24;
+    const dayCodes = data.hourly.weathercode.slice(dayOffset + startHour, dayOffset + endHour + 1);
+    
+    const counts = {};
+    for (const code of dayCodes) { counts[code] = (counts[code] || 0) + 1; }
+
+    // 1. Якщо є хоча б 2 години ідеального сонця (код 0)
+    if ((counts[0] || 0) >= 2) return 0;
+
+    // 2. Якщо сонця мало, але є хоча б 2 години легкої хмарності (коди 1, 2)
+    if ((counts[1] || 0) + (counts[2] || 0) >= 2) return 2;
+
+    // 3. Якщо нічого з вищого не підійшло — тоді вже виводимо хмари або щось інше, що домінує
+    let maxCount = 0, dominantCode = dayCodes[0];
+    for (const code in counts) {
+        if (counts[code] > maxCount) { maxCount = counts[code]; dominantCode = parseInt(code); }
+    }
+    return dominantCode;
+}
+
+weatherData = {
             timestamp: Date.now(),
             today: { max: Math.round(data.daily.temperature_2m_max[0]), min: Math.round(data.daily.temperature_2m_min[0]), code: getDominantCode(0) },
             tomorrow: { max: Math.round(data.daily.temperature_2m_max[1]), min: Math.round(data.daily.temperature_2m_min[1]), code: getDominantCode(1) }
