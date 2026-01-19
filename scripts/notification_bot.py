@@ -4,6 +4,8 @@ import os
 import requests
 import re
 import random
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 def escape_markdown_v2(text: str) -> str:
     escape_chars = r'_*[]()~`>#+-=|{}.!'
@@ -32,21 +34,22 @@ def get_time_icon(total_minutes):
     else: return "🌙"
 
 def get_random_tip(event_type):
+    # Тут прибрано ручні слеші, функція escape_markdown_v2 додасть їх сама
     tips_off = [
-        "🌗 Зараз стане трішки темніше навколо, але не всередині\\.",
-        "⏸️ Світло вимкнуть ненадовго\\. Завершуй справи з електрикою \\— решта почекає\\.",
-        "💾 Світло от\\-от зникне\\. Якщо працюєш за ПК \\— збережи важливе й дай йому відпочити\\.",
-        "🕯️ Світло зникне на якийсь час\\. Подбай про важливе \\— решта почекає\\.",
-        "🌘 Світло повільно зникає\\. Подбай про те, що має значення саме зараз\\.",
-        "🔌 Невелика перерва в електриці\\. Можеш спокійно завершити справи й підготуватись\\."
+        "🌗 Зараз стане трішки темніше навколо, але не всередині.",
+        "⏸️ Світло вимкнуть ненадовго. Завершуй справи з електрикою — решта почекає.",
+        "💾 Світло от-от зникне. Якщо працюєш за ПК — збережи важливе й дай йому відпочити.",
+        "🕯️ Світло зникне na якийсь час. Подбай про важливе — решта почекає.",
+        "🌘 Світло повільно зникає. Подбай про те, що має значення саме зараз.",
+        "🔌 Невелика перерва в електриці. Можеш спокійно завершити справи й підготуватись."
     ]
     tips_on = [
-        "⏳ От\\-от з’явиться світло\\. На жаль на короткий проміжок часу, не витрачай його даремно\\!",
-        "🔋 Скоро буде світло\\. Подумай, що варто зарядити в першу чергу\\.",
-        "🔌 Світло скоро ввімкнуть\\. Подбай про важливе \\— без поспіху\\.",
-        "🚀 Світло на підході\\! Готуйся вмикати найважливіші прилади\\.",
-        "📱 Скоро з’явиться напруга\\. Перевір, чи готові твої гаджети до зарядки\\.",
-        "🌟 Світло ось\\-ось повернеться\\. Використай цей час максимально ефективно\\!"
+        "⏳ От-от з’явиться світло. На жаль на короткий проміжок часу, не витрачай його даремно!",
+        "🔋 Скоро буде світло. Подумай, що варто зарядити в першу чергу.",
+        "🔌 Світло скоро ввімкнуть. Підготуй важливе — без поспіху.",
+        "🚀 Світло на підході! Готуйся вмикати найважливіші прилади.",
+        "📱 Скоро з’явиться напруга. Перевір, чи готові твої гаджети до зарядки.",
+        "🌟 Світло ось-ось повернеться. Використай цей час максимально ефективно!"
     ]
     return random.choice(tips_off if event_type == "off" else tips_on)
 
@@ -58,9 +61,13 @@ def send_telegram_message(message_text):
         return
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     payload = {'chat_id': chat_id, 'text': message_text, 'parse_mode': 'MarkdownV2'}
+    
+    session = requests.Session()
+    retries = Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
+    session.mount('https://', HTTPAdapter(max_retries=retries))
+    
     try:
-        # Додано тайм-аут 10 секунд для запобігання зависанню
-        response = requests.post(url, json=payload, timeout=10)
+        response = session.post(url, json=payload, timeout=10)
         response.raise_for_status()
         print("Повідомлення успішно надіслано в Telegram.")
     except Exception as e:
@@ -68,7 +75,6 @@ def send_telegram_message(message_text):
 
 def run_bot():
     print(f"--- Запуск бота: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ---")
-    
     try:
         with open('database.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -98,84 +104,56 @@ def run_bot():
             end_total = (1440 if (e_h == 0 and e_m == 0) or e_h == 24 else e_h * 60 + e_m) + (day_offset * 1440)
             all_events.append({'start': start_total, 'end': end_total})
 
-    if not all_events:
-        print("Вихід: Графік порожній.")
-        return
+    if not all_events: return
 
     all_events.sort(key=lambda x: x['start'])
     merged = []
     curr = all_events[0]
     for next_ev in all_events[1:]:
-        if curr['end'] == next_ev['start']:
-            curr['end'] = next_ev['end']
+        if curr['end'] == next_ev['start']: curr['end'] = next_ev['end']
         else:
             merged.append(curr)
             curr = next_ev
     merged.append(curr)
     
-    print(f"Виявлено {len(merged)} склеєних інтервалів відключень:")
-    for i, ev in enumerate(merged, 1):
-        print(f"   {i}. {format_time_display(ev['start'])} — {format_time_display(ev['end'])}")
-
-    past_count, past_hours, future_count, future_hours = 0, 0, 0, 0
-    for ev in merged:
-        if ev['start'] < 1440:
-            actual_end = min(ev['end'], 1440)
-            duration = (actual_end - ev['start']) / 60
-            if actual_end <= now_m:
-                past_count += 1
-                past_hours += int(duration)
-            else:
-                future_count += 1
-                future_hours += int(duration)
-
-    notified = False
     for i, ev in enumerate(merged):
-        start_s, end_s = format_time_display(ev['start']), format_time_display(ev['end'])
-        
         if ev['start'] <= now_m < ev['end']:
             diff = ev['end'] - now_m
-            print(f"Перевірка [{start_s}-{end_s}]: Ми в блоці. До ВВІМКНЕННЯ: {int(diff)} хв.")
             if 0 < diff <= 30:
-                print(f"==> УМОВА 30 ХВ: Надсилаю про світло")
-                if i + 1 < len(merged):
-                    next_off_start = merged[i + 1]['start']
-                else:
-                    next_off_start = 1440
-                send_notif(current_time_str, days_ukr_cap[today_dow], ev['end'], next_off_start, diff, past_count, past_hours, future_count, future_hours, "on")
-                notified = True
+                next_off_start = merged[i + 1]['start'] if i + 1 < len(merged) else 1440
+                send_notif(current_time_str, days_ukr_cap[today_dow], ev['end'], next_off_start, diff, "on")
                 break
         elif ev['start'] > now_m:
             diff = ev['start'] - now_m
-            print(f"Перевірка [{start_s}-{end_s}]: Світло є. До ВИМКНЕННЯ: {int(diff)} хв.")
             if 0 < diff <= 30:
-                print(f"==> УМОВА 30 ХВ: Надсилаю про вимкнення")
-                send_notif(current_time_str, days_ukr_cap[today_dow], ev['start'], ev['end'], diff, past_count, past_hours, future_count, future_hours, "off")
-                notified = True
+                send_notif(current_time_str, days_ukr_cap[today_dow], ev['start'], ev['end'], diff, "off")
                 break
 
-    if not notified:
-        print("Підсумок: Подій у вікні 30 хв не знайдено. Бот завершив роботу.")
-
-def send_notif(cur_time, day, start, end, diff, p_c, p_h, f_c, f_h, type):
+def send_notif(cur_time, day, start, end, diff, type):
+    # Тут ми екрануємо ВСІ змінні через функцію
     start_time = escape_markdown_v2(format_time_display(start))
     end_time = escape_markdown_v2(format_time_display(end))
     duration = escape_markdown_v2(calculate_duration_from_min(start, end))
+    day_esc = escape_markdown_v2(day)
+    cur_time_esc = escape_markdown_v2(cur_time)
+    diff_esc = escape_markdown_v2(str(int(diff)))
+    tip_esc = escape_markdown_v2(get_random_tip(type))
     
     if type == "off":
         icon = get_time_icon(start)
-        status = "вимкнуть світло\\! ⚡"
+        status = "вимкнуть світло! ⚡"
         event_label = "Вимкнення"
     else:
         icon = get_time_icon(end)
-        status = "увімкнуть світло\\! 💡"
+        status = "увімкнуть світло! 💡"
         event_label = "Увімкнення"
     
+    # Використовуємо довге тире — без ручного слеша, функція його обробить
     msg = (
-        f"{icon} *Увага\\! Менше ніж за {escape_markdown_v2(str(int(diff)))} хвилин {status}*\n\n"
-        f"📅 {escape_markdown_v2(day)}, {escape_markdown_v2(cur_time)}\n"
-        f"⏰ {event_label}: {start_time} \\— {end_time} \\({duration}\\)\n\n"
-        f"{get_random_tip(type)}\n\n"
+        f"{icon} *Увага! Менше ніж за {diff_esc} хвилин {escape_markdown_v2(status)}*\n\n"
+        f"📅 {day_esc}, {cur_time_esc}\n"
+        f"⏰ {escape_markdown_v2(event_label)}: {start_time} — {end_time} ({duration})\n\n"
+        f"{tip_esc}\n\n"
         f"📊 Графік: https://mixaua\\.github\\.io/Grafik/"
     )
     send_telegram_message(msg)
