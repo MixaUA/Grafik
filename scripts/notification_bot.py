@@ -8,6 +8,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 def escape_markdown_v2(text: str) -> str:
+    """Екранує спеціальні символи для Telegram MarkdownV2."""
     escape_chars = r'_*[]()~`>#+-=|{}.!'
     text = text.replace('\\', '\\\\')
     return re.sub(f'([{re.escape(escape_chars)}])', r'\\\1', text)
@@ -34,12 +35,12 @@ def get_time_icon(total_minutes):
     else: return "🌙"
 
 def get_random_tip(event_type):
-    # Тут прибрано ручні слеші, функція escape_markdown_v2 додасть їх сама
+    """Повертає чистий текст поради без ручного екранування."""
     tips_off = [
         "🌗 Зараз стане трішки темніше навколо, але не всередині.",
         "⏸️ Світло вимкнуть ненадовго. Завершуй справи з електрикою — решта почекає.",
         "💾 Світло от-от зникне. Якщо працюєш за ПК — збережи важливе й дай йому відпочити.",
-        "🕯️ Світло зникне na якийсь час. Подбай про важливе — решта почекає.",
+        "🕯️ Світло зникне на якийсь час. Подбай про важливе — решта почекає.",
         "🌘 Світло повільно зникає. Подбай про те, що має значення саме зараз.",
         "🔌 Невелика перерва в електриці. Можеш спокійно завершити справи й підготуватись."
     ]
@@ -85,10 +86,10 @@ def run_bot():
 
     now = datetime.now()
     now_m = now.hour * 60 + now.minute
-    current_time_str = now.strftime("%H:%M")
     days_ukr = {0: "понеділок", 1: "вівторок", 2: "середа", 3: "четвер", 4: "п'ятниця", 5: "субота", 6: "неділя"}
     days_ukr_cap = {0: "Понеділок", 1: "Вівторок", 2: "Середа", 3: "Четвер", 4: "П'ятниця", 5: "Субота", 6: "Неділя"}
     today_dow = now.weekday()
+    current_time_str = now.strftime("%H:%M")
     
     print(f"Зараз: {current_time_str}, {days_ukr[today_dow]}")
 
@@ -116,21 +117,25 @@ def run_bot():
             curr = next_ev
     merged.append(curr)
     
+    print(f"Інтервали: {[f'{format_time_display(ev['start'])}-{format_time_display(ev['end'])}' for ev in merged]}")
+
     for i, ev in enumerate(merged):
         if ev['start'] <= now_m < ev['end']:
             diff = ev['end'] - now_m
+            print(f"Ми в блоці. До ввімкнення: {int(diff)} хв.")
             if 0 < diff <= 30:
                 next_off_start = merged[i + 1]['start'] if i + 1 < len(merged) else 1440
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['end'], next_off_start, diff, "on")
                 break
         elif ev['start'] > now_m:
             diff = ev['start'] - now_m
+            print(f"Світло є. До вимкнення: {int(diff)} хв.")
             if 0 < diff <= 30:
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['start'], ev['end'], diff, "off")
                 break
 
 def send_notif(cur_time, day, start, end, diff, type):
-    # Тут ми екрануємо ВСІ змінні через функцію
+    """Формує та надсилає повідомлення з коректним екрануванням."""
     start_time = escape_markdown_v2(format_time_display(start))
     end_time = escape_markdown_v2(format_time_display(end))
     duration = escape_markdown_v2(calculate_duration_from_min(start, end))
@@ -141,18 +146,17 @@ def send_notif(cur_time, day, start, end, diff, type):
     
     if type == "off":
         icon = get_time_icon(start)
-        status = "вимкнуть світло! ⚡"
-        event_label = "Вимкнення"
+        status = escape_markdown_v2("вимкнуть світло! ⚡")
+        event_label = escape_markdown_v2("Вимкнення")
     else:
         icon = get_time_icon(end)
-        status = "увімкнуть світло! 💡"
-        event_label = "Увімкнення"
+        status = escape_markdown_v2("увімкнуть світло! 💡")
+        event_label = escape_markdown_v2("Увімкнення")
     
-    # Використовуємо довге тире — без ручного слеша, функція його обробить
     msg = (
-        f"{icon} *Увага! Менше ніж за {diff_esc} хвилин {escape_markdown_v2(status)}*\n\n"
+        f"{icon} *Увага! Менше ніж за {diff_esc} хвилин {status}*\n\n"
         f"📅 {day_esc}, {cur_time_esc}\n"
-        f"⏰ {escape_markdown_v2(event_label)}: {start_time} — {end_time} ({duration})\n\n"
+        f"⏰ {event_label}: {start_time} — {end_time} ({duration})\n\n"
         f"{tip_esc}\n\n"
         f"📊 Графік: https://mixaua\\.github\\.io/Grafik/"
     )
