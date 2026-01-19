@@ -21,15 +21,60 @@ let dayIdx = 0, viewMode = 1;
 let weatherData = null, timerData = null;
 let clickedSlots = JSON.parse(localStorage.getItem('clickedSlots')) || {};
 
+function updateStatusDot() {
+    const statusDot = document.getElementById('status-dot');
+    if (!statusDot) return;
+
+    const cacheTime = parseInt(localStorage.getItem('db_cache_time'));
+    if (!cacheTime) {
+        statusDot.className = 'offline-dot';
+        return;
+    }
+
+    const twentyMinutes = 20 * 60 * 1000;
+    const isFresh = (Date.now() - cacheTime) < twentyMinutes;
+
+    statusDot.className = isFresh ? 'online-dot' : 'offline-dot';
+}
+
 async function init() {
+    // Prepare status UI
+    const statusEl = document.getElementById('status');
+    if (statusEl) {
+        statusEl.innerHTML = `<span id="update-time"></span><span id="status-dot"></span>`;
+    }
+
     document.getElementById('year').innerText = new Date().getFullYear();
     updateFlipTimer();
-    await fetchData(); 
+
+    // Cache-first logic
+    const cachedDb = localStorage.getItem('db_cache');
+    if (cachedDb) {
+        db = JSON.parse(cachedDb);
+        const updateTimeEl = document.getElementById('update-time');
+        if (updateTimeEl && db.update_time) updateTimeEl.innerText = `Оновлено: ${db.update_time}`;
+    }
+    
     renderGrid();
     if (curQ) selectQ(curQ);
+    updateStatusDot();
+
+    // Conditional initial fetch
+    const cacheTime = parseInt(localStorage.getItem('db_cache_time')) || 0;
+    if (Date.now() - cacheTime > 20 * 60 * 1000) {
+        await fetchData();
+    }
+    
     await fetchWeather();
+
     setInterval(updateFlipTimer, 1000);
-    setInterval(() => { if (curQ && db) { calculateTimerData(); render(); } }, 60000);
+    setInterval(() => {
+        if (curQ && db) {
+            calculateTimerData();
+            render();
+            updateStatusDot();
+        }
+    }, 60000);
     setInterval(async () => { if (curQ) await fetchData(); }, 1200000); 
     setInterval(() => { fetchWeather(); }, 3600000);
 }
@@ -38,16 +83,24 @@ async function fetchData() {
     const now = Date.now();
     try {
         const r = await fetch(`${API_URL}?t=${now}`);
-        if (!r.ok) throw new Error();
-        db = await r.json();
+        if (!r.ok) throw new Error('Network response was not ok');
+        const freshDb = await r.json();
+
+        db = freshDb;
         localStorage.setItem('db_cache', JSON.stringify(db));
         localStorage.setItem('db_cache_time', now.toString());
-        document.getElementById('status').innerText = `Оновлено: ${db.update_time}`;
-        if (curQ) { calculateTimerData(); render(); }
+
+        const updateTimeEl = document.getElementById('update-time');
+        if (updateTimeEl) updateTimeEl.innerText = `Оновлено: ${db.update_time}`;
+
+        if (curQ) {
+            calculateTimerData();
+            render();
+        }
+        updateStatusDot();
     } catch (e) {
-        const cached = localStorage.getItem('db_cache');
-        if (cached) { db = JSON.parse(cached); if (curQ) { calculateTimerData(); render(); } }
-        document.getElementById('status').innerText = "Офлайн / Кеш";
+        console.log('Fetch failed, continuing with cached data.');
+        updateStatusDot();
     }
 }
 
