@@ -59,7 +59,8 @@ def send_telegram_message(message_text):
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     payload = {'chat_id': chat_id, 'text': message_text, 'parse_mode': 'MarkdownV2'}
     try:
-        response = requests.post(url, json=payload)
+        # Додано тайм-аут 10 секунд для запобігання зависанню
+        response = requests.post(url, json=payload, timeout=10)
         response.raise_for_status()
         print("Повідомлення успішно надіслано в Telegram.")
     except Exception as e:
