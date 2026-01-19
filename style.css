@@ -725,3 +725,17 @@ h1 {
     background: #eee;
     margin: 15px 0;
 }
+
+
+/* --- Status Dot Indicator --- */
+#status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-left: 8px;
+    animation: pulse-dot 2s infinite;
+}
+.online-dot { background-color: #4CAF50; }
+.offline-dot { background-color: #ff6b6b; }
+#status { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
