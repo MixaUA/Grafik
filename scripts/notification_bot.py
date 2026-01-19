@@ -173,7 +173,7 @@ def send_notif(cur_time, day, start, end, diff, p_c, p_h, f_c, f_h, type):
     msg = (
         f"{icon} *Увага\\! Менше ніж за {escape_markdown_v2(str(int(diff)))} хвилин {status}*\n\n"
         f"📅 {escape_markdown_v2(day)}, {escape_markdown_v2(cur_time)}\n"
-        f"⏰ {event_label}: {start_time} \\— {end_time} \\({duration}\\)\n\n"
+        f"⏰ {event_label}: {start_time} \\- {end_time} \\({duration}\\)\n\n"
         f"{get_random_tip(type)}\n\n"
         f"📊 Графік: https://mixaua\\.github\\.io/Grafik/"
     )
