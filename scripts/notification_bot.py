@@ -32,8 +32,22 @@ def get_time_icon(total_minutes):
     else: return "🌙"
 
 def get_random_tip(event_type):
-    tips_off = ["☕ Встигніть заварити чай або каву\\!", "💾 Збережіть всі документи\\!", "🕯️ Підготуйте свічки та ліхтарик", "💡 Завершіть справи зі світлом", "🍳 Підігрійте їжу зараз\\!", "🌡️ Налаштуйте температуру в оселі", "💧 Наберіть води про запас"]
-    tips_on = ["🎉 Нарешті можна працювати\\!", "⚡ Світло ось\\-ось з'явиться\\!", "🌟 Готуйтесь \\- світло на підході\\!", "🏠 Час підготувати техніку до зарядки\\!", "🔌 Підготуйте список що зарядити\\!", "📱 Складіть план на час зі світлом\\!"]
+    tips_off = [
+        "🌗 Зараз стане трішки темніше навколо, але не всередині\\.",
+        "⏸️ Світло вимкнуть ненадовго\\. Завершуй справи з електрикою \\— решта почекає\\.",
+        "💾 Світло от\\-от зникне\\. Якщо працюєш за ПК \\— збережи важливе й дай йому відпочити\\.",
+        "🕯️ Світло зникне на якийсь час\\. Подбай про важливе \\— решта почекає\\.",
+        "🌘 Світло повільно зникає\\. Подбай про те, що має значення саме зараз\\.",
+        "🔌 Невелика перерва в електриці\\. Можеш спокійно завершити справи й підготуватись\\."
+    ]
+    tips_on = [
+        "⏳ От\\-от з’явиться світло\\. На жаль на короткий проміжок часу, не витрачай його даремно\\!",
+        "🔋 Скоро буде світло\\. Подумай, що варто зарядити в першу чергу\\.",
+        "🔌 Світло скоро ввімкнуть\\. Подбай про важливе \\— без поспіху\\.",
+        "🚀 Світло на підході\\! Готуйся вмикати найважливіші прилади\\.",
+        "📱 Скоро з’явиться напруга\\. Перевір, чи готові твої гаджети до зарядки\\.",
+        "🌟 Світло ось\\-ось повернеться\\. Використай цей час максимально ефективно\\!"
+    ]
     return random.choice(tips_off if event_type == "off" else tips_on)
 
 def send_telegram_message(message_text):
@@ -123,11 +137,9 @@ def run_bot():
             print(f"Перевірка [{start_s}-{end_s}]: Ми в блоці. До ВВІМКНЕННЯ: {int(diff)} хв.")
             if 0 < diff <= 30:
                 print(f"==> УМОВА 30 ХВ: Надсилаю про світло")
-                # Для увімкнення знаходимо наступну подію (наступне вимкнення)
                 if i + 1 < len(merged):
                     next_off_start = merged[i + 1]['start']
                 else:
-                    # Якщо наступної події немає - показуємо до кінця поточної доби (00:00)
                     next_off_start = 1440
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['end'], next_off_start, diff, past_count, past_hours, future_count, future_hours, "on")
                 notified = True
@@ -145,7 +157,6 @@ def run_bot():
         print("Підсумок: Подій у вікні 30 хв не знайдено. Бот завершив роботу.")
 
 def send_notif(cur_time, day, start, end, diff, p_c, p_h, f_c, f_h, type):
-    # Формуємо час початку та кінця
     start_time = escape_markdown_v2(format_time_display(start))
     end_time = escape_markdown_v2(format_time_display(end))
     duration = escape_markdown_v2(calculate_duration_from_min(start, end))
@@ -154,7 +165,7 @@ def send_notif(cur_time, day, start, end, diff, p_c, p_h, f_c, f_h, type):
         icon = get_time_icon(start)
         status = "вимкнуть світло\\! ⚡"
         event_label = "Вимкнення"
-    else:  # type == "on"
+    else:
         icon = get_time_icon(end)
         status = "увімкнуть світло\\! 💡"
         event_label = "Увімкнення"
@@ -162,7 +173,7 @@ def send_notif(cur_time, day, start, end, diff, p_c, p_h, f_c, f_h, type):
     msg = (
         f"{icon} *Увага\\! Менше ніж за {escape_markdown_v2(str(int(diff)))} хвилин {status}*\n\n"
         f"📅 {escape_markdown_v2(day)}, {escape_markdown_v2(cur_time)}\n"
-        f"⏰ {event_label}: {start_time} \\- {end_time} \\({duration}\\)\n\n"
+        f"⏰ {event_label}: {start_time} \\— {end_time} \\({duration}\\)\n\n"
         f"{get_random_tip(type)}\n\n"
         f"📊 Графік: https://mixaua\\.github\\.io/Grafik/"
     )
