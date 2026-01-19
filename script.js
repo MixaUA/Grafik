@@ -60,10 +60,11 @@ async function init() {
 
     // Conditional initial fetch
     const cacheTime = parseInt(localStorage.getItem('db_cache_time')) || 0;
-    const needsFetch = !cachedDb || (Date.now() - cacheTime > 20 * 60 * 1000);
+    // Перевіряємо не тільки наявність кешу, а й наявність даних черг
+    const needsFetch = !db || !db.queues || (Date.now() - cacheTime > 20 * 60 * 1000);
 
     if (needsFetch) {
-        await fetchData(); // Чекаємо завершення якщо кешу немає або він застарілий
+        await fetchData(); // Чекаємо завершення якщо кешу немає, він битий, або застарілий
     }
 
     // Тепер db точно є, можна рендерити
