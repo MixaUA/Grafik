@@ -54,21 +54,21 @@ async function init() {
         const updateTimeEl = document.getElementById('update-time');
         if (updateTimeEl && db.update_time) updateTimeEl.innerText = `Оновлено: ${db.update_time}`;
     }
-    
+
     renderGrid();
     updateStatusDot();
 
     // Conditional initial fetch
     const cacheTime = parseInt(localStorage.getItem('db_cache_time')) || 0;
     const needsFetch = !cachedDb || (Date.now() - cacheTime > 20 * 60 * 1000);
-    
+
     if (needsFetch) {
         await fetchData(); // Чекаємо завершення якщо кешу немає або він застарілий
     }
-    
+
     // Тепер db точно є, можна рендерити
     if (curQ) selectQ(curQ);
-    
+
     await fetchWeather();
 
     setInterval(updateFlipTimer, 1000);
@@ -79,7 +79,7 @@ async function init() {
             updateStatusDot();
         }
     }, 60000);
-    setInterval(async () => { if (curQ) await fetchData(); }, 1200000); 
+    setInterval(async () => { if (curQ) await fetchData(); }, 1200000);
     setInterval(() => { fetchWeather(); }, 3600000);
 }
 
@@ -103,7 +103,23 @@ async function fetchData() {
         }
         updateStatusDot();
     } catch (e) {
-        console.log('Fetch failed, continuing with cached data.');
+        console.log('Fetch failed, continuing with cached data.', e);
+
+        // Якщо кеш порожній і fetch падає - показуємо помилку
+        if (!db) {
+            const statusEl = document.getElementById('update-time');
+            if (statusEl) statusEl.innerText = 'Помилка завантаження даних';
+
+            // Показуємо повідомлення в content-list якщо черга вибрана
+            if (curQ) {
+                const cl = document.getElementById('content-list');
+                if (cl) {
+                    cl.innerHTML = `<div class="no-actual">Не вдалося завантажити дані.<br>Перевірте підключення до інтернету.</div>`;
+                    cl.classList.remove('hidden');
+                }
+            }
+        }
+
         updateStatusDot();
     }
 }
@@ -194,7 +210,7 @@ function setDigit(id, v) { const s = document.getElementById(id); if (s) s.style
 function render() {
     if (!db || !curQ || !db.queues || !db.queues[curQ]) {
         const cl = document.getElementById('content-list');
-        if(cl) cl.innerHTML = `<div class="no-actual">Дані завантажуються...</div>`;
+        if (cl) cl.innerHTML = `<div class="no-actual">Дані завантажуються...</div>`;
         return;
     }
     const now = new Date();
@@ -313,28 +329,28 @@ async function fetchWeather() {
         if (!r.ok) throw new Error();
         const data = await r.json();
         function getDominantCode(dayIndex) {
-    if (!data.hourly?.weathercode?.length) return data.daily?.weathercode?.[dayIndex] ?? 3;
-    const startHour = 10, endHour = 16, dayOffset = dayIndex * 24;
-    const dayCodes = data.hourly.weathercode.slice(dayOffset + startHour, dayOffset + endHour + 1);
-    
-    const counts = {};
-    for (const code of dayCodes) { counts[code] = (counts[code] || 0) + 1; }
+            if (!data.hourly?.weathercode?.length) return data.daily?.weathercode?.[dayIndex] ?? 3;
+            const startHour = 10, endHour = 16, dayOffset = dayIndex * 24;
+            const dayCodes = data.hourly.weathercode.slice(dayOffset + startHour, dayOffset + endHour + 1);
 
-    // 1. Якщо є хоча б 2 години ідеального сонця (код 0)
-    if ((counts[0] || 0) >= 2) return 0;
+            const counts = {};
+            for (const code of dayCodes) { counts[code] = (counts[code] || 0) + 1; }
 
-    // 2. Якщо сонця мало, але є хоча б 2 години легкої хмарності (коди 1, 2)
-    if ((counts[1] || 0) + (counts[2] || 0) >= 2) return 2;
+            // 1. Якщо є хоча б 2 години ідеального сонця (код 0)
+            if ((counts[0] || 0) >= 2) return 0;
 
-    // 3. Якщо нічого з вищого не підійшло — тоді вже виводимо хмари або щось інше, що домінує
-    let maxCount = 0, dominantCode = dayCodes[0];
-    for (const code in counts) {
-        if (counts[code] > maxCount) { maxCount = counts[code]; dominantCode = parseInt(code); }
-    }
-    return dominantCode;
-}
+            // 2. Якщо сонця мало, але є хоча б 2 години легкої хмарності (коди 1, 2)
+            if ((counts[1] || 0) + (counts[2] || 0) >= 2) return 2;
 
-weatherData = {
+            // 3. Якщо нічого з вищого не підійшло — тоді вже виводимо хмари або щось інше, що домінує
+            let maxCount = 0, dominantCode = dayCodes[0];
+            for (const code in counts) {
+                if (counts[code] > maxCount) { maxCount = counts[code]; dominantCode = parseInt(code); }
+            }
+            return dominantCode;
+        }
+
+        weatherData = {
             timestamp: Date.now(),
             today: { max: Math.round(data.daily.temperature_2m_max[0]), min: Math.round(data.daily.temperature_2m_min[0]), code: getDominantCode(0) },
             tomorrow: { max: Math.round(data.daily.temperature_2m_max[1]), min: Math.round(data.daily.temperature_2m_min[1]), code: getDominantCode(1) }
