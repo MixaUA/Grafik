@@ -38,12 +38,6 @@ function updateStatusDot() {
 }
 
 async function init() {
-    // Prepare status UI
-    const statusEl = document.getElementById('status');
-    if (statusEl) {
-        statusEl.innerHTML = `<span id="update-time"></span><span id="status-dot"></span>`;
-    }
-
     document.getElementById('year').innerText = new Date().getFullYear();
     updateFlipTimer();
 
