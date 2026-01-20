@@ -388,11 +388,29 @@ function openGoogleCalendar(slot, isToday, type) {
 
 function registerSW() {
     if (!('serviceWorker' in navigator)) return;
-    navigator.serviceWorker.addEventListener('controllerchange', () => { window.location.reload(); });
+
+    // Автоматично перезавантажуємо сторінку, коли новий воркер активується
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+            window.location.reload();
+            refreshing = true;
+        }
+    });
+
     navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(reg => {
+        // ПЕРЕВІРКА: якщо оновлення вже завантажене і чекає (після F5)
+        if (reg.waiting) {
+            showUpdateBar(reg.waiting);
+        }
+
         reg.addEventListener('updatefound', () => {
             const w = reg.installing;
-            w.addEventListener('statechange', () => { if (w.state === 'installed' && navigator.serviceWorker.controller) showUpdateBar(w); });
+            w.addEventListener('statechange', () => {
+                if (w.state === 'installed' && navigator.serviceWorker.controller) {
+                    showUpdateBar(w);
+                }
+            });
         });
     });
 }
