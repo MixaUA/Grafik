@@ -24,7 +24,7 @@ jobs:
       - name: Download data
         id: download
         run: |
-          URL="https://raw.githubusercontent.com/MixaUA/Mykolayivka/main/database_new.json"
+          URL="https://raw.githubusercontent.com/Aporial/Svitlo-Sumy-Databases/main/database_new.json"
           curl -s -L "$URL" -o scripts/database_new.json.tmp
           if [ ! -s scripts/database_new.json.tmp ] || cmp -s scripts/database_new.json scripts/database_new.json.tmp; then
             echo "changed=false" >> $GITHUB_OUTPUT
