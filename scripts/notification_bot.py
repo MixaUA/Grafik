@@ -214,7 +214,7 @@ def run_bot():
                 print(f"🔔 [EVENT] Технічне сповіщення: Вимкнення через {int(diff)} хв.")
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['start'], ev['end'], diff, "off", merged[i+1:])
                 sent = True; break
-            elif 70 < diff <= 240:
+            elif 70 < diff <= 90:
                 print(f"📚 [EVENT] Літературна пауза перед Вимкненням. До події: {int(diff)} хв.")
                 quote = get_literature_tip("off")
                 if quote: send_literature_notif(quote, "off"); sent = True; break
