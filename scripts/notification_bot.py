@@ -95,60 +95,63 @@ def run_bot():
     merged = []
     curr = all_events[0]
     for nxt in all_events[1:]:
-        if curr['end'] == nxt['start']:
-            curr['end'] = nxt['end']
+        if curr['end'] == nxt['start']: curr['end'] = nxt['end']
         else:
             merged.append(curr)
             curr = nxt
     merged.append(curr)
     
     for i, ev in enumerate(merged):
-        # ЛОГІКА ДЛЯ УВІМКНЕННЯ (ми зараз у темряві)
         if ev['start'] <= now_m < ev['end']:
             diff = ev['end'] - now_m
             if 0 < diff <= 30:
-                # Визначаємо період СВІТЛА, що настане
+                # УВІМКНЕННЯ
                 light_start = ev['end']
-                light_end = merged[i+1]['start'] if i+1 < len(merged) else (ev['end'] + 120) # +2 год як заглушка якщо далі нема даних
-                send_notif(current_time_str, days_ukr_cap[today_dow], light_start, light_end, diff, "on", merged[i+1:])
+                next_ev = merged[i+1] if i+1 < len(merged) else None
+                
+                # Перевірка чи є наступне вимкнення сьогодні
+                if next_ev and next_ev['start'] < 1440:
+                    send_notif(current_time_str, days_ukr_cap[today_dow], light_start, next_ev['start'], diff, "on", merged[i+1:])
+                else:
+                    send_notif(current_time_str, days_ukr_cap[today_dow], light_start, None, diff, "on", merged[i+1:])
                 break
-        # ЛОГІКА ДЛЯ ВИМКНЕННЯ (зараз світло є)
         elif ev['start'] > now_m:
             diff = ev['start'] - now_m
             if 0 < diff <= 30:
+                # ВИМКНЕННЯ
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['start'], ev['end'], diff, "off", merged[i+1:])
                 break
 
 def send_notif(cur_time, day, start, end, diff, type, future_events):
-    s_t = escape_markdown_v2(format_time_display(start))
-    e_t = escape_markdown_v2(format_time_display(end))
-    dur = escape_markdown_v2(calculate_duration_from_min(start, end))
-    
     if type == "off":
         icon = get_time_icon(start)
         status = "вимкнуть світло\\! ⚡"
         event_label = "Вимкнення"
+        time_info = f"{escape_markdown_v2(format_time_display(start))} \\- {escape_markdown_v2(format_time_display(end))} \\({escape_markdown_v2(calculate_duration_from_min(start, end))}\\)"
     else:
-        icon = get_time_icon(start) # іконка початку періоду світла
+        icon = get_time_icon(start)
         status = "увімкнуть світло\\! 💡"
         event_label = "Увімкнення"
+        if end is None:
+            time_info = "За графіком до кінця доби"
+        else:
+            time_info = f"{escape_markdown_v2(format_time_display(start))} \\- {escape_markdown_v2(format_time_display(end))} \\({escape_markdown_v2(calculate_duration_from_min(start, end))}\\)"
     
     next_list = []
     for fev in future_events:
-        if fev['start'] < 1440:
+        # Змінено з 1440 на 2880, щоб бачити події на завтра
+        if fev['start'] < 2880:
             f_s = escape_markdown_v2(format_time_display(fev['start']))
             f_e = escape_markdown_v2(format_time_display(fev['end']))
             f_d = escape_markdown_v2(calculate_duration_from_min(fev['start'], fev['end']))
             next_list.append(f"👉 Вимкнення: {f_s} \\- {f_e} \\({f_d}\\)")
     
-    next_events_block = ""
-    if next_list:
-        next_events_block = "\n\n*Наступні:*\n" + "\n".join(next_list)
+    next_events_block = ("\n\n*Наступні:*\n" + "\n".join(next_list)) if next_list else ""
 
     msg = (
         f"{icon} *Увага\\! Менше ніж за {escape_markdown_v2(str(int(diff)))} хвилин {status}*\n\n"
         f"📅 {escape_markdown_v2(day)}, {escape_markdown_v2(cur_time)}\n"
-        f"⏰ {event_label}: {s_t} \\- {e_t} \\({dur}\\)"
+        f"⏰ {event_label}: {time_info}"
         f"{next_events_block}\n\n"
         f"{escape_markdown_v2(get_random_tip(type))}\n\n"
         f"📊 *Графік:* https://mixaua\\.github\\.io/Mykolayivka/"
