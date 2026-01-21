@@ -8,8 +8,8 @@ import textwrap
 
 # --- НАЛАШТУВАННЯ ФАЙЛІВ ---
 SCRIPT_DIR = os.path.dirname(__file__)
-LIT_FILE = os.path.join(SCRIPT_DIR, 'literature.json')
-STATE_FILE = os.path.join(SCRIPT_DIR, 'state.json')
+LIT_FILE = os.path.join(SCRIPT_DIR, 'literature.json') # literature.json is in scripts/
+STATE_FILE = os.path.join(SCRIPT_DIR, 'state.json')   # state.json will be in scripts/
 
 def escape_markdown_v2(text: str) -> str:
     escape_chars = r'_*[]()~`>#+-=|{}.!'
@@ -112,7 +112,8 @@ def send_telegram_message(message_text):
 def run_bot():
     print(f"--- Запуск бота: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ---")
     try:
-        with open(os.path.join(SCRIPT_DIR, 'database.json'), 'r', encoding='utf-8') as f:
+        # database.json is in the repository root, so refer to it directly
+        with open('database.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
         print("Файл database.json завантажено.")
     except Exception as e:
@@ -211,7 +212,7 @@ def send_notif(cur_time, day, start_event_m, end_event_m, diff, type, future_eve
         a_text = q.get('about_text', 'Інформація про текст відсутня.')
         prep = q.get('prepared_by', 'Admin')
 
-        raw_quote_block = f"""📖 *Хвилинка класики:*
+        raw_quote_block = f"""📚 *Хвилинка класики:*
 👤 *{author}*
 
 «{text}»
@@ -236,12 +237,15 @@ def send_notif(cur_time, day, start_event_m, end_event_m, diff, type, future_eve
 
     next_events_block = ""
     if next_list:
-        next_events_block = "\n\n*Наступні:*\n" + "\n".join(next_list)
+        next_events_block = "\n\n*Наступні:*
+" + "\n".join(next_list)
     
     # Construct final message
-    msg = f"""{icon} *Увага\\! Менше ніж за {diff_esc} хвилин {status}*\n
+    msg = f"""
+{icon} *Увага\\! Менше ніж за {diff_esc} хвилин {status}*\n
 📅 {day_esc}, {time_esc}
-⏰ {event_label}: {escape_markdown_v2(format_time_display(start_event_m))} \- {escape_markdown_v2(format_time_display(end_event_m))} \({escape_markdown_v2(calculate_duration_from_min(start_event_m, end_event_m))}\\) {next_events_block}\n
+⏰ {event_label}: {escape_markdown_v2(format_time_display(start_event_m))} \- {escape_markdown_v2(format_time_display(end_event_m))} \({escape_markdown_v2(calculate_duration_from_min(start_event_m, end_event_m))}\{next_events_block}\)
+
 {quote_block}\n
 📊 *Графік:* https://mixaua\\.github\\.io/Mykolayivka/"""
     
