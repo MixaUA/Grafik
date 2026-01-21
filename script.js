@@ -41,7 +41,7 @@ async function init() {
     document.getElementById('year').innerText = new Date().getFullYear();
     updateFlipTimer();
 
-    // 1. Спершу завантажуємо кеш
+    // 1. Завантажуємо кеш
     const cachedDb = localStorage.getItem('db_cache');
     if (cachedDb) {
         db = JSON.parse(cachedDb);
@@ -49,30 +49,29 @@ async function init() {
         if (updateTimeEl && db.update_time) updateTimeEl.innerText = `Оновлено: ${db.update_time}`;
     }
 
-    // 2. КРИТИЧНИЙ МОМЕНТ: Якщо черга вже обрана, ховаємо сітку ДО будь-яких мережевих запитів
+    // 2. Логіка відображення (тепер працює в парі з твоїм новим HTML)
     if (curQ) {
-        const gridEl = document.getElementById('grid');
-        const boxEl = document.getElementById('box');
-        if (gridEl) gridEl.classList.add('hidden');
-        if (boxEl) boxEl.classList.remove('hidden');
+        // Якщо черга обрана, просто ставимо заголовок
         document.getElementById('title').innerText = `Черга ${curQ}`;
+    } else {
+        // Якщо черги немає — показуємо сітку вибору
+        document.getElementById('grid').classList.remove('hidden');
+        document.getElementById('box').classList.add('hidden');
+        renderGrid();
     }
 
-    // 3. Малюємо те, що є в кеші
-    renderGrid();
     updateStatusDot();
 
-    // 4. Тільки тепер ідемо в мережу перевіряти оновлення
+    // 3. Перевірка оновлень на GitHub (HEAD-запит)
     await fetchData();
 
-    // 5. Після оновлення даних з мережі (якщо воно було) оновлюємо вигляд
     if (curQ) {
         selectQ(curQ); 
     }
 
     await fetchWeather();
 
-    // Налаштування інтервалів
+    // Інтервали
     setInterval(updateFlipTimer, 1000);
     setInterval(() => {
         if (curQ && db) {
@@ -85,7 +84,6 @@ async function init() {
     setInterval(async () => { if (curQ) await fetchData(); }, 300000);
     setInterval(() => { fetchWeather(); }, 3600000);
 }
-
 
 async function fetchData() {
     const now = Date.now();
