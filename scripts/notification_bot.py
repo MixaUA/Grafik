@@ -12,7 +12,6 @@ def escape_markdown_v2(text: str) -> str:
     return re.sub(f'([{re.escape(escape_chars)}])', r'\\\1', text)
 
 def smart_wrap(text, width=60):
-    # Тепер переносить тільки якщо текст реально довший за 60 символів
     lines = textwrap.wrap(text, width=width, break_long_words=False)
     return "\n".join(lines)
 
@@ -84,31 +83,36 @@ def run_bot():
         schedule = data.get('queues', {}).get('6.2', {}).get(days_ukr[target_dow], [])
         for val in schedule:
             s_str, e_str = val.split('-')
-            s_h, s_m = map(int, s_str.split(':'))
-            e_h, e_m = map(int, e_str.split(':'))
-            start_total = s_h * 60 + s_m + (day_offset * 1440)
-            end_total = (1440 if (e_h == 0 and e_m == 0) or e_h == 24 else e_h * 60 + e_m) + (day_offset * 1440)
-            all_events.append({'start': start_total, 'end': end_total})
+            sh, sm = map(int, s_str.split(':'))
+            eh, em = map(int, e_str.split(':'))
+            st = sh * 60 + sm + (day_offset * 1440)
+            et = (1440 if (eh == 0 and em == 0) or eh == 24 else eh * 60 + em) + (day_offset * 1440)
+            all_events.append({'start': st, 'end': et})
 
     if not all_events: return
     all_events.sort(key=lambda x: x['start'])
     
     merged = []
     curr = all_events[0]
-    for next_ev in all_events[1:]:
-        if curr['end'] == next_ev['start']:
-            curr['end'] = next_ev['end']
+    for nxt in all_events[1:]:
+        if curr['end'] == nxt['start']:
+            curr['end'] = nxt['end']
         else:
             merged.append(curr)
-            curr = next_ev
+            curr = nxt
     merged.append(curr)
     
     for i, ev in enumerate(merged):
+        # ЛОГІКА ДЛЯ УВІМКНЕННЯ (ми зараз у темряві)
         if ev['start'] <= now_m < ev['end']:
             diff = ev['end'] - now_m
             if 0 < diff <= 30:
-                send_notif(current_time_str, days_ukr_cap[today_dow], ev['start'], ev['end'], diff, "on", merged[i+1:])
+                # Визначаємо період СВІТЛА, що настане
+                light_start = ev['end']
+                light_end = merged[i+1]['start'] if i+1 < len(merged) else (ev['end'] + 120) # +2 год як заглушка якщо далі нема даних
+                send_notif(current_time_str, days_ukr_cap[today_dow], light_start, light_end, diff, "on", merged[i+1:])
                 break
+        # ЛОГІКА ДЛЯ ВИМКНЕННЯ (зараз світло є)
         elif ev['start'] > now_m:
             diff = ev['start'] - now_m
             if 0 < diff <= 30:
@@ -116,16 +120,16 @@ def run_bot():
                 break
 
 def send_notif(cur_time, day, start, end, diff, type, future_events):
-    start_time = escape_markdown_v2(format_time_display(start))
-    end_time = escape_markdown_v2(format_time_display(end))
-    duration = escape_markdown_v2(calculate_duration_from_min(start, end))
+    s_t = escape_markdown_v2(format_time_display(start))
+    e_t = escape_markdown_v2(format_time_display(end))
+    dur = escape_markdown_v2(calculate_duration_from_min(start, end))
     
     if type == "off":
         icon = get_time_icon(start)
         status = "вимкнуть світло\\! ⚡"
         event_label = "Вимкнення"
     else:
-        icon = get_time_icon(end)
+        icon = get_time_icon(start) # іконка початку періоду світла
         status = "увімкнуть світло\\! 💡"
         event_label = "Увімкнення"
     
@@ -144,7 +148,7 @@ def send_notif(cur_time, day, start, end, diff, type, future_events):
     msg = (
         f"{icon} *Увага\\! Менше ніж за {escape_markdown_v2(str(int(diff)))} хвилин {status}*\n\n"
         f"📅 {escape_markdown_v2(day)}, {escape_markdown_v2(cur_time)}\n"
-        f"⏰ {event_label}: {start_time} \\- {end_time} \\({duration}\\)"
+        f"⏰ {event_label}: {s_t} \\- {e_t} \\({dur}\\)"
         f"{next_events_block}\n\n"
         f"{escape_markdown_v2(get_random_tip(type))}\n\n"
         f"📊 *Графік:* https://mixaua\\.github\\.io/Mykolayivka/"
