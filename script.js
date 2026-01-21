@@ -41,7 +41,7 @@ async function init() {
     document.getElementById('year').innerText = new Date().getFullYear();
     updateFlipTimer();
 
-    // Cache-first logic: спочатку показуємо те, що вже є
+    // 1. Спершу завантажуємо кеш
     const cachedDb = localStorage.getItem('db_cache');
     if (cachedDb) {
         db = JSON.parse(cachedDb);
@@ -49,13 +49,26 @@ async function init() {
         if (updateTimeEl && db.update_time) updateTimeEl.innerText = `Оновлено: ${db.update_time}`;
     }
 
+    // 2. КРИТИЧНИЙ МОМЕНТ: Якщо черга вже обрана, ховаємо сітку ДО будь-яких мережевих запитів
+    if (curQ) {
+        const gridEl = document.getElementById('grid');
+        const boxEl = document.getElementById('box');
+        if (gridEl) gridEl.classList.add('hidden');
+        if (boxEl) boxEl.classList.remove('hidden');
+        document.getElementById('title').innerText = `Черга ${curQ}`;
+    }
+
+    // 3. Малюємо те, що є в кеші
     renderGrid();
     updateStatusDot();
 
-    // При кожному запуску намагаємося перевірити актуальність через fetchData (HEAD-запит всередині)
+    // 4. Тільки тепер ідемо в мережу перевіряти оновлення
     await fetchData();
 
-    if (curQ) selectQ(curQ);
+    // 5. Після оновлення даних з мережі (якщо воно було) оновлюємо вигляд
+    if (curQ) {
+        selectQ(curQ); 
+    }
 
     await fetchWeather();
 
@@ -69,11 +82,10 @@ async function init() {
         }
     }, 60000);
     
-    // Перевіряємо актуальність бази кожні 5 хвилин (замість 20)
     setInterval(async () => { if (curQ) await fetchData(); }, 300000);
-    
     setInterval(() => { fetchWeather(); }, 3600000);
 }
+
 
 async function fetchData() {
     const now = Date.now();
