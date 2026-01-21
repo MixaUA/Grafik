@@ -28,11 +28,16 @@
         </svg>
     </div>
     <h2>Графік відключень</h2>
-    <div class="update-status" id="status"><span id="update-time">Завантаження...</span><span id="status-dot"></span></div>
+    <div class="update-status" id="status">
+        <span id="update-time">Завантаження...</span>
+        <span id="status-dot"></span>
+    </div>
     <h1 id="title">Оберіть чергу</h1>
     <div id="timer-container"></div>
-    <div id="grid" class="queue-grid"></div>
-    <div id="box" class="hidden">
+    
+    <div id="grid" class="queue-grid hidden"></div>
+    
+    <div id="box">
         <div class="tabs">
             <button id="tabL" class="tab active" onclick="setDay(0)">
                 Сьогодні
@@ -62,7 +67,8 @@
             <p class="wiki-warning">Під час динамічних змін графіків обленерго вже заплановані події можуть бути некоректними. Канал та календар не гарантують точність у моменти позапланових змін.</p>
             <p><b>Погода:</b> Інформація про погоду відображається виключно для Миколаївки. Графіки відключень можуть стосуватися й інших населених пунктів області.</p>
             <p><b>Важливо:</b> Даний графік не є офіційним джерелом інформації. Дані взяті з відкритих джерел і можуть бути неточними.</p>
-        </div>    </div>
+        </div>
+    </div>
     <div class="footer">&copy; <span id="year"></span> Mykhailo Anisimov</div>
 </div>
 
