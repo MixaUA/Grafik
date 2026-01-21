@@ -215,7 +215,7 @@ def run_bot():
             if 0 < diff <= 30:
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['end'], (merged[i+1]['start'] if i+1 < len(merged) else None), diff, "on", merged[i+1:])
                 sent = True; break
-            elif 70 < diff <= 240:
+            elif 70 < diff <= 90:
                 quote = get_literature_tip("on")
                 if quote: send_literature_notif(quote, "on"); sent = True; break
         elif ev['start'] > now_m:
