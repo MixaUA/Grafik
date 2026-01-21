@@ -30,17 +30,32 @@ def get_time_icon(total_minutes):
     hour = (int(total_minutes) // 60) % 24
     return "☀️" if 6 <= hour < 20 else "🌙"
 
+# --- ПОРАДИ (РАНДОМ) ---
+def get_legacy_tip(event_type):
+    tips_off = [
+        "🌗 Зараз стане трішки темніше, але це лише пауза. Заряджайте пристрої!",
+        "⏸️ Світло вимкнуть ненадовго. Час для кави або теплого чаю.",
+        "🔋 Перевірте павербанки! Скоро переходимо на автономний режим.",
+        "🌘 Темрява — це просто відсутність світла, а не надії. Тримайтеся!",
+        "⚡ Готуємось до відключення. Все буде Україна!"
+    ]
+    tips_on = [
+        "⏳ От-от з’явиться світло! Готуйтеся вмикати улюблені прилади.",
+        "🔋 Скоро буде світло. Життя повертається у звичний ритм!",
+        "💡 Сяйво вже на підході. Блекаут сьогодні програв!",
+        "🔥 Світло повертається! Дякуємо енергетикам за працю.",
+        "✨ Ще кілька хвилин — і будемо з електрикою. Гарного вечора!"
+    ]
+    return random.choice(tips_off if event_type == "off" else tips_on)
+
 # --- ЛІТЕРАТУРНИЙ БЛОК ---
 def get_literature_tip(event_type):
     lit_path = 'scripts/literature.json'
     state_path = 'scripts/state.json'
-    
     try:
         with open(lit_path, 'r', encoding='utf-8') as f:
             lit_data = json.load(f)
-    except Exception as e:
-        print(f"⚠️ Помилка завантаження літератури: {e}")
-        return None
+    except: return None
 
     key = "ON_event" if event_type == "on" else "OFF_event"
     quotes = lit_data.get(key, [])
@@ -56,16 +71,13 @@ def get_literature_tip(event_type):
     idx_key = f"{key}_index"
     current_idx = state.get(idx_key, 0)
     if current_idx >= len(quotes): current_idx = 0
-        
     quote = quotes[current_idx]
     state[idx_key] = (current_idx + 1) % len(quotes)
 
     try:
         with open(state_path, 'w', encoding='utf-8') as f:
             json.dump(state, f, ensure_ascii=False, indent=4)
-    except Exception as e:
-        print(f"⚠️ Не вдалося зберегти state.json: {e}")
-
+    except: pass
     return quote
 
 # --- ВІДПРАВКА ---
@@ -75,14 +87,9 @@ def send_telegram_message(message_text):
     if not bot_token or not chat_id: return
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     payload = {'chat_id': chat_id, 'text': message_text, 'parse_mode': 'MarkdownV2'}
-    try:
-        requests.post(url, json=payload).raise_for_status()
-        print("✅ Повідомлення надіслано в Telegram.")
-    except Exception as e:
-        print(f"❌ Помилка Telegram: {e}")
+    requests.post(url, json=payload)
 
 def send_literature_notif(quote, event_type):
-    # Рандомні вітання
     on_greetings = [
         "Оце прокинувся подивитися, що там у нашому графіку. Бачу, що ще маю трохи часу, перш ніж бігти вмикати вам рубильники. Поки ми всі чекаємо, тримайте цікавинку, а я ще трішки подрімаю. Скоро почуємось!",
         "Тихо зазирнув у ваші плани... Світло вже на підході! Поки воно ще в дорозі, пропоную хвилинку для роздумів. Не сумуйте, скоро буде яскраво!",
@@ -97,39 +104,24 @@ def send_literature_notif(quote, event_type):
         "Перевірив черги... Так, скоро вимкнення. Але не варто засмучуватися! Поки маємо час, пропоную трохи зануритися в літературу. А я піду перевірю свої акумулятори.",
         "Бот на зв'язку! Бачу, що скоро за планом «темний режим». Вирішив заздалегідь підняти вам настрій добрим словом. Тримайте, а я ще повернусь із точним часом!"
     ]
-
     title = "💡 *Передчуття світла\\.\\.\\.*" if event_type == "on" else "🌙 *Вечірні роздуми\\.\\.\\.*"
     greeting = random.choice(on_greetings if event_type == "on" else off_greetings)
-    
-    print(f"📖 [LIT LOG] Відправка ID: {quote.get('id')}, Автор: {quote.get('author')}")
-
-    text = escape_markdown_v2(quote.get('text', ''))
-    author = escape_markdown_v2(quote.get('author', ''))
-    about_auth = escape_markdown_v2(quote.get('about_author', ''))
-    about_txt = escape_markdown_v2(quote.get('about_text', ''))
-    prep = escape_markdown_v2(quote.get('prepared_by', ''))
-
     msg = (
         f"{title}\n\n"
         f"_{escape_markdown_v2(greeting)}_\n\n"
-        f"📖 *«{text}»*\n\n"
-        f"👤 *{author}*\n"
-        f"{about_auth}\n\n"
-        f"📚 *Про текст:* {about_txt}\n\n"
-        f"✍️ _Підготував: {prep}_"
+        f"📖 *«{escape_markdown_v2(quote.get('text', ''))}»*\n\n"
+        f"👤 *{escape_markdown_v2(quote.get('author', ''))}*\n"
+        f"{escape_markdown_v2(quote.get('about_author', ''))}\n\n"
+        f"📚 *Про текст:* {escape_markdown_v2(quote.get('about_text', ''))}\n\n"
+        f"✍️ _Підготував: {escape_markdown_v2(quote.get('prepared_by', ''))}_"
     )
     send_telegram_message(msg)
 
 def send_notif(cur_time, day, start, end, diff, type, future_events):
     icon = get_time_icon(start)
-    if type == "off":
-        status = "вимкнуть світло\\! ⚡"
-        event_label = "Вимкнення"
-        time_info = f"{escape_markdown_v2(format_time_display(start))} \\- {escape_markdown_v2(format_time_display(end))} \\({escape_markdown_v2(calculate_duration_from_min(start, end))}\\)"
-    else:
-        status = "увімкнуть світло\\! 💡"
-        event_label = "Увімкнення"
-        time_info = "За графіком до кінця доби" if end is None else f"{escape_markdown_v2(format_time_display(start))} \\- {escape_markdown_v2(format_time_display(end))} \\({escape_markdown_v2(calculate_duration_from_min(start, end))}\\)"
+    status = "увімкнуть світло\\! 💡" if type == "on" else "вимкнуть світло\\! ⚡"
+    event_label = "Увімкнення" if type == "on" else "Вимкнення"
+    time_info = "За графіком до кінця доби" if (type == "on" and end is None) else f"{escape_markdown_v2(format_time_display(start))} \\- {escape_markdown_v2(format_time_display(end))} \\({escape_markdown_v2(calculate_duration_from_min(start, end))}\\)"
     
     next_list = []
     for fev in future_events:
@@ -142,17 +134,16 @@ def send_notif(cur_time, day, start, end, diff, type, future_events):
         f"📅 {escape_markdown_v2(day)}, {escape_markdown_v2(cur_time)}\n"
         f"⏰ {event_label}: {time_info}"
         f"{next_events_block}\n\n"
+        f"💡 _{escape_markdown_v2(get_legacy_tip(type))}_\n\n" # РАНДОМ ПОВЕРНУТО СЮДИ
         f"📊 *Графік:* https://mixaua\\.github\\.io/Mykolayivka/"
     )
     send_telegram_message(msg)
 
-# --- ОСНОВНИЙ ЦИКЛ ---
+# --- ЛОГІКА ЗАПУСКУ ---
 def run_bot():
     try:
-        with open('database.json', 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        with open('database.json', 'r', encoding='utf-8') as f: data = json.load(f)
     except: return
-
     now = datetime.now()
     now_m = now.hour * 60 + now.minute
     current_time_str = now.strftime("%H:%M")
@@ -160,20 +151,16 @@ def run_bot():
     days_ukr = {k: v.lower() for k, v in days_ukr_cap.items()}
     today_dow = now.weekday()
 
-    print(f"🕒 Запуск: {current_time_str}, {days_ukr_cap[today_dow]}")
-
     all_events = []
     for day_offset in range(2):
         target_dow = (today_dow + day_offset) % 7
         schedule = data.get('queues', {}).get('6.2', {}).get(days_ukr[target_dow], [])
         for val in schedule:
             s_str, e_str = val.split('-')
-            sh, sm = map(int, s_str.split(':'))
-            eh, em = map(int, e_str.split(':'))
+            sh, sm = map(int, s_str.split(':')); eh, em = map(int, e_str.split(':'))
             st = sh * 60 + sm + (day_offset * 1440)
             et = (1440 if (eh == 0 and em == 0) or eh == 24 else eh * 60 + em) + (day_offset * 1440)
             all_events.append({'start': st, 'end': et})
-
     all_events.sort(key=lambda x: x['start'])
     merged = []
     if all_events:
@@ -185,34 +172,22 @@ def run_bot():
 
     sent = False
     for i, ev in enumerate(merged):
-        # УВІМКНЕННЯ
         if ev['start'] <= now_m < ev['end']:
             diff = ev['end'] - now_m
             if 0 < diff <= 30:
-                print(f"🔔 Технічне (УВІМК): {int(diff)} хв")
-                light_start = ev['end']
-                next_ev = merged[i+1] if i+1 < len(merged) else None
-                end_val = next_ev['start'] if next_ev and next_ev['start'] < 1440 else None
-                send_notif(current_time_str, days_ukr_cap[today_dow], light_start, end_val, diff, "on", merged[i+1:])
+                send_notif(current_time_str, days_ukr_cap[today_dow], ev['end'], (merged[i+1]['start'] if i+1 < len(merged) else None), diff, "on", merged[i+1:])
                 sent = True; break
-            elif 70 < diff <= 240: # ТЕСТОВИЙ РЕЖИМ (потім змінити 240 на 90)
-                print(f"📖 Література (УВІМК): {int(diff)} хв")
+            elif 70 < diff <= 240:
                 quote = get_literature_tip("on")
                 if quote: send_literature_notif(quote, "on"); sent = True; break
-
-        # ВИМКНЕННЯ
         elif ev['start'] > now_m:
             diff = ev['start'] - now_m
             if 0 < diff <= 30:
-                print(f"🔔 Технічне (ВИМК): {int(diff)} хв")
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['start'], ev['end'], diff, "off", merged[i+1:])
                 sent = True; break
-            elif 70 < diff <= 240: # ТЕСТОВИЙ РЕЖИМ (потім змінити 240 на 90)
-                print(f"📖 Література (ВИМК): {int(diff)} хв")
+            elif 70 < diff <= 240:
                 quote = get_literature_tip("off")
                 if quote: send_literature_notif(quote, "off"); sent = True; break
-
-    if not sent: print("😴 Немає подій для сповіщення.")
 
 if __name__ == "__main__":
     run_bot()
