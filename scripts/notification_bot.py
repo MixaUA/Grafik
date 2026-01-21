@@ -210,22 +210,15 @@ def send_notif(cur_time, day, start_event_m, end_event_m, diff, type, future_eve
         a_text = q.get('about_text', 'Інформація про текст відсутня.')
         prep = q.get('prepared_by', 'Admin')
 
-        raw_quote_block = (
-            f"📖 *Хвилинка класики:*
-"
-            f"👤 *{author}*
+        raw_quote_block = f"""📖 *Хвилинка класики:*
+👤 *{author}*
 
-"
-            f"«{text}»
+«{text}»
 
-"
-            f"ℹ️ *Про автора:* {a_author}
-"
-            f"📝 *Про текст:* {a_text}
+ℹ️ *Про автора:* {a_author}
+📝 *Про текст:* {a_text}
 
-"
-            f"✍️ *Підготував:* {prep}"
-        )
+✍️ *Підготував:* {prep}"""
         quote_block = smart_wrap(raw_quote_block)
     else:
         quote_block = smart_wrap("Тримаймося\\! Світло переможе темряву\.")
@@ -242,25 +235,14 @@ def send_notif(cur_time, day, start_event_m, end_event_m, diff, type, future_eve
 
     next_events_block = ""
     if next_list:
-        next_events_block = "\n\n*Наступні:*
-" + "\n".join(next_list)
+        next_events_block = "\n\n*Наступні:*\n" + "\n".join(next_list)
     
     # Construct final message
-    msg = (
-        f"{icon} *Увага\\! Менше ніж за {diff_esc} хвилин {status}*
-
-"
-        f"📅 {day_esc}, {time_esc}
-"
-        f"⏰ {event_label}: {escape_markdown_v2(format_time_display(start_event_m))} \- {escape_markdown_v2(format_time_display(end_event_m))} \({escape_markdown_v2(calculate_duration_from_min(start_event_m, end_event_m))}\)"
-        f"{next_events_block}
-
-"
-        f"{quote_block}
-
-"
-        f"📊 *Графік:* https://mixaua\\.github\\.io/Mykolayivka/"
-    )
+    msg = f"""{icon} *Увага\\! Менше ніж за {diff_esc} хвилин {status}*\n
+📅 {day_esc}, {time_esc}
+⏰ {event_label}: {escape_markdown_v2(format_time_display(start_event_m))} \- {escape_markdown_v2(format_time_display(end_event_m))} \({escape_markdown_v2(calculate_duration_from_min(start_event_m, end_event_m))}\\) {next_events_block}\n
+{quote_block}\n
+📊 *Графік:* https://mixaua\\.github\\.io/Mykolayivka/"""
     
     print(f"DEBUG: Constructed msg (truncated): {msg[:200]}...")
     send_telegram_message(msg)
