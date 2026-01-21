@@ -7,8 +7,9 @@ import random
 import textwrap
 
 # --- НАЛАШТУВАННЯ ФАЙЛІВ ---
-LIT_FILE = 'literature.json'
-STATE_FILE = 'state.json'
+SCRIPT_DIR = os.path.dirname(__file__)
+LIT_FILE = os.path.join(SCRIPT_DIR, 'literature.json')
+STATE_FILE = os.path.join(SCRIPT_DIR, 'state.json')
 
 def escape_markdown_v2(text: str) -> str:
     escape_chars = r'_*[]()~`>#+-=|{}.!'
@@ -111,7 +112,7 @@ def send_telegram_message(message_text):
 def run_bot():
     print(f"--- Запуск бота: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ---")
     try:
-        with open('database.json', 'r', encoding='utf-8') as f:
+        with open(os.path.join(SCRIPT_DIR, 'database.json'), 'r', encoding='utf-8') as f:
             data = json.load(f)
         print("Файл database.json завантажено.")
     except Exception as e:
