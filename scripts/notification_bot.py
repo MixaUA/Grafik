@@ -1,20 +1,20 @@
 import json
-from datetime import datetime, timedelta
+from datetime import datetime
 import os
 import requests
 import re
 import random
 import textwrap
 
-# --- НАЛАШТУВАННЯ ФАЙЛІВ ---
-SCRIPT_DIR = os.path.dirname(__file__)
-LIT_FILE = os.path.join(SCRIPT_DIR, 'literature.json') # literature.json is in scripts/
-STATE_FILE = os.path.join(SCRIPT_DIR, 'state.json')   # state.json will be in scripts/
-
 def escape_markdown_v2(text: str) -> str:
     escape_chars = r'_*[]()~`>#+-=|{}.!'
-    text = str(text).replace('\\', '\\\\') # Ensure text is string and escape backslashes first
+    text = text.replace('\\', '\\\\')
     return re.sub(f'([{re.escape(escape_chars)}])', r'\\\1', text)
+
+def smart_wrap(text, width=60):
+    # Тепер переносить тільки якщо текст реально довший за 60 символів
+    lines = textwrap.wrap(text, width=width, break_long_words=False)
+    return "\n".join(lines)
 
 def format_time_display(total_minutes):
     h = (int(total_minutes) // 60) % 24
@@ -34,100 +34,49 @@ def get_time_icon(total_minutes):
     hour = (int(total_minutes) // 60) % 24
     return "☀️" if 6 <= hour < 20 else "🌙"
 
-def smart_wrap(text, width=60):
-    lines = textwrap.wrap(text, width=width, break_long_words=False)
-    return "\n".join(lines)
-
-def get_next_quote(event_type):
-    """Отримує наступну цитату з literature.json по черзі, використовуючи state.json"""
-    if not os.path.exists(LIT_FILE):
-        print(f"DEBUG: Literature file {LIT_FILE} not found.")
-        return None
-    
-    try:
-        with open(LIT_FILE, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-    except Exception as e:
-        print(f"Помилка читання бази літератури: {e}")
-        return None
-
-    key = "ON_event" if event_type == "on" else "OFF_event"
-    idx_key = "ON_index" if event_type == "on" else "OFF_index"
-    quotes = data.get(key, [])
-
-    if not quotes:
-        print(f"DEBUG: No quotes found for {event_type} in {LIT_FILE}.")
-        return None
-
-    # Читаємо або створюємо стан черговості
-    if os.path.exists(STATE_FILE):
-        try:
-            with open(STATE_FILE, 'r', encoding='utf-8') as f:
-                state = json.load(f)
-        except: # Handle malformed state.json or other read errors
-            state = {"ON_index": 0, "OFF_index": 0}
-            print(f"DEBUG: Re-initializing state.json due to error.")
-    else:
-        state = {"ON_index": 0, "OFF_index": 0}
-        print(f"DEBUG: Initializing new state.json.")
-
-    # Визначаємо індекс
-    current_idx = state.get(idx_key, 0)
-    if current_idx >= len(quotes):
-        current_idx = 0
-    
-    selected_quote = quotes[current_idx]
-
-    # Оновлюємо індекс для наступного разу
-    state[idx_key] = (current_idx + 1) % len(quotes)
-    try:
-        with open(STATE_FILE, 'w', encoding='utf-8') as f:
-            json.dump(state, f, indent=2, ensure_ascii=False)
-    except Exception as e:
-        print(f"Помилка збереження state.json: {e}")
-    
-    print(f"DEBUG: Retrieved quote ID {selected_quote.get('id', 'N/A')} for {event_type} event. Next index: {state[idx_key]}")
-    return selected_quote
+def get_random_tip(event_type):
+    tips_off = [
+        "🌗 Зараз стане трішки темніше навколо, але не всередині.",
+        "⏸️ Світло вимкнуть ненадовго. Завершуй справи з електрикою - решта почекає.",
+        "💾 Світло от-от зникне. Якщо працюєш за ПК - збережи важливе й дай йому відпочити.",
+        "🕯️ Світло зникне на якийсь час. Подбай про важливе - решта почекає.",
+        "🌘 Світло повільно зникає. Подбай про те, що має значення саме зараз.",
+        "🔌 Невелика перерва в електриці. Можеш спокійно завершити справи й підготуватись."
+    ]
+    tips_on = [
+        "⏳ От-от з’явиться світло. На жаль на короткий проміжок часу, не витрачай його даремно!",
+        "🔋 Скоро буде світло. Подумай, що варто зарядити в першу чергу.",
+        "🔌 Світло скоро ввімкнуть. Підготуй важливе - без поспіху.",
+        "🚀 Світло на підході! Готуйся вмикати найважливіші прилади.",
+        "📱 Скоро з’явиться напруга. Перевір, чи готові твої гаджети до зарядки.",
+        "🌟 Світло ось-ось повернеться. Використай цей час максимально ефективно!"
+    ]
+    raw_tip = random.choice(tips_off if event_type == "off" else tips_on)
+    return smart_wrap(raw_tip, width=60)
 
 def send_telegram_message(message_text):
     bot_token = os.environ.get('TELEGRAM_TOKEN')
     chat_id = os.environ.get('TELEGRAM_CHAT_ID')
-    if not bot_token or not chat_id:
-        print("Помилка: Токен або ID чату не знайдені.")
-        return
+    if not bot_token or not chat_id: return
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-    payload = {
-        'chat_id': chat_id,
-        'text': message_text,
-        'parse_mode': 'MarkdownV2',
-        'disable_web_page_preview': True  # Disable link previews
-    }
+    payload = {'chat_id': chat_id, 'text': message_text, 'parse_mode': 'MarkdownV2'}
     try:
-        response = requests.post(url, json=payload)
-        response.raise_for_status()
-        print("Повідомлення успішно надіслано в Telegram.")
+        requests.post(url, json=payload).raise_for_status()
     except Exception as e:
-        print(f"Помилка відправки в ТГ: {e}")
+        print(f"Error: {e}")
 
 def run_bot():
-    print(f"--- Запуск бота: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ---")
     try:
-        # database.json is in the repository root, so refer to it directly
         with open('database.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
-        print("Файл database.json завантажено.")
-    except Exception as e:
-        print(f"Помилка завантаження файлу: {e}")
-        return
+    except: return
 
     now = datetime.now()
     now_m = now.hour * 60 + now.minute
     current_time_str = now.strftime("%H:%M")
-    days_ukr = {0: "понеділок", 1: "вівторок", 2: "середа", 3: "четвер", 4: "п'ятниця", 5: "субота", 6: "неділя"}
     days_ukr_cap = {0: "Понеділок", 1: "Вівторок", 2: "Середа", 3: "Четвер", 4: "П'ятниця", 5: "Субота", 6: "Неділя"}
+    days_ukr = {k: v.lower() for k, v in days_ukr_cap.items()}
     today_dow = now.weekday()
-    
-    print(f"DEBUG: Зараз: {current_time_str}, {days_ukr_cap[today_dow]}")
 
     all_events = []
     for day_offset in range(2):
@@ -141,116 +90,65 @@ def run_bot():
             end_total = (1440 if (e_h == 0 and e_m == 0) or e_h == 24 else e_h * 60 + e_m) + (day_offset * 1440)
             all_events.append({'start': start_total, 'end': end_total})
 
-    if not all_events:
-        print("DEBUG: Вихід: Графік порожній.")
-        return
-
+    if not all_events: return
     all_events.sort(key=lambda x: x['start'])
-    merged = []
-    if all_events:
-        curr = all_events[0]
-        for next_ev in all_events[1:]:
-            if curr['end'] == next_ev['start']:
-                curr['end'] = next_ev['end']
-            else:
-                merged.append(curr)
-                curr = next_ev
-        merged.append(curr)
     
-    print(f"DEBUG: Виявлено {len(merged)} склеєних інтервалів відключень:")
-    for i, ev in enumerate(merged, 1):
-        print(f"DEBUG:    {i}. {format_time_display(ev['start'])} — {format_time_display(ev['end'])}")
-
-    notified = False
+    merged = []
+    curr = all_events[0]
+    for next_ev in all_events[1:]:
+        if curr['end'] == next_ev['start']:
+            curr['end'] = next_ev['end']
+        else:
+            merged.append(curr)
+            curr = next_ev
+    merged.append(curr)
+    
     for i, ev in enumerate(merged):
-        start_s, end_s = format_time_display(ev['start']), format_time_display(ev['end'])
-        
         if ev['start'] <= now_m < ev['end']:
             diff = ev['end'] - now_m
-            print(f"DEBUG: Перевірка [{start_s}-{end_s}]. Ми в блоці. До ВВІМКНЕННЯ: {int(diff)} хв.")
             if 0 < diff <= 30:
-                print(f"DEBUG: ==> УМОВА 30 ХВ: Надсилаю про світло")
-                next_off_start = merged[i + 1]['start'] if i + 1 < len(merged) else 1440
-                send_notif(current_time_str, days_ukr_cap[today_dow], ev['end'], ev['start'], diff, "on", merged[i+1:])
-                notified = True
+                send_notif(current_time_str, days_ukr_cap[today_dow], ev['start'], ev['end'], diff, "on", merged[i+1:])
                 break
         elif ev['start'] > now_m:
             diff = ev['start'] - now_m
-            print(f"DEBUG: Перевірка [{start_s}-{end_s}]. Світло є. До ВИМКНЕННЯ: {int(diff)} хв.")
             if 0 < diff <= 30:
-                print(f"DEBUG: ==> УМОВА 30 ХВ: Надсилаю про вимкнення")
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['start'], ev['end'], diff, "off", merged[i+1:])
-                notified = True
                 break
 
-    if not notified:
-        print("DEBUG: Підсумок: Подій у вікні 30 хв не знайдено. Бот завершив роботу.")
-
-def send_notif(cur_time, day, start_event_m, end_event_m, diff, type, future_events=[]):
-    # Системна інформація для логування та повідомлення
-    day_esc = escape_markdown_v2(day)
-    time_esc = escape_markdown_v2(cur_time)
-    diff_esc = escape_markdown_v2(str(int(diff)))
+def send_notif(cur_time, day, start, end, diff, type, future_events):
+    start_time = escape_markdown_v2(format_time_display(start))
+    end_time = escape_markdown_v2(format_time_display(end))
+    duration = escape_markdown_v2(calculate_duration_from_min(start, end))
     
     if type == "off":
-        icon = get_time_icon(start_event_m)
+        icon = get_time_icon(start)
         status = "вимкнуть світло\\! ⚡"
         event_label = "Вимкнення"
     else:
-        icon = get_time_icon(end_event_m)
+        icon = get_time_icon(end)
         status = "увімкнуть світло\\! 💡"
         event_label = "Увімкнення"
-
-    # Отримуємо цитату з літературного джейсона
-    q = get_next_quote(type)
     
-    if q:
-        # Поля вже екрановані в JSON, використовуємо їх напряму
-        author = q.get('author', 'Невідомий автор')
-        text = q.get('text', 'Текст цитати відсутній.')
-        a_author = q.get('about_author', 'Інформація про автора відсутня.')
-        a_text = q.get('about_text', 'Інформація про текст відсутня.')
-        prep = q.get('prepared_by', 'Admin')
-
-        raw_quote_block = f"""
-📚 *Хвилинка класики:*
-👤 *{author}*
-
-«{text}»
-
-ℹ️ *Про автора:* {a_author}
-📝 *Про текст:* {a_text}
-
-✍️ *Підготував:* {prep}"""
-        quote_block = smart_wrap(raw_quote_block)
-    else:
-        quote_block = smart_wrap("Тримаймося\\! Світло переможе темряву\.")
-        print(f"DEBUG: No quote retrieved for {type}. Using fallback message.")
-
     next_list = []
-    # Limit to next 3 events to avoid long messages
-    for fev in future_events[:3]:
-        if fev['start'] < 1440: 
+    for fev in future_events:
+        if fev['start'] < 1440:
             f_s = escape_markdown_v2(format_time_display(fev['start']))
             f_e = escape_markdown_v2(format_time_display(fev['end']))
             f_d = escape_markdown_v2(calculate_duration_from_min(fev['start'], fev['end']))
-            next_list.append(f"👉 Вимкнення: {f_s} \- {f_e} \({f_d}\)")
-
+            next_list.append(f"👉 Вимкнення: {f_s} \\- {f_e} \\({f_d}\\)")
+    
     next_events_block = ""
     if next_list:
-        next_events_block = f"\n\n*Наступні:*
-" + "\n".join(next_list)
-    
-    # Construct final message
-    msg = f"""
-{icon} *Увага\\! Менше ніж за {diff_esc} хвилин {status}*\n
-📅 {day_esc}, {time_esc}
-⏰ {event_label}: {escape_markdown_v2(format_time_display(start_event_m))} \- {escape_markdown_v2(format_time_display(end_event_m))} \({escape_markdown_v2(calculate_duration_from_min(start_event_m, end_event_m))}\{next_events_block}\)
+        next_events_block = "\n\n*Наступні:*\n" + "\n".join(next_list)
 
-{quote_block}\n
-📊 *Графік:* https://mixaua\\.github\\.io/Mykolayivka/"""
-    
-    print(f"DEBUG: Constructed msg (truncated): {msg[:200]}...")
+    msg = (
+        f"{icon} *Увага\\! Менше ніж за {escape_markdown_v2(str(int(diff)))} хвилин {status}*\n\n"
+        f"📅 {escape_markdown_v2(day)}, {escape_markdown_v2(cur_time)}\n"
+        f"⏰ {event_label}: {start_time} \\- {end_time} \\({duration}\\)"
+        f"{next_events_block}\n\n"
+        f"{escape_markdown_v2(get_random_tip(type))}\n\n"
+        f"📊 *Графік:* https://mixaua\\.github\\.io/Mykolayivka/"
+    )
     send_telegram_message(msg)
 
 if __name__ == "__main__":
