@@ -111,7 +111,7 @@ def send_literature_notif(quote, event_type):
     greeting = random.choice(on_greetings if event_type == "on" else off_greetings)
     msg = (
         f"{title}\n\n"
-        f"_{escape_markdown_v2(greeting)}_\n\n"
+        f"🤖_{escape_markdown_v2(greeting)}_\n\n"
         f"📖 *«{escape_markdown_v2(quote.get('text', ''))}»*\n\n"
         f"👤 *{escape_markdown_v2(quote.get('author', ''))}*\n"
         f"{escape_markdown_v2(quote.get('about_author', ''))}\n\n"
