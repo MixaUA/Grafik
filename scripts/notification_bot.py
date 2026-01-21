@@ -32,7 +32,7 @@ def get_time_icon(total_minutes):
 # --- ПОРАДИ (РАНДОМ) ---
 def get_legacy_tip(event_type):
     tips_off = [
-        "🌗 Зараз стане трішки темніше, але це лише пауза. Заряджайте пристрої!",
+        "🌗 Зараз стане трішки темніше, але это лише пауза. Заряджайте пристрої!",
         "⏸️ Світло вимкнуть ненадовго. Час для кави або теплого чаю.",
         "🔋 Перевірте павербанки! Скоро переходимо на автономний режим.",
         "🌘 Темрява — це просто відсутність світла, а не надії. Тримайтеся!",
@@ -60,9 +60,7 @@ def get_literature_tip(event_type):
 
     key = "ON_event" if event_type == "on" else "OFF_event"
     quotes = lit_data.get(key, [])
-    if not quotes: 
-        print(f"⚠️ Масив {key} порожній або відсутній!")
-        return None
+    if not quotes: return None
 
     state = {"ON_event_index": 0, "OFF_event_index": 0}
     if os.path.exists(state_path):
@@ -76,34 +74,23 @@ def get_literature_tip(event_type):
     if current_idx >= len(quotes): current_idx = 0
     
     quote = quotes[current_idx]
-    
-    # Вивід дебагу в консоль GitHub
-    print(f"📖 [LIT DEBUG] Тип: {event_type}, Взято ID: {quote.get('id')}, Індекс: {current_idx}, Автор: {quote.get('author')}")
+    print(f"📖 [LIT DEBUG] Тип: {event_type}, Взято ID: {quote.get('id')}, Автор: {quote.get('author')}")
     
     state[idx_key] = (current_idx + 1) % len(quotes)
     try:
         with open(state_path, 'w', encoding='utf-8') as f:
             json.dump(state, f, ensure_ascii=False, indent=4)
-    except Exception as e:
-        print(f"⚠️ Не вдалося зберегти state.json: {e}")
-        
+    except: pass
     return quote
 
 # --- ВІДПРАВКА ---
 def send_telegram_message(message_text):
     bot_token = os.environ.get('TELEGRAM_TOKEN')
     chat_id = os.environ.get('TELEGRAM_CHAT_ID')
-    if not bot_token or not chat_id:
-        print("❌ Помилка: Відсутні токен або ID чату!")
-        return
+    if not bot_token or not chat_id: return
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     payload = {'chat_id': chat_id, 'text': message_text, 'parse_mode': 'MarkdownV2'}
-    try:
-        r = requests.post(url, json=payload)
-        r.raise_for_status()
-        print("✅ Повідомлення успішно надіслано в Telegram.")
-    except Exception as e:
-        print(f"❌ Помилка відправки в Telegram: {e}")
+    requests.post(url, json=payload)
 
 def send_literature_notif(quote, event_type):
     on_greetings = [
@@ -122,7 +109,6 @@ def send_literature_notif(quote, event_type):
     ]
     title = "💡 *Передчуття світла\\.\\.\\.*" if event_type == "on" else "🌙 *Вечірні роздуми\\.\\.\\.*"
     greeting = random.choice(on_greetings if event_type == "on" else off_greetings)
-    
     msg = (
         f"{title}\n\n"
         f"_{escape_markdown_v2(greeting)}_\n\n"
@@ -133,6 +119,7 @@ def send_literature_notif(quote, event_type):
         f"✍️ _Підготував: {escape_markdown_v2(quote.get('prepared_by', ''))}_"
     )
     send_telegram_message(msg)
+    print("✅ Літературне повідомлення надіслано.")
 
 def send_notif(cur_time, day, start, end, diff, type, future_events):
     icon = get_time_icon(start)
@@ -155,15 +142,13 @@ def send_notif(cur_time, day, start, end, diff, type, future_events):
         f"📊 *Графік:* https://mixaua\\.github\\.io/Mykolayivka/"
     )
     send_telegram_message(msg)
+    print(f"✅ Технічне повідомлення ({event_label}) надіслано.")
 
 # --- ЛОГІКА ЗАПУСКУ ---
 def run_bot():
     try:
         with open('database.json', 'r', encoding='utf-8') as f: data = json.load(f)
-    except Exception as e:
-        print(f"❌ Не вдалося відкрити database.json: {e}")
-        return
-
+    except: return
     now = datetime.now()
     now_m = now.hour * 60 + now.minute
     current_time_str = now.strftime("%H:%M")
@@ -171,7 +156,7 @@ def run_bot():
     days_ukr = {k: v.lower() for k, v in days_ukr_cap.items()}
     today_dow = now.weekday()
 
-    print(f"🕒 [START] Час: {current_time_str} ({days_ukr_cap[today_dow]})")
+    print(f"🕒 [START] {current_time_str} ({days_ukr_cap[today_dow]}) | Хвилина дня: {now_m}")
 
     all_events = []
     for day_offset in range(2):
@@ -193,34 +178,32 @@ def run_bot():
             else: merged.append(curr); curr = nxt
         merged.append(curr)
 
+    # ВІДНОВЛЕНИЙ ВИВІД ГРАФІКА В ЛОГИ
+    print("--- Події в графіку (merged) ---")
+    for ev in merged:
+        print(f"  - {format_time_display(ev['start'])} -> {format_time_display(ev['end'])}")
+    print("--------------------------------")
+
     sent = False
     for i, ev in enumerate(merged):
-        # Перевірка на УВІМКНЕННЯ (всередині події)
         if ev['start'] <= now_m < ev['end']:
             diff = ev['end'] - now_m
             if 0 < diff <= 30:
-                print(f"🔔 [EVENT] Технічне сповіщення: Увімкнення через {int(diff)} хв.")
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['end'], (merged[i+1]['start'] if i+1 < len(merged) else None), diff, "on", merged[i+1:])
                 sent = True; break
             elif 70 < diff <= 240:
-                print(f"📚 [EVENT] Літературна пауза перед Увімкненням. До події: {int(diff)} хв.")
                 quote = get_literature_tip("on")
                 if quote: send_literature_notif(quote, "on"); sent = True; break
-        
-        # Перевірка на ВИМКНЕННЯ (попереду)
         elif ev['start'] > now_m:
             diff = ev['start'] - now_m
             if 0 < diff <= 30:
-                print(f"🔔 [EVENT] Технічне сповіщення: Вимкнення через {int(diff)} хв.")
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['start'], ev['end'], diff, "off", merged[i+1:])
                 sent = True; break
-            elif 70 < diff <= 90:
-                print(f"📚 [EVENT] Літературна пауза перед Вимкненням. До події: {int(diff)} хв.")
+            elif 70 < diff <= 240:
                 quote = get_literature_tip("off")
                 if quote: send_literature_notif(quote, "off"); sent = True; break
 
-    if not sent:
-        print(f"😴 [IDLE] Немає активних умов для відправки (поточна хвилина дня: {now_m})")
+    if not sent: print("😴 Умов для відправки зараз немає.")
 
 if __name__ == "__main__":
     run_bot()
