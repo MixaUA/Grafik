@@ -212,7 +212,8 @@ def send_notif(cur_time, day, start_event_m, end_event_m, diff, type, future_eve
         a_text = q.get('about_text', 'Інформація про текст відсутня.')
         prep = q.get('prepared_by', 'Admin')
 
-        raw_quote_block = f"""📚 *Хвилинка класики:*
+        raw_quote_block = f"""
+📚 *Хвилинка класики:*
 👤 *{author}*
 
 «{text}»
@@ -237,7 +238,7 @@ def send_notif(cur_time, day, start_event_m, end_event_m, diff, type, future_eve
 
     next_events_block = ""
     if next_list:
-        next_events_block = "\n\n*Наступні:*
+        next_events_block = f"\n\n*Наступні:*
 " + "\n".join(next_list)
     
     # Construct final message
