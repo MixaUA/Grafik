@@ -1,8 +1,8 @@
 name: Sync & Build Database
 
 on:
-  schedule:
-    - cron: '*/30 * * * *'
+  repository_dispatch:
+    types: [run-sync]
   workflow_dispatch:
 
 concurrency:
