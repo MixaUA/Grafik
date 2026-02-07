@@ -26,7 +26,7 @@ def parse_schedule(text):
                 clean_periods = [f"{times[j]}-{times[j+1]}" for j in range(0, len(times) - 1, 2)]
                 
                 if q_id not in queues_data:
-                    # Створюємо повну структуру днями, як на скріншоті
+                    # Створюємо повну структуру з порожніми днями
                     queues_data[q_id] = {day: [] for day in days_ukr}
                 
                 queues_data[q_id][day_name] = clean_periods
@@ -36,27 +36,38 @@ def parse_schedule(text):
 def main():
     try:
         now = datetime.now(ZoneInfo("Europe/Kiev"))
+        
+        # Словник для назв місяців у родовому відмінку
+        months_ukr = {
+            1: "січня", 2: "лютого", 3: "березня", 4: "квітня",
+            5: "травня", 6: "червня", 7: "липня", 8: "серпня",
+            9: "вересня", 10: "жовтня", 11: "листопада", 12: "грудня"
+        }
+        
+        # Формуємо час оновлення: "07 лютого 22:30"
+        formatted_date = f"{now.day} {months_ukr[now.month]} {now.strftime('%H:%M')}"
+
         with open('database.txt', 'r', encoding='utf-8') as f:
             content = f.read()
         
         parsed_queues = parse_schedule(content)
         
         if parsed_queues:
-            # Формуємо JSON з нуля (повний перезапис)
+            # Формуємо JSON (повний перезапис згідно з TXT)
             result = {
-                "update_time": now.strftime("%d.%m %H:%M"),
+                "update_time": formatted_date,
                 "queues": parsed_queues
             }
             
             with open('database_v2.json', 'w', encoding='utf-8') as f:
                 json.dump(result, f, ensure_ascii=False, indent=2)
             
-            print(f"✅ ПЕРЕЗАПИСАНО: Структура для {len(parsed_queues)} черг готова.")
+            print(f"✅ Готово! Дата оновлення: {formatted_date}")
         else:
-            print("⚠️ Дані не знайдено.")
+            print("⚠️ Не знайдено даних у database.txt")
             
     except Exception as e:
-        print(f"❌ ПОМИЛКА: {e}")
+        print(f"❌ Помилка: {e}")
 
 if __name__ == "__main__":
     main()
