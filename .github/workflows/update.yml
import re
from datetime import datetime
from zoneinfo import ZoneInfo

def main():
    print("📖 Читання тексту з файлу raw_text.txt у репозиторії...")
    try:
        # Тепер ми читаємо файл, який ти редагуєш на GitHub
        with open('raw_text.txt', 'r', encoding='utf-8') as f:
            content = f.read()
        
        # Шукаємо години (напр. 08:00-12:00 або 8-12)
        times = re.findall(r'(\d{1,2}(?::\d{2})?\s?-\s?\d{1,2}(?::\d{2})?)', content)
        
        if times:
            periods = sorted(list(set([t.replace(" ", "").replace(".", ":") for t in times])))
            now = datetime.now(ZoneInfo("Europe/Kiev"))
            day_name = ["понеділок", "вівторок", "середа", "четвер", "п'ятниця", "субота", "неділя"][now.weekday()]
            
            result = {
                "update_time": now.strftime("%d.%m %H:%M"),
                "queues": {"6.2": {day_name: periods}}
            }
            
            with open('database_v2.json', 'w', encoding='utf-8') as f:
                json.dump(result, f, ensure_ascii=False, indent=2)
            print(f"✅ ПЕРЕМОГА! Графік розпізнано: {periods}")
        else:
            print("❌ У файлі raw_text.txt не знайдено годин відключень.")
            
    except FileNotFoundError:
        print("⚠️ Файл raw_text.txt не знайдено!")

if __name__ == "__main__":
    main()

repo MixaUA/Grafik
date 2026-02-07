@@ -1,0 +1,25 @@
+name: Update Schedule from GitHub File
+on:
+  push:
+    paths:
+      - 'database.txt' # Бот прокидається тільки коли ти зберіг текст!
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Run scraper
+        run: python scripts/scraper.py
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add database_v2.json
+          git commit -m "Авто-оновлення після редагування тексту" || exit 0
+          git push
