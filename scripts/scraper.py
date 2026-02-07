@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-# Твій особистий міст через Google
+# Твій перевірений міст
 BRIDGE_URL = "https://script.google.com/macros/s/AKfycbx4H1kE5uzLmpCvwVjafysU38c4ibFQ5MDhZQbwCeZNhiaKdR44HIC1qwf29ftG37CLFQ/exec"
 
 def main():
@@ -16,42 +16,48 @@ def main():
             return
 
         soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # Шукаємо періоди відключень у списку <ul>
         periods = []
+
+        # ШУКАЄМО ГРАФІК: Варіант 1 (список <ul>)
         ul_element = soup.find('ul')
         if ul_element:
             for li in ul_element.find_all('li'):
                 txt = li.get_text().strip()
-                # Очищаємо текст (напр., "з 08:00 до 10:00" -> "08:00-10:00")
-                if "з " in txt and " до " in txt:
-                    clean = txt.replace("з ", "").replace(" до ", "-").split(",")[0].strip()
-                    periods.append(clean)
+                if any(char.isdigit() for char in txt): # Перевіряємо, чи є цифри (години)
+                    clean = txt.replace("з ", "").replace(" до ", "-").split(",")[0].replace("год.", "").strip()
+                    if "-" in clean:
+                        periods.append(clean)
+
+        # Якщо не знайшли в списку, шукаємо просто в тексті (Варіант 2)
+        if not periods:
+            all_text = soup.get_text()
+            print("🔍 Пошук годин у тексті сторінки...")
+            import re
+            # Шукаємо шаблони типу 08:00-10:00 або 08-10
+            found = re.findall(r'\d{1,2}[:\.]?\d{0,2}\s?-\s?\d{1,2}[:\.]?\d{0,2}', all_text)
+            periods = [p.replace(" ", "") for p in found]
 
         if periods:
             now = datetime.now(ZoneInfo("Europe/Kiev"))
             update_time = now.strftime("%d.%m о %H:%M")
-            # Визначаємо день тижня українською
             days = ["понеділок", "вівторок", "середа", "четвер", "п'ятниця", "субота", "неділя"]
             day_name = days[now.weekday()]
 
-            # Формуємо структуру JSON для черги 6.2
             result = {
                 "update_time": update_time,
                 "queues": {
-                    "6.2": {
-                        day_name: periods
-                    }
+                    "6.2": { day_name: periods }
                 }
             }
 
             with open('database_v2.json', 'w', encoding='utf-8') as f:
                 json.dump(result, f, ensure_ascii=False, indent=2)
             
-            print(f"✅ Графік оновлено! Знайдено періодів: {len(periods)}")
-            print(f"🕒 Час оновлення: {update_time}")
+            print(f"✅ ПЕРЕМОГА! Графік оновлено: {', '.join(periods)}")
         else:
-            print("❓ Графік не знайдено на сторінці через Google Bridge.")
+            print("❓ Годин відключень не знайдено. Перевір посилання в Google Script.")
+            # Виведемо шматочок тексту для діагностики
+            print(f"Уривок тексту: {soup.get_text()[:200]}...")
 
     except Exception as e:
         print(f"⚠️ Помилка: {e}")
