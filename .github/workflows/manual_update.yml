@@ -23,6 +23,6 @@ jobs:
         run: |
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "action@github.com"
-          git add database_v2.json # Додаємо оновлений JSON-файл для сайту
+          git add database.json # Додаємо оновлений JSON-файл для сайту
           git commit -m "Авто-оновлення графіка з database.txt" || exit 0
           git push
