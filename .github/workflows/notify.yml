@@ -1,8 +1,10 @@
 name: Live Notification Bot
+
 on:
   workflow_dispatch:
   repository_dispatch:
     types: [6.2-bot]
+
 jobs:
   send-notification:
     runs-on: ubuntu-latest
@@ -13,14 +15,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Потрібно для коректної роботи git push
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
+
       - name: Run Notification Script
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
@@ -28,6 +33,7 @@ jobs:
         run: |
           sudo timedatectl set-timezone Europe/Kiev
           python scripts/notification_bot.py
+
       - name: Commit and Push state change
         run: |
           git config --global user.name "GitHub Action Bot"
