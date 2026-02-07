@@ -1,0 +1,43 @@
+name: Live Notification Bot
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [6.2-bot]
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Дозволяємо боту записувати зміни в репозиторій
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Потрібно для коректної роботи git push
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+      - name: Run Notification Script
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          sudo timedatectl set-timezone Europe/Kiev
+          python scripts/notification_bot.py
+      - name: Commit and Push state change
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
+          # Додаємо файл стану, якщо він був створений або змінений
+          git add scripts/state.json || echo "No state file to add"
+          # Перевіряємо, чи є зміни, щоб не створювати порожній коміт
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update literature state [skip ci]"
+            git push
+          fi
