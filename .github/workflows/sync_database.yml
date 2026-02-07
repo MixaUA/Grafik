@@ -23,7 +23,7 @@ jobs:
         run: pip install requests beautifulsoup4
 
       - name: Run Scraper
-        run: python scripts/new_scraper.py
+        run: python scripts/scraper.py
 
       - name: Commit and Push
         uses: stefanzweifel/git-auto-commit-action@v5
