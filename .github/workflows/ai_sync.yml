@@ -1,33 +1,46 @@
 name: AI Sync Process
 
 on:
-  workflow_dispatch: # Запуск вручну
+  workflow_dispatch: # Ручний запуск кнопкою з вкладки Actions
+
+# Налаштування черги, щоб уникнути конфліктів при записі в базу
+concurrency:
+  group: data-update-group
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    # Права на запис у репозиторій для збереження database_new.json
     permissions:
       contents: write
 
     steps:
+      # 1. Завантажуємо код репозиторію
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Встановлюємо Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      # 3. Встановлюємо залежності (фіксуємо версію AI для стабільності)
       - name: Install dependencies
         run: |
-          pip install google-genai requests beautifulsoup4
+          pip install google-generativeai==0.8.3 requests beautifulsoup4
+
+      # 4. Запускаємо інтелектуальний скрипт
       - name: Run AI Processor
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/ai_processor.py
 
+      # 5. Комітимо зміни, якщо файл database_new.json був створений або оновлений
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "auto: оновлення графіка з Telegram"
+          commit_message: "auto: оновлення бази за сьогоднішнім графіком"
           file_pattern: "database_new.json"
