@@ -1,14 +1,18 @@
 name: AI Sync Process
+
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Запуск вручну
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -16,8 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install google-generativeai requests beautifulsoup4 playwright pillow
-          playwright install chromium --with-deps
+          pip install google-generativeai requests beautifulsoup4
 
       - name: Run AI Processor
         env:
@@ -27,5 +30,5 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "feat: оновлення через Playwright та AI"
+          commit_message: "auto: оновлення графіка з Telegram"
           file_pattern: "database_new.json"
