@@ -4,11 +4,21 @@ import requests
 import re
 import google.generativeai as genai
 from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
+from datetime import datetime
 from zoneinfo import ZoneInfo
 
 # Налаштування Gemini
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+
+def get_ua_date(date_str):
+    """Конвертує 09.02.2026 у '9 лютого'"""
+    months = {
+        "01": "січня", "02": "лютого", "03": "березня", "04": "квітня",
+        "05": "травня", "06": "червня", "07": "липня", "08": "серпня",
+        "09": "вересня", "10": "жовтня", "11": "листопада", "12": "грудня"
+    }
+    day, month, _ = date_str.split('.')
+    return f"{int(day)} {months.get(month, month)}"
 
 def get_latest_msg_data():
     channel_url = "https://t.me/s/suspilnesumy"
@@ -17,12 +27,10 @@ def get_latest_msg_data():
         response = requests.get(channel_url, headers=headers, timeout=20)
         soup = BeautifulSoup(response.text, 'html.parser')
         messages = soup.find_all('div', class_='tgme_widget_message_wrap')
-        
         for msg in reversed(messages):
             text_area = msg.find('div', class_='tgme_widget_message_text')
             photo_wrap = msg.find('a', class_='tgme_widget_message_photo_wrap')
             if not photo_wrap or not text_area: continue
-                
             text = text_area.get_text().strip()
             if any(word in text.lower() for word in ["гпв", "графік", "черги"]):
                 style = photo_wrap.get('style', '')
@@ -33,16 +41,13 @@ def get_latest_msg_data():
                     return {"url": img_url, "text": text}
         return None
     except Exception as e:
-        print(f"❌ Помилка парсингу: {e}")
+        print(f"❌ Помилка: {e}")
         return None
 
 def main():
     msg_data = get_latest_msg_data()
-    if not msg_data:
-        print("🔍 Графіків у Telegram не знайдено.")
-        return
+    if not msg_data: return
 
-    # Робота напряму з основним файлом бази
     db_path = 'database.json'
     db = {}
     if os.path.exists(db_path):
@@ -50,59 +55,54 @@ def main():
             try: db = json.load(f)
             except: db = {}
 
-    # Перевірка на дублікати (економія Gemini)
-    if db.get("last_processed_url") == msg_data["url"] and db.get("last_processed_text") == msg_data["text"]:
-        print(f"☕ Змін немає. Працюємо на старій базі.")
+    if db.get("last_processed_url") == msg_data["url"]:
+        print(f"☕ Змін немає.")
         return
 
-    print(f"🤖 Виявлено новий графік! Запуск Gemini...")
-
     img_data = requests.get(msg_data["url"]).content
-    model_name = 'gemini-2.5-flash'
+    model = genai.GenerativeModel('gemini-2.5-flash')
     
     prompt = """
-    Це таблиця ГПВ. Визнач дату (напр. 09.02.2026) та день тижня.
-    Витягни інтервали для підчерг 1.1-6.2.
-    Поверни ТІЛЬКИ JSON:
-    {
-      "date": "09.02.2026",
-      "day_of_week": "понеділок",
-      "queues": { "1.1": ["00:00-02:00", ...], ... }
-    }
+    Це таблиця ГПВ. Визнач дату (DD.MM.YYYY) та день тижня.
+    Витягни інтервали для ВСІХ підчерг 1.1, 1.2, 2.1, 2.2, 3.1, 3.2, 4.1, 4.2, 5.1, 5.2, 6.1, 6.2.
+    Поверни ТІЛЬКИ JSON об'єкт, де ключі - це назви черг.
     """
     
     try:
-        model = genai.GenerativeModel(model_name)
         response = model.generate_content([prompt, {'mime_type': 'image/jpeg', 'data': img_data}])
-        
         json_match = re.search(r'\{.*\}', response.text, re.DOTALL)
         if json_match:
             res = json.loads(json_match.group())
-            new_date = res['date']
-            new_day = res['day_of_week'].lower()
-
-            kyiv_now = datetime.now(ZoneInfo("Europe/Kiev"))
+            
             ua_days = ["понеділок", "вівторок", "середа", "четвер", "п'ятниця", "субота", "неділя"]
+            kyiv_now = datetime.now(ZoneInfo("Europe/Kiev"))
+            
+            # СПИСОК ВСІХ ЧЕРГ
+            all_q_names = [f"{i}.{j}" for i in range(1, 7) for j in range(1, 3)]
+            
+            if "queues" not in db:
+                db["queues"] = {q: {d: [] for d in ua_days} for q in all_q_names}
+
+            # Очищення старих днів (крім сьогодні/завтра)
             today_name = ua_days[kyiv_now.weekday()]
             tomorrow_name = ua_days[(kyiv_now.weekday() + 1) % 7]
+            for q in db["queues"]:
+                for d in ua_days:
+                    if d != today_name and d != tomorrow_name:
+                        db["queues"][q][d] = []
 
-            if "queues" not in db:
-                db["queues"] = {q: {d: [] for d in ua_days} for q in res["queues"].keys()}
+            # Заповнення нових даних
+            target_day = res.get('day_of_week', today_name).lower()
+            for q_name in all_q_names:
+                if q_name in res.get('queues', res):
+                    data = res.get('queues', res)[q_name]
+                    db["queues"][q_name][target_day] = data if isinstance(data, list) else []
 
-            # Очищення старих днів (залишаємо тільки сьогодні/завтра)
-            for q_name in db["queues"]:
-                for d_name in ua_days:
-                    if d_name != today_name and d_name != tomorrow_name:
-                        db["queues"][q_name][d_name] = []
-
-            # Оновлення поточного/нового дня
-            for q_name, q_intervals in res["queues"].items():
-                if q_name in db["queues"]:
-                    db["queues"][q_name][new_day] = q_intervals
-
-            # Фінальний об'єкт для database.json
+            # Форматування дати з назвою місяця
+            display_date = get_ua_date(res.get('date', kyiv_now.strftime("%d.%m.%Y")))
+            
             output = {
-                "update_time": f"{new_date[:5]} {kyiv_now.strftime('%H:%M')}",
+                "update_time": f"{display_date} {kyiv_now.strftime('%H:%M')}",
                 "queues": db["queues"],
                 "last_processed_url": msg_data["url"],
                 "last_processed_text": msg_data["text"]
@@ -110,11 +110,9 @@ def main():
 
             with open(db_path, 'w', encoding='utf-8') as f:
                 json.dump(output, f, ensure_ascii=False, indent=2)
-            print(f"✅ База database.json оновлена для: {new_day} ({new_date}).")
-        else:
-            print("❌ AI не повернув JSON.")
+            print(f"✅ База оновлена: {display_date}, {target_day}. Всі 12 черг оброблено.")
     except Exception as e:
-        print(f"❌ Помилка: {e}")
+        print(f"❌ Помилка AI: {e}")
 
 if __name__ == "__main__":
     main()
