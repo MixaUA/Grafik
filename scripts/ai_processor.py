@@ -4,7 +4,7 @@ import requests
 import re
 import google.generativeai as genai
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 # Налаштування Gemini
@@ -38,9 +38,7 @@ def get_latest_msg_data():
 
 def main():
     msg_data = get_latest_msg_data()
-    if not msg_data:
-        print("🔍 Повідомлень з графіком не знайдено.")
-        return
+    if not msg_data: return
 
     db_path = 'database_new.json'
     db = {}
@@ -49,35 +47,24 @@ def main():
             try: db = json.load(f)
             except: db = {}
 
-    # Дебаг логіки змін
-    is_same_url = db.get("last_processed_url") == msg_data["url"]
-    is_same_text = db.get("last_processed_text") == msg_data["text"]
-
-    if is_same_url and is_same_text:
-        print(f"☕ Gemini НЕ запускається: цей графік ({msg_data['url']}) вже оброблено.")
+    if db.get("last_processed_url") == msg_data["url"] and db.get("last_processed_text") == msg_data["text"]:
+        print(f"☕ Gemini НЕ запускається: цей графік вже оброблено.")
         return
 
-    print(f"🤖 Gemini ЗАПУСКАЄТЬСЯ: знайдено новий або змінений графік.")
+    print(f"🤖 Gemini ЗАПУСКАЄТЬСЯ: аналіз оновлень...")
 
     img_data = requests.get(msg_data["url"]).content
     model_name = 'gemini-2.5-flash'
     
-    # Промпт адаптований під твій формат JSON (з днями тижня)
     prompt = """
-    Це таблиця ГПВ. Визнач дату (напр. 09.02.2026) та день тижня для цієї дати (напр. понеділок).
-    Витягни інтервали відключень для підчерг 1.1-6.2.
-    Поверни ТІЛЬКИ JSON у такому форматі:
+    Це таблиця ГПВ. Визнач дату (напр. 09.02.2026) та день тижня.
+    Витягни інтервали для підчерг 1.1-6.2.
+    Поверни ТІЛЬКИ JSON:
     {
       "date": "09.02.2026",
       "day_of_week": "понеділок",
-      "queues": {
-        "1.1": {
-          "понеділок": ["00:00-02:00", "04:00-08:00"],
-          "вівторок": [], "середа": [], "четвер": [], "п'ятниця": [], "субота": [], "неділя": []
-        }
-      }
+      "queues": { "1.1": ["00:00-02:00", ...], ... }
     }
-    Важливо: Заповни інтервали ТІЛЬКИ для того дня тижня, якому відповідає дата графіка. Всі інші дні мають бути порожніми списками [].
     """
     
     try:
@@ -87,22 +74,45 @@ def main():
         json_match = re.search(r'\{.*\}', response.text, re.DOTALL)
         if json_match:
             res = json.loads(json_match.group())
+            new_date = res['date']
+            new_day = res['day_of_week'].lower()
+
+            kyiv_now = datetime.now(ZoneInfo("Europe/Kiev"))
+            # Визначаємо назви днів для сьогодні та завтра українською
+            ua_days = ["понеділок", "вівторок", "середа", "четвер", "п'ятниця", "субота", "неділя"]
+            today_idx = kyiv_now.weekday()
+            tomorrow_idx = (today_idx + 1) % 7
             
-            # Формуємо структуру як на сайті
-            update_time = f"{res['date'][:5]} {datetime.now(ZoneInfo('Europe/Kiev')).strftime('%H:%M')}"
-            
+            today_name = ua_days[today_idx]
+            tomorrow_name = ua_days[tomorrow_idx]
+
+            # Якщо структури ще немає — створюємо її
+            if "queues" not in db:
+                db["queues"] = {q: {d: [] for d in ua_days} for q in res["queues"].keys()}
+
+            # 1. Очищення: для кожної черги затираємо все, що не є сьогодні або завтра
+            for q_name in db["queues"]:
+                for d_name in ua_days:
+                    if d_name != today_name and d_name != tomorrow_name:
+                        db["queues"][q_name][d_name] = []
+
+            # 2. Оновлення: записуємо свіжі дані від AI
+            for q_name, q_intervals in res["queues"].items():
+                if q_name in db["queues"]:
+                    db["queues"][q_name][new_day] = q_intervals
+
             output = {
-                "update_time": update_time,
-                "queues": res["queues"],
+                "update_time": f"{new_date[:5]} {kyiv_now.strftime('%H:%M')}",
+                "queues": db["queues"],
                 "last_processed_url": msg_data["url"],
                 "last_processed_text": msg_data["text"]
             }
 
             with open(db_path, 'w', encoding='utf-8') as f:
                 json.dump(output, f, ensure_ascii=False, indent=2)
-            print(f"🎉 Дані на {res['date']} ({res['day_of_week']}) успішно збережені у форматі сайту.")
+            print(f"🎉 Успішно! Збережено день: {new_day}. Старі дні (крім сьогодні/завтра) очищено.")
         else:
-            print("❌ AI повернув некоректні дані.")
+            print("❌ AI повернув не JSON.")
     except Exception as e:
         print(f"❌ Помилка AI: {e}")
 
