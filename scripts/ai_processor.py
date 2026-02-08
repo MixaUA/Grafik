@@ -38,20 +38,24 @@ def get_latest_msg_data():
 
 def main():
     msg_data = get_latest_msg_data()
-    if not msg_data: return
+    if not msg_data:
+        print("🔍 Графіків у Telegram не знайдено.")
+        return
 
-    db_path = 'database_new.json'
+    # Робота напряму з основним файлом бази
+    db_path = 'database.json'
     db = {}
     if os.path.exists(db_path):
         with open(db_path, 'r', encoding='utf-8') as f:
             try: db = json.load(f)
             except: db = {}
 
+    # Перевірка на дублікати (економія Gemini)
     if db.get("last_processed_url") == msg_data["url"] and db.get("last_processed_text") == msg_data["text"]:
-        print(f"☕ Gemini НЕ запускається: цей графік вже оброблено.")
+        print(f"☕ Змін немає. Працюємо на старій базі.")
         return
 
-    print(f"🤖 Gemini ЗАПУСКАЄТЬСЯ: аналіз оновлень...")
+    print(f"🤖 Виявлено новий графік! Запуск Gemini...")
 
     img_data = requests.get(msg_data["url"]).content
     model_name = 'gemini-2.5-flash'
@@ -78,29 +82,25 @@ def main():
             new_day = res['day_of_week'].lower()
 
             kyiv_now = datetime.now(ZoneInfo("Europe/Kiev"))
-            # Визначаємо назви днів для сьогодні та завтра українською
             ua_days = ["понеділок", "вівторок", "середа", "четвер", "п'ятниця", "субота", "неділя"]
-            today_idx = kyiv_now.weekday()
-            tomorrow_idx = (today_idx + 1) % 7
-            
-            today_name = ua_days[today_idx]
-            tomorrow_name = ua_days[tomorrow_idx]
+            today_name = ua_days[kyiv_now.weekday()]
+            tomorrow_name = ua_days[(kyiv_now.weekday() + 1) % 7]
 
-            # Якщо структури ще немає — створюємо її
             if "queues" not in db:
                 db["queues"] = {q: {d: [] for d in ua_days} for q in res["queues"].keys()}
 
-            # 1. Очищення: для кожної черги затираємо все, що не є сьогодні або завтра
+            # Очищення старих днів (залишаємо тільки сьогодні/завтра)
             for q_name in db["queues"]:
                 for d_name in ua_days:
                     if d_name != today_name and d_name != tomorrow_name:
                         db["queues"][q_name][d_name] = []
 
-            # 2. Оновлення: записуємо свіжі дані від AI
+            # Оновлення поточного/нового дня
             for q_name, q_intervals in res["queues"].items():
                 if q_name in db["queues"]:
                     db["queues"][q_name][new_day] = q_intervals
 
+            # Фінальний об'єкт для database.json
             output = {
                 "update_time": f"{new_date[:5]} {kyiv_now.strftime('%H:%M')}",
                 "queues": db["queues"],
@@ -110,11 +110,11 @@ def main():
 
             with open(db_path, 'w', encoding='utf-8') as f:
                 json.dump(output, f, ensure_ascii=False, indent=2)
-            print(f"🎉 Успішно! Збережено день: {new_day}. Старі дні (крім сьогодні/завтра) очищено.")
+            print(f"✅ База database.json оновлена для: {new_day} ({new_date}).")
         else:
-            print("❌ AI повернув не JSON.")
+            print("❌ AI не повернув JSON.")
     except Exception as e:
-        print(f"❌ Помилка AI: {e}")
+        print(f"❌ Помилка: {e}")
 
 if __name__ == "__main__":
     main()
