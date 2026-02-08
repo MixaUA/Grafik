@@ -1,28 +1,29 @@
-name: Update from Text File
+name: Manual Emergency Update
 on:
   push:
     paths:
-      - 'database.txt' # Бот прокинеться тільки тоді, коли ти зміниш цей файл
-  workflow_dispatch: # Дозволяє запустити бота вручну кнопкою на сайті
+      - 'database.txt'
+  workflow_dispatch:
 
 jobs:
-  build:
+  update-json:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4 # Копіюємо твій репозиторій на сервер GitHub
+      - name: Checkout repository
+        uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.11'
           
-      - name: Run scraper
-        run: python scripts/scraper.py # Запускаємо обробку тексту
+      - name: Run Scraper
+        run: python scripts/scraper.py
         
-      - name: Commit and push changes
-        run: |
-          git config --global user.name "GitHub Action Bot"
-          git config --global user.email "action@github.com"
-          git add database_v2.json # Додаємо оновлений JSON-файл для сайту
-          git commit -m "Авто-оновлення графіка з database.txt" || exit 0
-          git push
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "manual(data): оновлення графіків з тексту"
+          file_pattern: "database.json"
