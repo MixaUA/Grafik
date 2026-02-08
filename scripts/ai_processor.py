@@ -10,7 +10,7 @@ from zoneinfo import ZoneInfo
 # Налаштування Gemini
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
 
-def get_image_from_telegram():
+def get_latest_msg_data():
     channel_url = "https://t.me/s/suspilnesumy"
     headers = {'User-Agent': 'Mozilla/5.0'}
     
@@ -19,82 +19,96 @@ def get_image_from_telegram():
         soup = BeautifulSoup(response.text, 'html.parser')
         messages = soup.find_all('div', class_='tgme_widget_message_wrap')
         
-        last_photo_url = None
-        print("🔎 Пошук останнього графіка в каналі...")
-
         for msg in reversed(messages):
             text_area = msg.find('div', class_='tgme_widget_message_text')
             photo_wrap = msg.find('a', class_='tgme_widget_message_photo_wrap')
             
-            if not photo_wrap: continue
+            if not photo_wrap or not text_area: continue
                 
-            style = photo_wrap.get('style', '')
-            match = re.search(r'url\(["\']?(.*?)["\']?\)', style)
-            if not match: continue
-            
-            img_url = match.group(1)
-            if img_url.startswith('//'): img_url = 'https:' + img_url
-            
-            if not last_photo_url: last_photo_url = img_url
-
-            if text_area:
-                text = text_area.get_text().lower()
-                if any(word in text for word in ["гпв", "графік", "черги", "відключень"]):
-                    print(f"✅ Знайдено графік за текстом: {text[:40]}...")
-                    return img_url
-
-        return last_photo_url
-            
+            text = text_area.get_text().lower()
+            # Шукаємо повідомлення, де є згадка про графік
+            if any(word in text for word in ["гпв", "графік", "черги"]):
+                style = photo_wrap.get('style', '')
+                match = re.search(r'url\(["\']?(.*?)["\']?\)', style)
+                if match:
+                    img_url = match.group(1)
+                    if img_url.startswith('//'): img_url = 'https:' + img_url
+                    return {"url": img_url, "text": text}
+        return None
     except Exception as e:
         print(f"❌ Помилка парсингу Telegram: {e}")
-    return None
+        return None
 
 def main():
-    img_url = get_image_from_telegram()
-    if not img_url: return
+    msg_data = get_latest_msg_data()
+    if not msg_data: return
 
-    img_data = requests.get(img_url).content
+    # Завантажуємо існуючу базу
+    db_path = 'database_new.json'
+    if os.path.exists(db_path):
+        with open(db_path, 'r', encoding='utf-8') as f:
+            try:
+                db = json.load(f)
+            except:
+                db = {}
+    else:
+        db = {}
+
+    # Перевірка: чи ми вже обробляли цю картинку?
+    if db.get("last_processed_url") == msg_data["url"]:
+        print("⏭️ Цей графік вже є в базі. Пропускаємо сканування.")
+        return
+
+    img_data = requests.get(msg_data["url"]).content
     model_name = 'gemini-2.5-flash'
     
-    # Максимально жорсткий промпт: просто зчитати текст
+    # Промпт тепер просить ще й дату
     prompt = """
-    Це таблиця графіку відключень світла. 
-    ЗАВДАННЯ: Для кожної підчерги (1.1, 1.2, 2.1... до 6.2) випиши ВСІ часові інтервали, вказані в її рядку.
-    ВСІ прямокутники з часом у таблиці — це періоди ВІДКЛЮЧЕННЯ.
-
-    Поверни ТІЛЬКИ чистий JSON без жодних твоїх коментарів:
+    Це таблиця графіку відключень світла ГПВ. 
+    1. Знайди дату, на яку цей графік (наприклад, 09.02.2026).
+    2. Для кожної підчерги (1.1-6.2) випиши ВСІ часові інтервали.
+    Поверни ТІЛЬКИ JSON:
     {
+      "date": "ДД.ММ.РРРР",
       "queues": {
-        "1.1": ["00:00-02:00", "04:00-08:00", "10:00-14:00", "16:00-20:00", "22:00-00:00"],
-        "1.2": ["02:00-06:00", "08:00-12:00", "14:00-18:00", "20:00-00:00"],
+        "1.1": ["час-час", "час-час"],
         ...
       }
     }
-    Важливо: не пропускай жодного інтервалу. Якщо в рядку підчерги є час — додавай його в список.
     """
     
-    print(f"🤖 AI зчитує всі дані через {model_name}...")
+    print(f"🤖 Новий графік знайдено! AI розшифровує через {model_name}...")
     try:
         model = genai.GenerativeModel(model_name)
-        response = model.generate_content([
-            prompt,
-            {'mime_type': 'image/jpeg', 'data': img_data}
-        ])
+        response = model.generate_content([prompt, {'mime_type': 'image/jpeg', 'data': img_data}])
         
-        # Витягуємо JSON через Regex
         json_match = re.search(r'\{.*\}', response.text, re.DOTALL)
         if json_match:
-            data = json.loads(json_match.group())
-            data["update_time"] = datetime.now(ZoneInfo("Europe/Kiev")).strftime("%d.%m %H:%M")
+            new_data = json.loads(json_match.group())
+            date_key = new_data.get("date", datetime.now(ZoneInfo("Europe/Kiev")).strftime("%d.%m.%Y"))
             
-            with open('database_new.json', 'w', encoding='utf-8') as f:
-                json.dump(data, f, ensure_ascii=False, indent=2)
-            print("🎉 ПЕРЕМОГА! База database_new.json оновлена коректно.")
+            # Оновлюємо базу: додаємо новий день, зберігаючи старі
+            if "days" not in db: db["days"] = {}
+            db["days"][date_key] = {
+                "queues": new_data["queues"],
+                "updated_at": datetime.now(ZoneInfo("Europe/Kiev")).strftime("%H:%M")
+            }
+            
+            # Запам'ятовуємо URL, щоб не сканувати знову
+            db["last_processed_url"] = msg_data["url"]
+            
+            # Видаляємо старі дати (наприклад, залишаємо лише останні 3 дні), щоб файл не ріс вічно
+            keys = sorted(db["days"].keys(), reverse=True)
+            db["days"] = {k: db["days"][k] for k in keys[:3]}
+
+            with open(db_path, 'w', encoding='utf-8') as f:
+                json.dump(db, f, ensure_ascii=False, indent=2)
+            print(f"🎉 Графік на {date_key} додано до бази!")
         else:
-            print(f"❌ AI видав не JSON: {response.text}")
+            print("❌ AI не повернув JSON.")
             
     except Exception as e:
-        print(f"❌ Помилка AI: {e}")
+        print(f"❌ Помилка: {e}")
 
 if __name__ == "__main__":
     main()
