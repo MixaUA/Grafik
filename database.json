@@ -1,5 +1,5 @@
 {
-  "update_time": "8 лютого 20:05",
+  "update_time": "09.02 01:35",
   "queues": {
     "6.2": {
       "понеділок": [
@@ -13,13 +13,9 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": [
-        "00:00-02:00",
-        "04:00-08:00",
-        "10:00-14:00",
-        "16:00-20:00",
-        "22:00-00:00"
-      ]
+      "неділя": []
     }
-  }
+  },
+  "last_processed_url": "https://cdn4.telesco.pe/file/QhY9X4f3FktDiqwALLQNQ2rYIkXK_4lC4w4RS2vN5iXj9v9GBPlgY09Z8IkNfLv3j023k8qIyu3-wyQtSribNoid3wyRibQ6i2JyKaU857d8co2a4QDABermHHbksFAWe1PBJCg2jknPk-iWHkKlJVsoTMGSJ6uAJAmU50JNudAm8J10awpEbzV98xG2XahjVbuY0jh6bVGbBv_KYMusT-B2-xU8ljs9c5iba7of07Tu_qYlBbqYaF1ZAbGINyTBxuwyHg5ipOxbdjo44IApwJx2ruwpPSCIWFqaByNc1m8QWt1oCXzGHTksqUNoesK1w1OaWF7702CmssxOda7Tag.jpg",
+  "last_processed_text": "ГПВ на 9 лютогоЗа подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях.О 20:33 вимкнені за ГАВ 6-10 черги, ввімкнені 1-5 черги."
 }
