@@ -17,27 +17,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Download data
-        id: download
+
+      - name: Install dependencies
         run: |
-          URL="https://raw.githubusercontent.com/Aporial/Svitlo-Sumy-Databases/main/database.json"
-          curl -s -L "$URL" -o scripts/database_new.json.tmp
-          if [ ! -s scripts/database_new.json.tmp ] || cmp -s scripts/database_new.json scripts/database_new.json.tmp; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-            rm -f scripts/database_new.json.tmp
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-            mv scripts/database_new.json.tmp scripts/database_new.json
-          fi
-      - name: Run Build
-        if: steps.download.outputs.changed == 'true'
-        run: python scripts/scheduler.py --build
+          pip install google-generativeai requests beautifulsoup4
+
+      - name: Run AI Processor
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/ai_processor.py
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "feat(data): оновлення бази"
-          file_pattern: "scripts/database_new.json database.json"
+          commit_message: "feat(data): автоматичне оновлення графіка через AI"
+          file_pattern: "database.json"
