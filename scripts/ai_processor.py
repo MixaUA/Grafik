@@ -1,15 +1,15 @@
 import os
 import json
 import requests
-from google import genai
-from google.genai import types
+import google.generativeai as genai
 from bs4 import BeautifulSoup
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-# Налаштування нового клієнта Google AI
-client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
-MODEL_ID = "gemini-1.5-flash"
+# Стабільне налаштування Gemini
+genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+# Використовуємо стабільну версію моделі
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 def get_image_from_telegram():
     channel_url = "https://t.me/s/suspilnesumy"
@@ -18,22 +18,39 @@ def get_image_from_telegram():
     try:
         response = requests.get(channel_url, headers=headers, timeout=20)
         soup = BeautifulSoup(response.text, 'html.parser')
-        messages = soup.find_all('a', class_='tgme_widget_message_photo_wrap')
         
-        if not messages:
-            print("❌ Картинки в каналі не знайдено.")
-            return None
+        # Отримуємо всі блоки повідомлень
+        messages = soup.find_all('div', class_='tgme_widget_message_wrap')
+        
+        # Сьогоднішня дата для перевірки (наприклад, "09.02" або "9 лютого")
+        today = datetime.now(ZoneInfo("Europe/Kiev"))
+        date_str = today.strftime("%d.%m") 
+        
+        print(f"🔎 Шукаю графік за ключовими словами та датою: {date_str}")
+
+        # Перевіряємо повідомлення з кінця (найновіші)
+        for msg in reversed(messages):
+            text_area = msg.find('div', class_='tgme_widget_message_text')
+            if not text_area:
+                continue
+                
+            text = text_area.get_text().lower()
             
-        last_msg = messages[-1]
-        style = last_msg.get('style', '')
+            # Критерії пошуку: наявність "гпв" або "графік" ТА сьогоднішньої дати
+            if ("гпв" in text or "графік" in text) and (date_str in text or "лютого" in text):
+                photo_wrap = msg.find('a', class_='tgme_widget_message_photo_wrap')
+                if photo_wrap:
+                    style = photo_wrap.get('style', '')
+                    if "url('" in style:
+                        img_url = style.split("url('")[1].split("')")[0]
+                        print(f"✅ Знайдено актуальний графік! Текст: {text[:50]}...")
+                        return img_url
         
-        if "url('" in style:
-            img_url = style.split("url('")[1].split("')")[0]
-            print(f"✅ Знайдено посилання на графік: {img_url}")
-            return img_url
+        print("⚠️ Актуального графіка з ключовими словами сьогодні ще не було.")
+        return None
             
     except Exception as e:
-        print(f"❌ Помилка парсингу Telegram: {e}")
+        print(f"❌ Помилка парсингу: {e}")
     return None
 
 def main():
@@ -43,34 +60,27 @@ def main():
 
     # Завантаження картинки
     response = requests.get(img_url)
-    img_bytes = response.content
+    img_data = [{"mime_type": "image/jpeg", "data": response.content}]
     
     prompt = """
-    Це графік відключень світла (ГПВ). Витягни дані таблиці для ВСІХ підчерг (1.1, 1.2 і т.д.).
-    Поверни ТІЛЬКИ чистий JSON без жодних пояснень:
+    Це графік ГПВ. Витягни дані таблиці для всіх підчерг (1.1 - 6.2).
+    Поверни ТІЛЬКИ чистий JSON без пояснень:
     {
         "queues": {
             "1.1": {"понеділок": ["час-час", "час-час"]},
-            "1.2": {"понеділок": ["час-час"]}
+            ...
         }
     }
+    Якщо в таблиці є жовті/білі зони, вказуй лише ті інтервали, де світла НЕМАЄ.
     """
     
-    print("🤖 AI розшифровує графік через новий API...")
+    print("🤖 AI розшифровує картинку...")
     
     try:
-        # Виклик через нову бібліотеку google-genai
-        response = client.models.generate_content(
-            model=MODEL_ID,
-            contents=[
-                prompt,
-                types.Part.from_bytes(data=img_bytes, mime_type="image/jpeg")
-            ]
-        )
+        # Використовуємо стандартний метод генерації
+        result = model.generate_content([prompt, img_data[0]])
         
-        text_response = response.text.strip()
-        
-        # Очищення від Markdown ```json ... ```
+        text_response = result.text.strip()
         if "```json" in text_response:
             text_response = text_response.split("```json")[1].split("```")[0]
         elif "```" in text_response:
@@ -82,10 +92,10 @@ def main():
         with open('database_new.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
             
-        print("🎉 Перемога! Файл database_new.json оновлено.")
+        print("🎉 Базу успішно оновлено актуальним графіком!")
         
     except Exception as e:
-        print(f"❌ Помилка при запиті до AI: {e}")
+        print(f"❌ Помилка AI: {e}")
 
 if __name__ == "__main__":
     main()
