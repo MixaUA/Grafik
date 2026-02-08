@@ -1,34 +1,52 @@
 name: AI Sync Process
 
 on:
-  workflow_dispatch: # Запуск вручну
+  workflow_dispatch: # Запуск вручну з вкладки Actions
+  # Якщо захочеш автоматизацію кожні 2 години, розкоментуй наступні рядки:
+  # schedule:
+  #   - cron: '0 */2 * * *'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    # Дозволи на запис для того, щоб GitHub Actions міг зберегти файл у репозиторій
     permissions:
       contents: write
 
     steps:
+      # 1. Отримуємо код репозиторію
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Встановлюємо Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      # 3. Встановлюємо залежності
+      # Фіксуємо версію google-generativeai, щоб уникнути помилок 404 (NotFound)
       - name: Install dependencies
         run: |
           pip install google-generativeai==0.8.3 requests beautifulsoup4
 
+      # 4. Запуск основного скрипта
+      # Використовуємо continue-on-error, щоб якщо графік ще не опубліковано, 
+      # воркфлоу не світився червоним як "помилка".
       - name: Run AI Processor
+        continue-on-error: true
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python scripts/ai_processor.py
+        run: |
+          python scripts/ai_processor.py || echo "Скрипт завершився (можливо, графік ще не знайдено)"
 
+      # 5. Автоматичний комміт змін у database_new.json
+      # Спрацює лише якщо файл реально змінився
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "auto: оновлення графіка (фільтр за ключовими словами)"
+          commit_message: "auto: оновлення графіка з Telegram (AI)"
           file_pattern: "database_new.json"
+          skip_dirty_check: false
+          skip_fetch: true
