@@ -1,26 +1,48 @@
 name: AI Sync Process
+
 on:
-  workflow_dispatch: # Запуск вручну
+  workflow_dispatch: # Дозволяє запускати процес вручну кнопкою
+
+# Керування чергами: запобігає одночасному запуску кількох процесів оновлення бази
+concurrency:
+  group: data-update-group
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    # Дозвіл на запис у репозиторій
     permissions:
       contents: write
+
     steps:
-      - uses: actions/checkout@v4
+      # 1. Копіюємо репозиторій на віртуальний сервер GitHub
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Встановлюємо Python актуальної версії
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
+      # 3. Встановлюємо необхідні бібліотеки для роботи AI та парсингу
       - name: Install dependencies
-        run: pip install google-generativeai requests beautifulsoup4
+        run: |
+          pip install google-generativeai requests beautifulsoup4
+
+      # 4. Запускаємо основний скрипт обробки
       - name: Run AI Processor
         env:
+          # Використовуємо твій секретний API ключ
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/ai_processor.py
+
+      # 5. Зберігаємо зміни (новий JSON та файл для налагодження) у репозиторій
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "feat: оновлення даних через AI"
-          file_pattern: "database_new.json"
+          commit_message: "feat: оновлення через AI та додавання debug-інфо"
+          # Скрипт створить database_new.json (успіх) або debug_page.html (помилка)
+          file_pattern: "database_new.json debug_page.html"
