@@ -20,8 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install google-generativeai requests beautifulsoup4
-
+          pip install google-genai requests beautifulsoup4
       - name: Run AI Processor
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
