@@ -7,9 +7,8 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-# Налаштування Gemini
+# Налаштування Gemini з примусовим використанням стабільної версії v1
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-model = genai.GenerativeModel('gemini-1.5-flash')
 
 def get_image_from_telegram():
     channel_url = "https://t.me/s/suspilnesumy"
@@ -22,7 +21,7 @@ def get_image_from_telegram():
         
         last_photo_url = None
         
-        print("🔎 Пошук графіка за розширеними фільтрами...")
+        print("🔎 Пошук графіка за розширеними фільтрами (включаючи прикріплені)...")
 
         for msg in reversed(messages):
             text_area = msg.find('div', class_='tgme_widget_message_text')
@@ -31,7 +30,7 @@ def get_image_from_telegram():
             if not photo_wrap:
                 continue
                 
-            # Витягуємо URL картинки через Regex (надійно)
+            # Надійний витяг URL через Regex [за твоєю рекомендацією]
             style = photo_wrap.get('style', '')
             match = re.search(r'url\(["\']?(.*?)["\']?\)', style)
             if not match:
@@ -41,23 +40,21 @@ def get_image_from_telegram():
             if current_img_url.startswith('//'):
                 current_img_url = 'https:' + current_img_url
             
-            # Зберігаємо як fallback (найсвіжіше фото в каналі)
+            # Зберігаємо як fallback
             if not last_photo_url:
                 last_photo_url = current_img_url
 
-            # Якщо є текст — перевіряємо ключові слова
             if text_area:
                 text = text_area.get_text().lower()
-                keywords = ["гпв", "графік", "черги", "відключень", "лютого", "завтра"]
+                # Розширений фільтр ключових слів
+                keywords = ["гпв на", "гпв", "графік", "черги", "відключень", "9 лютого", "лютого"]
                 
-                # Якщо знайшли ключові слова — це 100% наш графік
                 if any(word in text for word in keywords):
-                    print(f"✅ Знайдено цільовий графік! Текст: {text[:40]}...")
+                    print(f"✅ Знайдено цільовий графік! Текст: {text[:50]}...")
                     return current_img_url
 
-        # Якщо пройшли всі повідомлення і не знайшли точного збігу — беремо останнє фото
         if last_photo_url:
-            print("⚠️ Точного збігу не знайдено. Fallback: беремо останнє фото з каналу.")
+            print("⚠️ Fallback: беремо останнє фото з каналу.")
             return last_photo_url
             
     except Exception as e:
@@ -67,16 +64,17 @@ def get_image_from_telegram():
 def main():
     img_url = get_image_from_telegram()
     if not img_url:
-        print("🛑 Картинку не знайдено взагалі.")
         return
 
     img_data = requests.get(img_url).content
     
-    # Промпт адаптований під добовий цикл (як на твоїх скрінах)
+    # Використовуємо модель через фіксований шлях, щоб уникнути помилки 404
+    model = genai.GenerativeModel('models/gemini-1.5-flash')
+    
     prompt = """
-    Це графік ГПВ Сумщина. Таблиця з підчергами 1.1–6.2 та часовими діапазонами.
-    Жовті клітинки — це вимкнення світла.
-    Витягни ТІЛЬКИ чистий JSON без пояснень:
+    Це графік ГПВ Сумщина. Таблиця з підчергами 1.1–6.2. 
+    Жовті клітинки — світла немає.
+    Поверни ТІЛЬКИ чистий JSON без тексту:
     {
       "queues": {
         "1.1": ["00:00-02:00", "12:00-16:00"],
@@ -85,25 +83,31 @@ def main():
     }
     """
     
+    print("🤖 AI розшифровує графік (через стабільний API)...")
     try:
-        response = model.generate_content([
-            prompt,
-            {'mime_type': 'image/jpeg', 'data': img_data}
-        ])
+        # Використовуємо generation_config для стабільності
+        response = model.generate_content(
+            contents=[
+                prompt,
+                {'mime_type': 'image/jpeg', 'data': img_data}
+            ]
+        )
         
-        # Очищення JSON
         raw_text = response.text
-        json_str = raw_text.split("```json")[-1].split("```")[0].strip() if "```" in raw_text else raw_text.strip()
-        
-        data = json.loads(json_str)
-        data["update_time"] = datetime.now(ZoneInfo("Europe/Kiev")).strftime("%d.%m %H:%M")
-        
-        with open('database_new.json', 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-        print("🎉 Базу успішно оновлено!")
-        
+        # Витягуємо JSON навіть якщо AI додав зайве
+        json_match = re.search(r'\{.*\}', raw_text, re.DOTALL)
+        if json_match:
+            data = json.loads(json_match.group())
+            data["update_time"] = datetime.now(ZoneInfo("Europe/Kiev")).strftime("%d.%m %H:%M")
+            
+            with open('database_new.json', 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            print("🎉 ПЕРЕМОГА! База оновлена.")
+        else:
+            print(f"❌ Не вдалося знайти JSON у відповіді: {raw_text}")
+            
     except Exception as e:
-        print(f"❌ Помилка AI або JSON: {e}")
+        print(f"❌ Критична помилка AI: {e}")
 
 if __name__ == "__main__":
     main()
