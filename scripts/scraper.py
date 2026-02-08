@@ -1,5 +1,6 @@
 import json
 import re
+import os
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -26,7 +27,6 @@ def parse_schedule(text):
                 clean_periods = [f"{times[j]}-{times[j+1]}" for j in range(0, len(times) - 1, 2)]
                 
                 if q_id not in queues_data:
-                    # Створюємо повну структуру з порожніми днями
                     queues_data[q_id] = {day: [] for day in days_ukr}
                 
                 queues_data[q_id][day_name] = clean_periods
@@ -34,37 +34,45 @@ def parse_schedule(text):
     return queues_data
 
 def main():
+    # Шлях до файлів (враховуючи, що скрипт в /scripts, а файли в корені)
+    input_file = 'database.txt'
+    output_file = 'database.json'
+
     try:
         now = datetime.now(ZoneInfo("Europe/Kiev"))
-        
-        # Словник для назв місяців у родовому відмінку
         months_ukr = {
             1: "січня", 2: "лютого", 3: "березня", 4: "квітня",
             5: "травня", 6: "червня", 7: "липня", 8: "серпня",
             9: "вересня", 10: "жовтня", 11: "листопада", 12: "грудня"
         }
-        
-        # Формуємо час оновлення: "07 лютого 22:30"
         formatted_date = f"{now.day} {months_ukr[now.month]} {now.strftime('%H:%M')}"
 
-        with open('database.txt', 'r', encoding='utf-8') as f:
-            content = f.read()
+        if not os.path.exists(input_file):
+            print(f"❌ Файл {input_file} не знайдено.")
+            return
+
+        with open(input_file, 'r', encoding='utf-8') as f:
+            content = f.read().strip()
+        
+        if not content:
+            print("⚠️ Файл database.txt порожній. Скасування.")
+            return
         
         parsed_queues = parse_schedule(content)
         
-        if parsed_queues:
-            # Формуємо JSON (повний перезапис згідно з TXT)
+        # Перевірка, чи знайшли ми хоч якісь дані
+        if parsed_queues and any(v for v in parsed_queues.values()):
             result = {
                 "update_time": formatted_date,
                 "queues": parsed_queues
             }
             
-            with open('database_v2.json', 'w', encoding='utf-8') as f:
+            with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(result, f, ensure_ascii=False, indent=2)
             
-            print(f"✅ Готово! Дата оновлення: {formatted_date}")
+            print(f"✅ Успішно! Базу оновлено: {formatted_date}")
         else:
-            print("⚠️ Не знайдено даних у database.txt")
+            print("⚠️ Парсер не знайшов даних у тексті. database.json не змінено.")
             
     except Exception as e:
         print(f"❌ Помилка: {e}")
