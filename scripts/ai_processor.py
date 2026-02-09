@@ -3,15 +3,16 @@ import json
 import requests
 import re
 from google import genai
-from google.genai import types  # Додано для правильної типізації даних
+from google.genai import types
 from bs4 import BeautifulSoup
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-# Ініціалізація клієнта
+# Ініціалізація клієнта за новим стандартом
 client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
 def get_ua_date(date_str):
+    """Конвертує 09.02.2026 у '9 лютого'"""
     months = {
         "01": "січня", "02": "лютого", "03": "березня", "04": "квітня",
         "05": "травня", "06": "червня", "07": "липня", "08": "серпня",
@@ -44,7 +45,7 @@ def get_latest_msg_data():
                     return {"url": img_url, "text": text}
         return None
     except Exception as e:
-        print(f"❌ Помилка парсингу: {e}")
+        print(f"❌ Помилка парсингу Telegram: {e}")
         return None
 
 def main():
@@ -59,21 +60,21 @@ def main():
             except: db = {}
 
     if db.get("last_processed_url") == msg_data["url"]:
-        print(f"☕ Змін немає.")
+        print(f"☕ Gemini НЕ запускається: цей графік вже оброблено.")
         return
 
-    print(f"🤖 Новий графік знайдено! AI розшифровує через виправлений SDK...")
+    print(f"🤖 Новий графік знайдено! AI розшифровує через новий SDK...")
 
-    img_data = requests.get(msg_data["url"]).content
-    
-    prompt = """
-    Це таблиця ГПВ. Визнач дату (DD.MM.YYYY) та день тижня.
-    Витягни інтервали для ВСІХ підчерг 1.1, 1.2, 2.1, 2.2, 3.1, 3.2, 4.1, 4.2, 5.1, 5.2, 6.1, 6.2.
-    Поверни ТІЛЬКИ JSON об'єкт з полями date, day_of_week та queues.
-    """
-    
     try:
-        # ВИПРАВЛЕНО: Використовуємо types.Part для передачі медіа-даних
+        img_data = requests.get(msg_data["url"]).content
+        
+        prompt = """
+        Це таблиця ГПВ. Визнач дату (DD.MM.YYYY) та день тижня.
+        Витягни інтервали для ВСІХ підчерг 1.1, 1.2, 2.1, 2.2, 3.1, 3.2, 4.1, 4.2, 5.1, 5.2, 6.1, 6.2.
+        Поверни ТІЛЬКИ JSON об'єкт з полями date, day_of_week та queues (де ключі - назви черг).
+        """
+        
+        # Виклик моделі з виправленою передачею медіа
         response = client.models.generate_content(
             model='gemini-2.0-flash',
             contents=[
@@ -89,6 +90,7 @@ def main():
             kyiv_now = datetime.now(ZoneInfo("Europe/Kiev"))
             all_q_names = [f"{i}.{j}" for i in range(1, 7) for j in range(1, 3)]
             
+            # Ініціалізація структури всіх черг
             if "queues" not in db:
                 db["queues"] = {q: {d: [] for d in ua_days} for q in all_q_names}
 
@@ -119,9 +121,19 @@ def main():
                 json.dump(output, f, ensure_ascii=False, indent=2)
             print(f"🎉 Дані на {display_date} оновлено!")
         else:
-            print("❌ AI не повернув JSON.")
+            print("⚠️ AI повернув відповідь без JSON.")
+            print(f"Початок відповіді: {response.text[:150]}...")
+
     except Exception as e:
-        print(f"❌ Помилка роботи з Gemini: {e}")
+        error_msg = str(e)
+        if "429" in error_msg:
+            # Розширене логування квот
+            print("🛑 КВОТА ВИЧЕРПАНА (429): Google просить почекати.")
+            print("📊 Ліміт: 20 запитів на добу. Спробую пізніше.")
+        elif "500" in error_msg or "503" in error_msg:
+            print("☁️ ПОМИЛКА СЕРВЕРА (500/503): Проблема у Google Cloud.")
+        else:
+            print(f"❌ ПОМИЛКА: {error_msg}")
 
 if __name__ == "__main__":
     main()
