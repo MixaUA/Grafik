@@ -4,42 +4,66 @@ on:
   push:
     paths:
       - 'database.json'
-  workflow_dispatch: # Дозволяє запускати вручну кнопкою
+  workflow_dispatch: # Кнопка для ручного запуску в Actions
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Send Message
+      - name: Send Message to Telegram
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          # Невелика пауза для синхронізації з Pages
-          sleep 10
+          # Пауза для синхронізації з розгортанням сайту
+          sleep 15
           
+          # Отримуємо час оновлення з бази
           UPDATE_TIME=$(jq -r '.update_time' database.json)
           
-          # Визначаємо завтрашній день (укр)
+          # Налаштування дати на завтра
+          TOMORROW_DAY=$(date -d "tomorrow" "+%d")
+          MONTH_NUM=$(date -d "tomorrow" "+%m")
           TOMORROW_EN=$(date -d "tomorrow" +%A | tr '[:upper:]' '[:lower:]')
-          declare -A days=( [monday]="понеділок" [tuesday]="вівторок" [wednesday]="середа" [thursday]="четвер" [friday]="п'ятниця" [saturday]="субота" [sunday]="неділя" )
-          TOMORROW_UA=${days[$TOMORROW_EN]}
           
-          # Перевірка даних на завтра для черги 6.2
+          # Словники для перекладу
+          declare -A months=( [01]="січня" [02]="лютого" [03]="березня" [04]="квітня" [05]="травня" [06]="червня" [07]="липня" [08]="серпня" [09]="вересня" [10]="жовтня" [11]="листопада" [12]="грудня" )
+          declare -A days=( [monday]="понеділок" [tuesday]="вівторок" [wednesday]="середа" [thursday]="четвер" [friday]="п'ятниця" [saturday]="субота" [sunday]="неділя" )
+          
+          MONTH_UA=${months[$MONTH_NUM]}
+          TOMORROW_UA=${days[$TOMORROW_EN]}
+          FULL_DATE="${TOMORROW_DAY} ${MONTH_UA}"
+
+          # Перевірка, чи є дані для черги 6.2 на завтра
           HAS_TOMORROW=$(jq --arg day "$TOMORROW_UA" '.queues["6.2"][$day] | length > 0' database.json)
-          DATE_TOMORROW=$(date -d "tomorrow" "+%d.%m")
 
           if [ "$HAS_TOMORROW" == "true" ]; then
-            # Повідомлення про новий графік (як на скриншотах)
-            SCHEDULE=$(jq -r --arg day "$TOMORROW_UA" '.queues["6.2"][$day] | join("\n👉 ")' database.json)
-            MSG="🤖 *Увага! Ваш помічник отримав графік черги 6.2 на завтра!*%0A%0A📅 *${DATE_TOMORROW}* (${TOMORROW_UA})%0A📍 *Графік:*%0A👉 ${SCHEDULE}%0A%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
+            # Формуємо список вимкнень з розрахунком тривалості
+            SCHEDULE=""
+            while read -r line; do
+              # Витягуємо години для розрахунку (наприклад, з "02:00-06:00")
+              start_h=$(echo $line | cut -d':' -f1)
+              end_h=$(echo $line | cut -d'-' -f2 | cut -d':' -f1)
+              
+              # Обробка кінця доби (00:00 рахуємо як 24)
+              if [ "$end_h" == "00" ]; then end_h=24; fi
+              
+              # Розрахунок тривалості (10# прибирає помилку з нулями на початку чисел)
+              duration=$((10#$end_h - 10#$start_h))
+              
+              SCHEDULE="${SCHEDULE}👉 Вимкнення: ${line} (${duration} год.)%0A"
+            done < <(jq -r --arg day "$TOMORROW_UA" '.queues["6.2"][$day][]' database.json)
+
+            # ПОВІДОМЛЕННЯ 1: Новий графік
+            MSG="🤖 *Увага! Ваш помічник отримав графік черги 6.2 на завтра!*%0A%0A📅 *${FULL_DATE}* (${TOMORROW_UA})%0A%0A*Графік:*%0A${SCHEDULE}%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
           else
-            # Повідомлення про коригування поточного дня
-            MSG="🤖 *Оновлення!*%0A%0A🔄 Внесено зміни в поточний графік від *${UPDATE_TIME}*.%0A%0A⚠️ Даних на завтра (${DATE_TOMORROW}) поки що немає.%0A%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
+            # ПОВІДОМЛЕННЯ 2: Оновлення поточного дня
+            MSG="🤖 *Оновлення!*%0A%0A🔄 Внесено зміни в поточний графік від *${UPDATE_TIME}*.%0A%0A📅 На завтра (*${FULL_DATE}*) даних поки немає.%0A%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
           fi
 
+          # Відправка запиту
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
             -d "chat_id=${TELEGRAM_CHAT_ID}&text=${MSG}&parse_mode=Markdown"
