@@ -1,0 +1,42 @@
+name: Smart JSON Update Notifier
+
+on:
+  push:
+    paths:
+      - 'database.json'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Send Message
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          # Даємо 15 секунд затримки, щоб Pages встигли стартувати
+          sleep 15
+          
+          UPDATE_TIME=$(jq -r '.update_time' database.json)
+          
+          # Визначаємо завтрашній день (укр)
+          TOMORROW_EN=$(date -d "tomorrow" +%A | tr '[:upper:]' '[:lower:]')
+          declare -A days=( [monday]="понеділок" [tuesday]="вівторок" [wednesday]="середа" [thursday]="четвер" [friday]="п'ятниця" [saturday]="субота" [sunday]="неділя" )
+          TOMORROW_UA=${days[$TOMORROW_EN]}
+          
+          # Перевірка даних на завтра для 6.2
+          HAS_TOMORROW=$(jq --arg day "$TOMORROW_UA" '.queues["6.2"][$day] | length > 0' database.json)
+          DATE_TOMORROW=$(date -d "tomorrow" "+%d.%m")
+
+          if [ "$HAS_TOMORROW" == "true" ]; then
+            SCHEDULE=$(jq -r --arg day "$TOMORROW_UA" '.queues["6.2"][$day] | join("\n👉 ")' database.json)
+            MSG="🤖 *Увага! Ваш помічник отримав графік черги 6.2 на завтра!*%0A%0A📅 *${DATE_TOMORROW}* (${TOMORROW_UA})%0A📍 *Графік:*%0A👉 ${SCHEDULE}%0A%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
+          else
+            MSG="🤖 *Оновлення!*%0A%0A🔄 Внесено зміни в поточний графік від *${UPDATE_TIME}*.%0A%0A⚠️ Даних на завтра (${DATE_TOMORROW}) поки що немає.%0A%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
+          fi
+
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}&text=${MSG}&parse_mode=Markdown"
