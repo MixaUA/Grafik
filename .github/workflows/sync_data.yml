@@ -25,7 +25,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install google-generativeai requests beautifulsoup4
+          pip install google-genai requests beautifulsoup4
 
       - name: Run AI Processor
         env:
@@ -35,5 +35,5 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "feat(data): автоматичне оновлення графіка через AI"
+          commit_message: "feat(data): оновлення бази через новий SDK"
           file_pattern: "database.json"
