@@ -2,17 +2,17 @@ import os
 import json
 import requests
 import re
+import time
 from google import genai
 from google.genai import types
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-# Ініціалізація клієнта за новим стандартом
+# Ініціалізація клієнта
 client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
 def get_ua_date(date_str):
-    """Конвертує 09.02.2026 у '9 лютого'"""
     months = {
         "01": "січня", "02": "лютого", "03": "березня", "04": "квітня",
         "05": "травня", "06": "червня", "07": "липня", "08": "серпня",
@@ -49,15 +49,26 @@ def get_latest_msg_data():
         return None
 
 def main():
-    msg_data = get_latest_msg_data()
-    if not msg_data: return
-
     db_path = 'database.json'
     db = {}
     if os.path.exists(db_path):
         with open(db_path, 'r', encoding='utf-8') as f:
             try: db = json.load(f)
             except: db = {}
+
+    # --- ЗАХИСТ ВІД ПЕРЕВИТРАТ КВОТИ ---
+    retry_after = db.get("retry_after")
+    if retry_after:
+        if time.time() < retry_after:
+            wait_min = int((retry_after - time.time()) / 60)
+            print(f"⏳ ЗАХИСТ: Gemini відпочиває. Спробую через {wait_min} хв.")
+            return
+        else:
+            # Час очікування минув, прибираємо мітку
+            db.pop("retry_after", None)
+
+    msg_data = get_latest_msg_data()
+    if not msg_data: return
 
     if db.get("last_processed_url") == msg_data["url"]:
         print(f"☕ Gemini НЕ запускається: цей графік вже оброблено.")
@@ -67,14 +78,8 @@ def main():
 
     try:
         img_data = requests.get(msg_data["url"]).content
+        prompt = "Це таблиця ГПВ. Визнач дату (DD.MM.YYYY) та день тижня. Витягни інтервали для ВСІХ підчерг 1.1-6.2. Поверни ТІЛЬКИ JSON об'єкт."
         
-        prompt = """
-        Це таблиця ГПВ. Визнач дату (DD.MM.YYYY) та день тижня.
-        Витягни інтервали для ВСІХ підчерг 1.1, 1.2, 2.1, 2.2, 3.1, 3.2, 4.1, 4.2, 5.1, 5.2, 6.1, 6.2.
-        Поверни ТІЛЬКИ JSON об'єкт з полями date, day_of_week та queues (де ключі - назви черг).
-        """
-        
-        # Виклик моделі з виправленою передачею медіа
         response = client.models.generate_content(
             model='gemini-2.0-flash',
             contents=[
@@ -90,7 +95,6 @@ def main():
             kyiv_now = datetime.now(ZoneInfo("Europe/Kiev"))
             all_q_names = [f"{i}.{j}" for i in range(1, 7) for j in range(1, 3)]
             
-            # Ініціалізація структури всіх черг
             if "queues" not in db:
                 db["queues"] = {q: {d: [] for d in ua_days} for q in all_q_names}
 
@@ -122,16 +126,15 @@ def main():
             print(f"🎉 Дані на {display_date} оновлено!")
         else:
             print("⚠️ AI повернув відповідь без JSON.")
-            print(f"Початок відповіді: {response.text[:150]}...")
 
     except Exception as e:
         error_msg = str(e)
         if "429" in error_msg:
-            # Розширене логування квот
-            print("🛑 КВОТА ВИЧЕРПАНА (429): Google просить почекати.")
-            print("📊 Ліміт: 20 запитів на добу. Спробую пізніше.")
-        elif "500" in error_msg or "503" in error_msg:
-            print("☁️ ПОМИЛКА СЕРВЕРА (500/503): Проблема у Google Cloud.")
+            # Встановлюємо захисну паузу на 1 годину (3600 секунд)
+            db["retry_after"] = time.time() + 3600 
+            with open(db_path, 'w', encoding='utf-8') as f:
+                json.dump(db, f, ensure_ascii=False, indent=2)
+            print("🛑 КВОТА ВИЧЕРПАНА. Захист увімкнено на 1 годину.")
         else:
             print(f"❌ ПОМИЛКА: {error_msg}")
 
