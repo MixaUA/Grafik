@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'database.json'
+  workflow_dispatch: # Дозволяє запускати вручну кнопкою
 
 jobs:
   notify:
@@ -17,8 +18,8 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          # Даємо 15 секунд затримки, щоб Pages встигли стартувати
-          sleep 15
+          # Невелика пауза для синхронізації з Pages
+          sleep 10
           
           UPDATE_TIME=$(jq -r '.update_time' database.json)
           
@@ -27,14 +28,16 @@ jobs:
           declare -A days=( [monday]="понеділок" [tuesday]="вівторок" [wednesday]="середа" [thursday]="четвер" [friday]="п'ятниця" [saturday]="субота" [sunday]="неділя" )
           TOMORROW_UA=${days[$TOMORROW_EN]}
           
-          # Перевірка даних на завтра для 6.2
+          # Перевірка даних на завтра для черги 6.2
           HAS_TOMORROW=$(jq --arg day "$TOMORROW_UA" '.queues["6.2"][$day] | length > 0' database.json)
           DATE_TOMORROW=$(date -d "tomorrow" "+%d.%m")
 
           if [ "$HAS_TOMORROW" == "true" ]; then
+            # Повідомлення про новий графік (як на скриншотах)
             SCHEDULE=$(jq -r --arg day "$TOMORROW_UA" '.queues["6.2"][$day] | join("\n👉 ")' database.json)
             MSG="🤖 *Увага! Ваш помічник отримав графік черги 6.2 на завтра!*%0A%0A📅 *${DATE_TOMORROW}* (${TOMORROW_UA})%0A📍 *Графік:*%0A👉 ${SCHEDULE}%0A%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
           else
+            # Повідомлення про коригування поточного дня
             MSG="🤖 *Оновлення!*%0A%0A🔄 Внесено зміни в поточний графік від *${UPDATE_TIME}*.%0A%0A⚠️ Даних на завтра (${DATE_TOMORROW}) поки що немає.%0A%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
           fi
 
