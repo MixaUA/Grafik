@@ -33,7 +33,70 @@ jobs:
         run: python scripts/ai_processor.py
 
       - name: Commit changes
+        id: auto-commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "feat(data): оновлення бази через новий SDK"
           file_pattern: "database.json"
+
+      - name: Send Telegram Notification
+        if: steps.auto-commit.outputs.changes_detected == 'true'
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          export TZ="Europe/Kyiv"
+          echo "🚀 Початок процесу сповіщення..."
+          echo "⏱️ Очікуємо 15с для підготовки GitHub Pages..."
+          sleep 15
+          
+          UPDATE_TIME=$(jq -r '.update_time' database.json)
+          
+          declare -A months=( [01]="січня" [02]="лютого" [03]="березня" [04]="квітня" [05]="травня" [06]="червня" [07]="липня" [08]="серпня" [09]="вересня" [10]="жовтня" [11]="листопада" [12]="грудня" )
+          declare -A days=( [monday]="понеділок" [tuesday]="вівторок" [wednesday]="середа" [thursday]="четвер" [friday]="п'ятниця" [saturday]="субота" [sunday]="неділя" )
+          
+          TODAY_UA=${days[$(date +%A | tr '[:upper:]' '[:lower:]')]}
+          FULL_DATE_TODAY="$(date "+%d") ${months[$(date "+%m")]}"
+          
+          TOMORROW_UA=${days[$(date -d "tomorrow" +%A | tr '[:upper:]' '[:lower:]')]}
+          FULL_DATE_TOMORROW="$(date -d "tomorrow" "+%d") ${months[$(date -d "tomorrow" "+%m")]}"
+
+          echo "🔍 Аналізуємо графік для: $TOMORROW_UA"
+
+          get_schedule() {
+            local day_ua=$1
+            local schedule=""
+            while read -r line; do
+              if [ "$line" != "null" ] && [ -n "$line" ]; then
+                start_h=$(echo $line | cut -d':' -f1)
+                end_h=$(echo $line | cut -d'-' -f2 | cut -d':' -f1)
+                if [ "$end_h" == "00" ]; then end_h=24; fi
+                duration=$((10#$end_h - 10#$start_h))
+                schedule="${schedule}👉 Вимкнення: ${line} (${duration} год.)%0A"
+              fi
+            done < <(jq -r --arg day "$day_ua" '.queues["6.2"][$day][]' database.json)
+            echo "$schedule"
+          }
+
+          HAS_TOMORROW=$(jq --arg day "$TOMORROW_UA" '.queues["6.2"][$day] | length > 0' database.json)
+
+          if [ "$HAS_TOMORROW" == "true" ]; then
+            echo "✅ Виявлено новий графік на завтра!"
+            SCHEDULE_TEXT=$(get_schedule "$TOMORROW_UA")
+            MSG="🤖 *Увага! Ваш помічник отримав графік черги 6.2 на завтра!*%0A%0A📅 *${FULL_DATE_TOMORROW}* (${TOMORROW_UA})%0A%0A*Графік:*%0A${SCHEDULE_TEXT}%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
+          else
+            echo "ℹ️ Даних на завтра немає, готуємо звіт про зміни на сьогодні."
+            SCHEDULE_TEXT=$(get_schedule "$TODAY_UA")
+            MSG="🤖 *Оновлення!*%0A%0A🔄 Внесено зміни в поточний графік від *${UPDATE_TIME}*.%0A%0A📅 *${FULL_DATE_TODAY}* (${TODAY_UA})%0A%0A*Графік:*%0A${SCHEDULE_TEXT}%0A⚠️ Даних на завтра (${FULL_DATE_TOMORROW}) поки немає.%0A%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
+          fi
+
+          echo "📡 Відправка повідомлення в Telegram..."
+          RESPONSE=$(curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}&text=${MSG}&parse_mode=Markdown")
+          
+          if echo "$RESPONSE" | grep -q '"ok":true'; then
+             echo "✨ Успішно надіслано!"
+          else
+             echo "❌ Помилка: $RESPONSE"
+             exit 1
+          fi
