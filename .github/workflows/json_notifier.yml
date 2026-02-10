@@ -18,48 +18,54 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          # Встановлюємо київський час для всього кроку
           export TZ="Europe/Kyiv"
           sleep 10
           
           UPDATE_TIME=$(jq -r '.update_time' database.json)
           
-          # Отримуємо поточну дату та дату на завтра за Києвом
-          CURRENT_DATE_UA=$(date "+%d.%m")
-          TOMORROW_DAY=$(date -d "tomorrow" "+%d")
-          MONTH_NUM=$(date -d "tomorrow" "+%m")
-          TOMORROW_EN=$(date -d "tomorrow" +%A | tr '[:upper:]' '[:lower:]')
-          
+          # Дати та переклади
           declare -A months=( [01]="січня" [02]="лютого" [03]="березня" [04]="квітня" [05]="травня" [06]="червня" [07]="липня" [08]="серпня" [09]="вересня" [10]="жовтня" [11]="листопада" [12]="грудня" )
           declare -A days=( [monday]="понеділок" [tuesday]="вівторок" [wednesday]="середа" [thursday]="четвер" [friday]="п'ятниця" [saturday]="субота" [sunday]="неділя" )
           
-          MONTH_UA=${months[$MONTH_NUM]}
-          TOMORROW_UA=${days[$TOMORROW_EN]}
-          FULL_DATE_TOMORROW="${TOMORROW_DAY} ${MONTH_UA}"
+          # Дані на СЬОГОДНІ
+          TODAY_DAY=$(date "+%d")
+          TODAY_MONTH_NUM=$(date "+%m")
+          TODAY_EN=$(date +%A | tr '[:upper:]' '[:lower:]')
+          TODAY_UA=${days[$TODAY_EN]}
+          FULL_DATE_TODAY="${TODAY_DAY} ${months[$TODAY_MONTH_NUM]}"
 
-          # Перевіряємо дані на завтра (наприклад, 11.02, якщо зараз 10.02)
+          # Дані на ЗАВТРА
+          TOMORROW_DAY=$(date -d "tomorrow" "+%d")
+          TOMORROW_MONTH_NUM=$(date -d "tomorrow" "+%m")
+          TOMORROW_EN=$(date -d "tomorrow" +%A | tr '[:upper:]' '[:lower:]')
+          TOMORROW_UA=${days[$TOMORROW_EN]}
+          FULL_DATE_TOMORROW="${TOMORROW_DAY} ${months[$TOMORROW_MONTH_NUM]}"
+
+          # Функція для формування тексту графіка
+          get_schedule() {
+            local day_ua=$1
+            local schedule=""
+            while read -r line; do
+              if [ "$line" != "null" ] && [ -n "$line" ]; then
+                start_h=$(echo $line | cut -d':' -f1)
+                end_h=$(echo $line | cut -d'-' -f2 | cut -d':' -f1)
+                if [ "$end_h" == "00" ]; then end_h=24; fi
+                duration=$((10#$end_h - 10#$start_h))
+                schedule="${schedule}👉 Вимкнення: ${line} (${duration} год.)%0A"
+              fi
+            done < <(jq -r --arg day "$day_ua" '.queues["6.2"][$day][]' database.json)
+            echo "$schedule"
+          }
+
+          # Перевіряємо дані на завтра
           HAS_TOMORROW=$(jq --arg day "$TOMORROW_UA" '.queues["6.2"][$day] | length > 0' database.json)
 
           if [ "$HAS_TOMORROW" == "true" ]; then
-            # ПОВІДОМЛЕННЯ: Новий графік на завтра
-            SCHEDULE=""
-            while read -r line; do
-              start_h=$(echo $line | cut -d':' -f1)
-              end_h=$(echo $line | cut -d'-' -f2 | cut -d':' -f1)
-              if [ "$end_h" == "00" ]; then end_h=24; fi
-              duration=$((10#$end_h - 10#$start_h))
-              SCHEDULE="${SCHEDULE}👉 Вимкнення: ${line} (${duration} год.)%0A"
-            done < <(jq -r --arg day "$TOMORROW_UA" '.queues["6.2"][$day][]' database.json)
-
-            MSG="🤖 *Увага! Ваш помічник отримав графік черги 6.2 на завтра!*%0A%0A📅 *${FULL_DATE_TOMORROW}* (${TOMORROW_UA})%0A%0A*Графік:*%0A${SCHEDULE}%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
+            SCHEDULE_TEXT=$(get_schedule "$TOMORROW_UA")
+            MSG="🤖 *Увага! Ваш помічник отримав графік черги 6.2 на завтра!*%0A%0A📅 *${FULL_DATE_TOMORROW}* (${TOMORROW_UA})%0A%0A*Графік:*%0A${SCHEDULE_TEXT}%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
           else
-            # ПОВІДОМЛЕННЯ: Оновлення поточного графіка
-            # Вираховуємо сьогоднішню дату словом для звіту
-            NOW_DAY=$(date "+%d")
-            NOW_MONTH_NUM=$(date "+%m")
-            NOW_MONTH_UA=${months[$NOW_MONTH_NUM]}
-            
-            MSG="🤖 *Оновлення!*%0A%0A🔄 Внесено зміни в поточний графік від *${UPDATE_TIME}*.%0A%0A📅 Даних на завтра (${FULL_DATE_TOMORROW}) поки немає.%0A%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
+            SCHEDULE_TEXT=$(get_schedule "$TODAY_UA")
+            MSG="🤖 *Оновлення!*%0A%0A🔄 Внесено зміни в поточний графік від *${UPDATE_TIME}*.%0A%0A📅 *${FULL_DATE_TODAY}* (${TODAY_UA})%0A%0A*Графік:*%0A${SCHEDULE_TEXT}%0A⚠️ Даних на завтра (${FULL_DATE_TOMORROW}) поки немає.%0A%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
           fi
 
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
