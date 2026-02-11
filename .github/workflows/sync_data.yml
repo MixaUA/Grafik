@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # Потрібно для порівняння з попереднім комітом
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -47,6 +49,20 @@ jobs:
         run: |
           export TZ="Europe/Kyiv"
           echo "🚀 Початок процесу сповіщення..."
+
+          # --- БЛОК ПОРІВНЯННЯ ДАНИХ ЧЕРГИ 6.2 ---
+          # Витягуємо попередню версію черги 6.2 з історії Git
+          git show HEAD^:database.json > old_db.json || echo "{}" > old_db.json
+          OLD_6_2=$(jq -c '.queues["6.2"]' old_db.json)
+          NEW_6_2=$(jq -c '.queues["6.2"]' database.json)
+
+          if [ "$OLD_6_2" == "$NEW_6_2" ]; then
+            echo "📢 Графік для 6.2 не змінився (оновлено лише час або текст). Скасовуємо сповіщення."
+            exit 0
+          fi
+          echo "✅ Виявлено реальні зміни в годинах для черги 6.2!"
+          # ---------------------------------------
+
           echo "⏱️ Очікуємо 15с для підготовки GitHub Pages..."
           sleep 15
           
