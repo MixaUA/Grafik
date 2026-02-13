@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2 # Потрібно для порівняння з попереднім комітом
+          fetch-depth: 2
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -51,12 +51,10 @@ jobs:
           echo "🚀 Початок процесу сповіщення..."
 
           # --- БЛОК ПОРІВНЯННЯ ДАНИХ ЧЕРГИ 6.2 ---
-          # Витягуємо попередню версію черги 6.2 з історії Git
-          git show HEAD^:database.json > old_db.json || echo "{}" > old_db.json
-          OLD_6_2=$(jq -c '.queues["6.2"]' old_db.json)
+          OLD_6_2=$(git show HEAD^:database.json 2>/dev/null | jq -c '.queues["6.2"]' || echo "none")
           NEW_6_2=$(jq -c '.queues["6.2"]' database.json)
 
-          if [ "$OLD_6_2" == "$NEW_6_2" ]; then
+          if [ "$OLD_6_2" != "none" ] && [ "$OLD_6_2" == "$NEW_6_2" ]; then
             echo "📢 Графік для 6.2 не змінився (оновлено лише час або текст). Скасовуємо сповіщення."
             exit 0
           fi
@@ -77,8 +75,6 @@ jobs:
           TOMORROW_UA=${days[$(date -d "tomorrow" +%A | tr '[:upper:]' '[:lower:]')]}
           FULL_DATE_TOMORROW="$(date -d "tomorrow" "+%d") ${months[$(date -d "tomorrow" "+%m")]}"
 
-          echo "🔍 Аналізуємо графік для: $TOMORROW_UA"
-
           get_schedule() {
             local day_ua=$1
             local schedule=""
@@ -97,22 +93,12 @@ jobs:
           HAS_TOMORROW=$(jq --arg day "$TOMORROW_UA" '.queues["6.2"][$day] | length > 0' database.json)
 
           if [ "$HAS_TOMORROW" == "true" ]; then
-            echo "✅ Виявлено новий графік на завтра!"
             SCHEDULE_TEXT=$(get_schedule "$TOMORROW_UA")
             MSG="🤖 *Увага! Ваш помічник отримав графік черги 6.2 на завтра!*%0A%0A📅 *${FULL_DATE_TOMORROW}* (${TOMORROW_UA})%0A%0A*Графік:*%0A${SCHEDULE_TEXT}%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
           else
-            echo "ℹ️ Даних на завтра немає, готуємо звіт про зміни на сьогодні."
             SCHEDULE_TEXT=$(get_schedule "$TODAY_UA")
             MSG="🤖 *Оновлення!*%0A%0A🔄 Внесено зміни в поточний графік від *${UPDATE_TIME}*.%0A%0A📅 *${FULL_DATE_TODAY}* (${TODAY_UA})%0A%0A*Графік:*%0A${SCHEDULE_TEXT}%0A⚠️ Даних на завтра (${FULL_DATE_TOMORROW}) поки немає.%0A%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
           fi
 
-          echo "📡 Відправка повідомлення в Telegram..."
-          RESPONSE=$(curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
-            -d "chat_id=${TELEGRAM_CHAT_ID}&text=${MSG}&parse_mode=Markdown")
-          
-          if echo "$RESPONSE" | grep -q '"ok":true'; then
-             echo "✨ Успішно надіслано!"
-          else
-             echo "❌ Помилка: $RESPONSE"
-             exit 1
-          fi
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}&text=${MSG}&parse_mode=Markdown"
