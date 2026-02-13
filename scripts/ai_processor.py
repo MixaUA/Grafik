@@ -128,10 +128,11 @@ def main():
                 if q in source and source[q]:
                     new_queues[q][target_day] = source[q]
 
-            display_date = get_ua_date(raw_date)
+            # --- ЗМІНЕНО: ТЕПЕР ВИВОДИМО ДАТУ ОНОВЛЕННЯ ЗАМІСТЬ ДАТИ ГРАФІКА ---
+            update_day_formatted = get_ua_date(kyiv_now.strftime("%d.%m.%Y"))
             
             output = {
-                "update_time": f"{display_date} {kyiv_now.strftime('%H:%M')}",
+                "update_time": f"{update_day_formatted} {kyiv_now.strftime('%H:%M')}",
                 "queues": new_queues,
                 "last_processed_url": msg_data["url"],
                 "last_processed_text": msg_data["text"]
