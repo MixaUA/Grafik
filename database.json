@@ -1,5 +1,5 @@
 {
-  "update_time": "15 лютого 09:30",
+  "update_time": "15 лютого 13:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -69,7 +69,7 @@
       "неділя": [
         "02:00-06:00",
         "08:00-12:00",
-        "14:00-18:00",
+        "14:00-16:00",
         "20:00-00:00"
       ]
     },
@@ -83,7 +83,7 @@
       "неділя": [
         "00:00-04:00",
         "06:00-10:00",
-        "12:00-16:00",
+        "12:00-14:00",
         "18:00-22:00"
       ]
     },
@@ -174,6 +174,6 @@
       ]
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/N31d00RWx0Hw3H5GsLMiTyP24z3ONXRGcmUPh211Ypztd2lCe_Avq9dMJUyHTdSh5AwAtPT3-3MHBVjN8X7sq5rXZblL_M8b-_c2qpTedICrjLC7FQ_t5qEXDLldNHzJxTHAriLbsSj-LEewiRsUcbbaGp8hBDgrBOE6V0DuHDRJgCSQqjCmHI_w2rF9g7zP8OIOgZh-ePmXNp6S7PbxqtWTurnAOiEufvUgkc0uDk5rkdqbUSPOmGuqBG5RHa6VfT4nwtKVQeCySbsjqc1IizwsB1E8vTX57K0QOU9sNDZxxnP7w8YYr4weRhJTYyn_ZvKwLmr83nBs9HBkBjLhVg.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/h71A2PLqaYOByYDiDCMgFdcU_2K6mA3AQ0x0bJRGd680aOKOck5QvHPBbW8sOQC6ktmu2S_jpAcsW6IRWM2-8zcVDD-xfS8zOAN_uaVIimXVWhR28JP9MH5YXYDg0TP9p85IlT3uxKVR3IyFc19POd11pe71-5ua35ZAARf9Hg_0KNWmodj6Q_GZYEIDhrLIuLwX8CQ_GbYVEtNkeooVhsmGpHV2kxvL5Xw7J4nm80L74_GG7T_VwpPR0rwVfT_V5HGQN-WgyBKeZOI5jre25Q_zfhgss4fyZjt10brFuvV_30Po8rJyw41tKTsUlk2OJ1waK251bJvrO0_lcTyv3Q.jpg",
   "last_processed_text": "Знову зміни в ГПВ."
 }
