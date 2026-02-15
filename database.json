@@ -1,5 +1,5 @@
 {
-  "update_time": "15 лютого 13:15",
+  "update_time": "15 лютого 14:45",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -69,7 +69,7 @@
       "неділя": [
         "02:00-06:00",
         "08:00-12:00",
-        "14:00-16:00",
+        "14:00-18:00",
         "20:00-00:00"
       ]
     },
@@ -84,6 +84,7 @@
         "00:00-04:00",
         "06:00-10:00",
         "12:00-14:00",
+        "15:00-16:00",
         "18:00-22:00"
       ]
     },
@@ -174,6 +175,6 @@
       ]
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/h71A2PLqaYOByYDiDCMgFdcU_2K6mA3AQ0x0bJRGd680aOKOck5QvHPBbW8sOQC6ktmu2S_jpAcsW6IRWM2-8zcVDD-xfS8zOAN_uaVIimXVWhR28JP9MH5YXYDg0TP9p85IlT3uxKVR3IyFc19POd11pe71-5ua35ZAARf9Hg_0KNWmodj6Q_GZYEIDhrLIuLwX8CQ_GbYVEtNkeooVhsmGpHV2kxvL5Xw7J4nm80L74_GG7T_VwpPR0rwVfT_V5HGQN-WgyBKeZOI5jre25Q_zfhgss4fyZjt10brFuvV_30Po8rJyw41tKTsUlk2OJ1waK251bJvrO0_lcTyv3Q.jpg",
-  "last_processed_text": "Знову зміни в ГПВ."
+  "last_processed_url": "https://cdn4.telesco.pe/file/einD4bC-96UwPH0LA6LJgiaqUep83N5gubFt_bdVQTdVS88vJGhTQ2gEousvuZt57JPLvU9TRR_cvY2JfLAotV4w3f5mpfTOr1pAIDUA6gXgtqNODi_M3aI0Zst3pn4vLh74Eh3Rrm6wPmr9HqBfZzPvfLaWRBbpH4sBHht33zHvDXbyQw9Ol9Yw-yHALg2kL5EapFUqiJjXZ8-OBAEqYtAd5A3pVFnE6zEkmat62hrlCTaXYv6CfpwVq5qhF182FVI3o-FK0Wf_9eS17f-wn9SLJxzFN0_UaDP6JcoGUGmec3qNhDucfgp-jrpc_pof33m4BUKQalv2AIhOYtVB9A.jpg",
+  "last_processed_text": "Зміни в графіках погодинних відключень."
 }
