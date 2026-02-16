@@ -1,11 +1,11 @@
 {
-  "update_time": "16 лютого 09:30",
+  "update_time": "16 лютого 10:15",
   "queues": {
     "1.1": {
       "понеділок": [
         "00:00-04:00",
         "06:00-08:00",
-        "13:00-16:00",
+        "12:00-16:00",
         "18:00-22:00"
       ],
       "вівторок": [],
@@ -19,7 +19,7 @@
       "понеділок": [
         "00:00-02:00",
         "04:00-06:00",
-        "13:00-14:00",
+        "10:30-14:00",
         "16:00-20:00",
         "22:00-00:00"
       ],
@@ -33,6 +33,7 @@
     "2.1": {
       "понеділок": [
         "02:00-04:00",
+        "10:30-12:00",
         "14:00-18:00",
         "20:00-00:00"
       ],
@@ -156,7 +157,8 @@
     "6.2": {
       "понеділок": [
         "02:00-06:00",
-        "08:00-12:00",
+        "08:00-10:00",
+        "10:30-12:00",
         "14:00-18:00",
         "20:00-00:00"
       ],
@@ -168,6 +170,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/s2id62UarOLDF8wVJqBKPYTwXXxr_h5A1arpKWNB8kZJaf-hzJ5z8vFsjDEgH0-0EzUJsvJvzpHfCgzskdda1xs9oLdpaIUB2N2igItCqTDlBN646l1EYtGm33tzDN5wy8NdfRzVyMUQvz9H7ms7GxQv8fKeWiOkmvEFsNns3Qamu4vj39SbvLM0omNdAAw_XpovvaxSEiksZL5hAlZT7pyiBncnXPjIo0q6q052F95Y8uH3Eq416RCfoQtuJ1qrm09SJVn2MIwlsQyU4MFaZgC7nc6WVASnQaEnbjkjnbsRDixnsttStcqvea8QgMKuZlwDLkupxbwdMAH2qmpZIQ.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/pSUQc5eLLiVO6_s_P0lk9u3mKREio800WE8xwl1DKbTgp1ah9yed7uGGhgSgYhM7iGhffMVTWHkzHasQlZEuc1215Y9XAqXxzoqU5F2lmgphEtp9fDm_mhnyoZzgC3Q2_ikLUwhGrVSi4GhFLcKcHXidNIiGSLLYTyreUX8W-AFZX_uoq7uH3H1-b0gfnEBZmazM16UjHAi1soTaex64hcU-CQ_CYhSngwGnhY2e65srHJRfOfNh2MoIJtiVzCQJzAn_dbk_EmtXF2UmRPt38QLXfmktp-zN6PXsX9CCdj-8vcAVYWtZK8sjVx1MwtY2SOwoJO5AA3uDahJhSsJ2dg.jpg",
   "last_processed_text": "ГПВ на 16 лютого. За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
 }
