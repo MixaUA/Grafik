@@ -1,5 +1,5 @@
 {
-  "update_time": "20 лютого 19:30",
+  "update_time": "20 лютого 22:00",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -14,7 +14,7 @@
       ],
       "субота": [
         "00:00-02:00",
-        "04:00-08:00",
+        "06:00-08:00",
         "10:00-14:00",
         "16:00-20:00",
         "22:00-00:00"
@@ -33,7 +33,6 @@
         "18:00-22:00"
       ],
       "субота": [
-        "02:00-04:00",
         "08:00-12:00",
         "14:00-18:00",
         "20:00-00:00"
@@ -53,7 +52,6 @@
         "22:00-00:00"
       ],
       "субота": [
-        "00:00-02:00",
         "07:00-10:00",
         "12:00-16:00",
         "18:00-22:00"
@@ -231,6 +229,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/oSdK1SLO7zS63HN2oNVVSxFb9lQMBJS8lbwk-lKhYo6Yk2JFuwp8EFPYOfpGXIk8wDrnnGnJEhK6njVctvwZ2acawCEpu-uXmqtHxP9odV7a38HoQrn8XrUasWe99HM1ow7RT7tlXB2AwGF7k8QKdTnOYm_HlhsDemQVaLptGoN4WuqpajuO5sIKMd2OwrPhjW5ApOA_gOGOvBLoXVUV2jiLnyAaknEozKCihA2bwzwDq2lmQvSDOPc4p5WRnrA2AcKSJ8QsHC4hTUvAtZNKif9juy-kjMEwfkJrVXzlCxZYfgIofNjJANv3ioPJo3wc9QEcfXlvUGhPHqP5LyCNwg.jpg",
-  "last_processed_text": "ГПВ на 21 лютого. За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
+  "last_processed_url": "https://cdn4.telesco.pe/file/ey0s47Axsp3mQlJrBFxMJ3lJgBvVa0BevF0ALSo6aFjvNB72m5CU5J6SnxpwEoxI9JVRZP5JjZmf-_mBrwHyPso5vOmehoMd4hxmdKz884Y7usW_5YvzubKIutK0PerJMWfdB7vVWzsZy_dXEqaSRDuC9PhMBFco4lfhnuhLNfkzEx3OyQiPJUZB81txQcEBMWUU2RAhcs8nHUGFrfAQ4-tk7aPM9GxthyX6XSjzlxyQsEmMA_fO5XeraHEUrZTqbyErH6LxR4F_jsBaZZsD9-lmIIKLNycxs0bIRcOAIe1QUINkjmFh4SoH6_0qljSDAHrgro4YZGOAIDAlc75cRg.jpg",
+  "last_processed_text": "ГПВ на 21 лютого. За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях.(оновлено 21:48)"
 }
