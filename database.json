@@ -1,10 +1,10 @@
 {
-  "update_time": "23 лютого 08:00",
+  "update_time": "23 лютого 17:30",
   "queues": {
     "1.1": {
       "понеділок": [
         "08:00-12:00",
-        "14:00-18:00",
+        "14:00-17:30",
         "20:00-00:00"
       ],
       "вівторок": [],
@@ -155,7 +155,7 @@
         "00:00-02:00",
         "06:00-08:00",
         "10:00-14:00",
-        "16:00-20:00",
+        "16:00-18:00",
         "22:00-00:00"
       ],
       "вівторок": [],
@@ -166,6 +166,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/MFAdcli_ZOaPw8ytiVuCUJ1f6s0h4WNj7Rxa95xtxQg6xbvx_wejnhZKOKtHhobbmmp7ViyWPMQLjX3vjUZ9qPZtYMpcEJrNLjqAro9XjRF5WyU-pdfSI8vJcNvTyHJX5nPE4H31mXi-1Ya10JpYReTdB1cC88VwiCiBjuU63nt4r1fN6b82Dz8rSuCIaIRykQV4cLF_yYrxYA49-124yCl9vQ04IV62JOAq3zcD02A-iAB7LKbO8vFibk4uLVZiW4kTlvIyK4tPtOhYAmqA7V4ul-4Slb77e1NMc_s7zh63csUwqZ3VIPr6Jo40t9mCU8znakfZp2euqQf3zXNrOw.jpg",
-  "last_processed_text": "ГПВ на 23 лютого (оновлення станом на 06:53). 07:24 введені спеціальніграфіки аварійних відключень, діє 1 черга.За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
+  "last_processed_url": "https://cdn4.telesco.pe/file/ThgnxKZkAwMY3vmYDkL5CKlfq3FZflP756-SiQleTrh-OEcee2qPMNdGjld6VH9baQZ7gViTUJQd_GbRlTuw-ETUBnGlEKyVClzgAhmulFBg5MrX2eABOOwRnXDCT21vkmrr4CAsmMjDZXsHf58H1DydRdZv3AibDQ7gIM1cOEONB37XvQiTeyudTKtIn__BDxEpMvpsBGvFI6o_9C7JlTfbJRAiCFt02Mrc2SE4jtnMefLOfmB-L1CsE5aBqj9eHfbnak6GFnJGfpWpxCgclt4wjtlrvPiBNBC3RiBaGnBBimaFIlvjOpH9bwn_esi8lOld6mOKs8ukAepRtJLPsQ.jpg",
+  "last_processed_text": "ГПВ на 23 лютого (оновлення станом на 17:23). 07:24 введені спеціальніграфіки аварійних відключень, діє 1 черга.За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
 }
