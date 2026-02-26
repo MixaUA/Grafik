@@ -1,5 +1,5 @@
 {
-  "update_time": "26 лютого 21:30",
+  "update_time": "26 лютого 23:30",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -11,6 +11,7 @@
         "20:00-00:00"
       ],
       "п'ятниця": [
+        "00:00-02:00",
         "04:00-08:00",
         "10:00-14:00",
         "16:00-20:00",
@@ -180,7 +181,7 @@
       ],
       "п'ятниця": [
         "00:00-02:00",
-        "04:00-06:00",
+        "04:00-08:00",
         "10:00-14:00",
         "16:00-20:00",
         "22:00-00:00"
@@ -199,7 +200,7 @@
         "18:00-22:00"
       ],
       "п'ятниця": [
-        "02:00-04:00",
+        "02:00-06:00",
         "08:00-12:00",
         "14:00-18:00",
         "20:00-00:00"
@@ -217,7 +218,7 @@
         "22:00-00:00"
       ],
       "п'ятниця": [
-        "00:00-02:00",
+        "00:00-04:00",
         "06:00-10:00",
         "12:00-16:00",
         "18:00-22:00"
@@ -226,6 +227,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/SW_UMJNSFzHdvIt_mz6rS2F2VwsoJy9w2b1o2ZL9dLoQD8tD9tCeUu-uVBKyO0Q0PQ1RET4MElIa-svhMqGjrC7pxQxF4Sm5v-9oFfS66b6F-UXWhl41iXTtkKmMrD0YcJdxfexGs4JdnObx6G8jaePuQ2TanA_zDDA643jdb9t3V-Wao7UFjmzV9yMNtt28QieSFCK85NrDMkxHEAXqZKcDlvhpRUZllkJZbEJ5rstxOHXRO8QW3H7GzQ04V8r8xbVaCa77bJDqz5VS-HcY1KAGmvUTS7kGUmoFAyI_vx25ghxaB5hyfvkEtsQqx9gHnMWir61Di-StBlfRRzmzSg.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/I2Lnf149seqZzrD-cW8xKgTlf7VD9EN-ii2US_VASCUQyzMkJRp92_LkKCDaSncwhJqo83b-L6yDaACiH8zxjtJsk-Ir6-Z4cOvDlrR24bDLsh2pVRM5Q33Q6gjkArEdQ6kUj_rnUImRkbQODZAwppVmeJsgGTV6dlUBVrZeDLZu_V_lIidWkGQUOE2TrxE3KBic-oiGvWYtSBJ4EZvvnZHPxj1ESgwuJBxU7ZSbH97t4WqRTXlSi3i96v7fCAYUSXvg3gKOScTTNCGV8T66xePJ8CG_hXZyi2rYRGrfdpPxyywVgIPGMk2aBYFHZkqM-1sQM3qMhD5WkjSdF6FVTw.jpg",
   "last_processed_text": "💡ГПВ на 27 лютого.За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
 }
