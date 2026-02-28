@@ -1,5 +1,5 @@
 {
-  "update_time": "28 лютого 20:15",
+  "update_time": "28 лютого 21:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -72,7 +72,7 @@
       ],
       "неділя": [
         "00:00-04:00",
-        "06:00-10:00",
+        "08:00-10:00",
         "12:00-14:00",
         "18:00-22:00"
       ]
@@ -92,7 +92,6 @@
       ],
       "неділя": [
         "00:00-02:00",
-        "04:00-06:00",
         "10:00-12:00",
         "16:00-20:00",
         "22:00-00:00"
@@ -111,7 +110,6 @@
         "20:00-22:00"
       ],
       "неділя": [
-        "02:00-04:00",
         "08:00-10:00",
         "14:00-18:00",
         "20:00-00:00"
@@ -130,7 +128,6 @@
         "18:00-20:00"
       ],
       "неділя": [
-        "00:00-02:00",
         "12:00-16:00",
         "18:00-22:00"
       ]
@@ -223,6 +220,6 @@
       ]
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/TeDi7mFIBWlRgQtIDlEcm5KEO_OI2PHq02Z1CJxVyo4KF2dwVklLebH6u4Cw93a0eZKiTF8Q5dkobonZR02csHn7e66iFo-j00O80gzoKqhJ26a9wziRDcx9_sJOfG92C52dtkslA0q2mhxku3ZSA2tsxUo8N3OqfirHqQIi24BCIYuQb_EeiNWgx9ZeXdT0GvEuHxGIPHd9MRds6BDaq8DL-nQe_M86yZ87J6N65tvHaUd_h5WfMYlRXw1qVq8T8ky86wzy90PWXGDhlSE-UI6BdvTFSCeoVtpuADh5oBBY-jcJLUUa5O9yqokcp7Ta1u0tnh7sM-5XLNsoQbQ5mw.jpg",
-  "last_processed_text": "ГПВ на 1 березняЗа подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
+  "last_processed_url": "https://cdn4.telesco.pe/file/BXNQT1uTSTpesmEdfs4GLGQie-BzkhYOGyhPyqUbs_RoJ084MyqcRleAPzGn34gdwpcnPmd13gwSuNxSB0MP57UyeGYuEBQuvFVQBay-LsscePak1olEzVMIvTTy4n0yiYLSWjG_Brta6yEPf2XKQFyVdHEafJWT9hL4HHR_sJn1yK7RjM93-58EkheCCTypJ2lHVyI_tY_xnCns34UO1uEZtn3nCH7DsVIA4E_D8Jfsfy4zXHAS-nthhqux50ebXVrJfJA2Ifd77DPgrmjaEcUQOLQKGbLvIkPdfkYRtZiEINvRPBY1_Sa7vt_RguM6NIzx3sNccBcRCP_QV1a-8w.jpg",
+  "last_processed_text": "ГПВ на 1 березняЗа подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях.Оновлено о 21:10"
 }
