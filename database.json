@@ -1,5 +1,5 @@
 {
-  "update_time": "28 лютого 08:30",
+  "update_time": "28 лютого 10:00",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -11,7 +11,6 @@
         "00:00-04:00",
         "06:00-08:00",
         "09:00-10:00",
-        "12:00-14:00",
         "18:00-22:00"
       ],
       "неділя": []
@@ -25,7 +24,6 @@
       "субота": [
         "00:00-02:00",
         "04:00-07:00",
-        "10:00-12:00",
         "16:00-20:00",
         "22:00-00:00"
       ],
@@ -83,7 +81,7 @@
         "02:00-04:00",
         "08:00-12:00",
         "14:00-18:00",
-        "20:00-00:00"
+        "20:00-22:00"
       ],
       "неділя": []
     },
@@ -97,7 +95,7 @@
         "00:00-02:00",
         "06:00-10:00",
         "12:00-16:00",
-        "18:00-22:00"
+        "18:00-20:00"
       ],
       "неділя": []
     },
@@ -110,8 +108,7 @@
       "субота": [
         "04:00-08:00",
         "10:00-14:00",
-        "16:00-20:00",
-        "22:00-00:00"
+        "16:00-18:00"
       ],
       "неділя": []
     },
@@ -124,8 +121,7 @@
       "субота": [
         "02:00-06:00",
         "08:00-12:00",
-        "14:00-18:00",
-        "20:00-22:00"
+        "14:00-16:00"
       ],
       "неділя": []
     },
@@ -138,8 +134,7 @@
       "субота": [
         "00:00-04:00",
         "06:00-10:00",
-        "12:00-16:00",
-        "18:00-20:00"
+        "12:00-14:00"
       ],
       "неділя": []
     },
@@ -152,8 +147,7 @@
       "субота": [
         "00:00-02:00",
         "04:00-08:00",
-        "10:00-14:00",
-        "16:00-18:00",
+        "10:00-12:00",
         "22:00-00:00"
       ],
       "неділя": []
@@ -166,13 +160,12 @@
       "п'ятниця": [],
       "субота": [
         "02:00-06:00",
-        "08:00-12:00",
-        "14:00-16:00",
+        "08:00-10:00",
         "20:00-00:00"
       ],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/fmfjH2nQ8opHHs6UBTbLgvS0AM1kD2HC8ATTu277djkHP4_RToT3LK7C6zKv52PCNEUgJOD3PCWIirN2qzeOGiX_yZIHLwB_5jfw1ybMaRa6SUcQYziPMFnXsM5yydbE5sslUlMT6X0sc2mSx3mYK_-Gd6xv94Tq1loeQYEXAvBMULsJvDNH4MIgWldeRJ9AAbkAM0Toi-OH_tei6qaqMxHi_jEJv6u6gs8xPtPpYdaDk6KjjabDR7-37qUMbP227CqrYYTcpERAUGf9j0WZdRp_dAJpx_NiWOVm3Hw920sxA8q6Tdq_LbbCTb8jiS-bf6yVtIJwrwr9zIg_N0SDLw.jpg",
-  "last_processed_text": "ГПВ на 28 лютого. За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
+  "last_processed_url": "https://cdn4.telesco.pe/file/BOg-cadrlYmjmBGG-SmVHbJffigtMjITPLcfHGngQzbdMK7aVtOrkFQXlA-P8U6uwFf9Dj-AcMO6yHWuL1S_ttpZdxrbEvlsUS3PT-t6N-qSQTxJIasdhUlNSe9Oy3DKtwLqcaaSefnVMozpDGc9Nv7WDlbv_mMb2FEalqK1Xo3j-oOyxFaBZAAngKMd1N052qcs9pngK61mrpssawCzDflxXceAztTCpXOOny2CZKDGeuSPdA6F6mwA-pHyWZREuaIjrfjT_yXaluMwynfinZa-rxlS6p_wWEwPZPXKTnT6OfQeSOTEo4i_m5Uqx8yNMrMigFwuDKrT8lygwB8tZQ.jpg",
+  "last_processed_text": "ГПВ на 28 лютого (оновлено).  За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
 }
