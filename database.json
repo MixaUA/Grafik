@@ -1,10 +1,10 @@
 {
-  "update_time": "2 березня 10:45",
+  "update_time": "2 березня 13:00",
   "queues": {
     "1.1": {
       "понеділок": [
         "14:00-18:00",
-        "20:00-00:00"
+        "20:00-22:00"
       ],
       "вівторок": [],
       "середа": [],
@@ -52,7 +52,8 @@
     "3.1": {
       "понеділок": [
         "08:00-10:00",
-        "12:00-16:00"
+        "12:00-14:00",
+        "18:00-19:00"
       ],
       "вівторок": [],
       "середа": [],
@@ -63,7 +64,8 @@
     },
     "3.2": {
       "понеділок": [
-        "10:00-14:00"
+        "10:00-13:00",
+        "16:00-18:00"
       ],
       "вівторок": [],
       "середа": [],
@@ -141,6 +143,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/DJwFBcHuYQVFWkWucF7nvxJusXqlT8J5dbwNFBVyb6ba00N-ZTHUxFYvfnOcCtSvl400QtobSvXfR056g_d2kjjwt-FnryRMIiZ1SSAycyCHsxzLPvFCkAl0MiudyFq0cOPNx_tkmvIqRivbNwnDVjohgUv95gYecvJFR6-A5z4kE9w49b0R5u0dfFibu1EixWCCMVf_auNhziThOIAnCAquJ1C0F1FLOn5O1JdOUV7nqucgbA9Q9qHigr8Im0q6SqI3IMfrSU2XdnhjF7faMMWpDcr9te74SqxlaiOCFBixwZA4yhOpXU7nuhZ9_-4mcNFmBXoY4rjS67CCp-8pCA.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/Jp3S6a__jv70eZgX9GykGe8XIHx0b4HJLSAHMvcuANAJ1GtU4-Ek8_E-kfIY0PMoVLsimIqMQNQdUF0UNoyVDvACjF38J4U7ehC96kj8kzkk7TaRZ8JSI1m6ycgX-yXzwV5l01icO1kgG2mbkQ2Acdz7ZB1f5aM3ohyjJFo0Sn0YrV2aeQo0sNpLlAVrx7OnEFEEktRhFJ8qYnnPAh8YteoC3_1nCtNeMftsmZYzBBfe4qPN5cAEBzVheCKfoVvM8gQkiI3zotnXL4eVJ1FxeCoAwv3Ne4wW5WWJfjrU489c9p3tKXMhB8LKcc6guDMJT7KMWNvIm0ZS1oRHKHMe9g.jpg",
   "last_processed_text": "💡ГПВ на 2 березняЗа подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
 }
