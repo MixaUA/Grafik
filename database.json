@@ -1,11 +1,11 @@
 {
-  "update_time": "3 березня 14:30",
+  "update_time": "3 березня 19:00",
   "queues": {
     "1.1": {
       "понеділок": [],
       "вівторок": [
         "10:00-14:00",
-        "16:00-20:00"
+        "16:00-19:00"
       ],
       "середа": [],
       "четвер": [],
@@ -144,6 +144,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/p5YZb8KmacpcWp-wY1Ui_EpJnrYkvBEAaM3Fc0QjkjOwQKyrx0jAqSWFyt_EwbxFZ6SgNQ8gt92aU9S9sD_-AqQc8M5KqQavqvRWK28sFmo57-ti6Co-1C_uCfa6q7FIkfi1rdJG38-M82nB7cBJ3yma_YSG05cnp4DCY3HrEakZi65pbgIUaczExaPxPc9Uh1LbMIZLju1RtRHXx81W211OQw4PCHApi4V3VIJSh7hnZU_xRHcLc3C32H7P8blqS_PH0-cfFgMcqb4GiKH7mIhhZsDj_yP_YSFYbbFUlrxLo8E9-1pSGl8lKtalBt7pL_1Z8wwwDFgVyNHpUJ7utw.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/l__RxA2Le-seNwt0p1fBhIDEnEfhSOSdYvWkaxadQ1UwiO2OcPEQdG9klYGDmreHihra75TsLulDYXdA1sAXKVb_2FPsmluR8JZI2L6ulT7FyAlAdDRcO0yvDFSnfpy18tZb-mGMgLE9rRMOXB2aJN5lyFTXZQps03tm9g2rQQsjZ7HY43WTLlkDKcv1_XscaCWXsahdzUQ7Hzz9Wd4XIttF-QmLsKEfScSpYktABiu03pRCd87G3l-Y87khevQKv-sEVuPk_3vb998CQ27spNTARK-XGzbxUxqZ9ozgj4O_88Krc156zEEvM1ZhqzeE3ha-vG8MupTBjwVrRlu1Gw.jpg",
   "last_processed_text": "💡ГПВ на 3 березня. За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
 }
