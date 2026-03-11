@@ -1,5 +1,5 @@
 {
-  "update_time": "11 березня 14:30",
+  "update_time": "11 березня 19:30",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -75,7 +75,9 @@
       "середа": [
         "08:00-09:00"
       ],
-      "четвер": [],
+      "четвер": [
+        "22:00-23:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -84,7 +86,9 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [],
-      "четвер": [],
+      "четвер": [
+        "20:00-23:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -93,7 +97,9 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [],
-      "четвер": [],
+      "четвер": [
+        "18:00-22:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -102,7 +108,9 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [],
-      "четвер": [],
+      "четвер": [
+        "17:00-20:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -111,7 +119,10 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [],
-      "четвер": [],
+      "четвер": [
+        "17:00-18:00",
+        "20:00-21:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -122,12 +133,14 @@
       "середа": [
         "22:00-00:00"
       ],
-      "четвер": [],
+      "четвер": [
+        "19:00-20:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/dAYh25xYUd0pX7L_bFjrs2GpY3Y3l4Nb_3JctubbBv1YCTf1zsXRfHUXh6Y-drY_6VrJbR1c4ZhAZdnwd4ptjbXIRzketS594JdsAWwMwSTbihWRsbI-_i_kYto65hjsdfpQ4xZYzSdi70Eto096rPpGSZQPjMh3zh0vIa4TOK7hP7vevN9KXoCLos1qm788e9PMcJRlEvjIF2ndphEszJJ67B3CCOdXhyYGwg2S7Y-fyBnqYfYVFZUWFxTzItRN-uyKI8IfrzeO9o43V7vut1RFUXruh88hKlOJ6ECPE521ySSqoTxhkQInDVPt6A2cr4zA7Yvp9RZ0XZFoU-nDBQ.jpg",
-  "last_processed_text": "ГПВ на 11 березня.За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
+  "last_processed_url": "https://cdn4.telesco.pe/file/ZVqJ13WXE-VbT0nwg3XIhvw38FtE7dMIte7Z_08xpsol42dXoPMorgJyu3rRmSnbLdnOXeWyMTdyMuchUdaM-ZUF4n-dmL5V1rCIXULW7LwckABReLbkx5AsgllOopU9UqdAAtLex2HEgpWnFP1f-QZFjao3bGf-K2iHPPKm1et0zJnmMAU_gqYeZkvPd7xDSFJ9zIaksorsRs9XHaVqtPN9ni0S4B_XpCokIk5AIs-FjDAti8WcXq3prwloct0IVetfQYp2qzCFjMUPxok6dCUKJuKRaYkDheZo-ivwlGY9YSmgmCdv0jBbcWaUM7JJ9-clTssq9XXzCl2BcxHxGQ.jpg",
+  "last_processed_text": "💡ГПВ на 12 березня.За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
 }
