@@ -1,12 +1,10 @@
 {
-  "update_time": "11 березня 19:30",
+  "update_time": "12 березня 19:00",
   "queues": {
     "1.1": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [
-        "20:00-00:00"
-      ],
+      "середа": [],
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
@@ -15,9 +13,7 @@
     "1.2": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [
-        "18:00-22:00"
-      ],
+      "середа": [],
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
@@ -26,55 +22,51 @@
     "2.1": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [
-        "18:00-20:00"
-      ],
+      "середа": [],
       "четвер": [],
-      "п'ятниця": [],
+      "п'ятниця": [
+        "20:00-22:00"
+      ],
       "субота": [],
       "неділя": []
     },
     "2.2": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [
-        "14:00-18:00",
-        "20:00-22:00"
-      ],
+      "середа": [],
       "четвер": [],
-      "п'ятниця": [],
+      "п'ятниця": [
+        "18:00-22:00"
+      ],
       "субота": [],
       "неділя": []
     },
     "3.1": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [
-        "19:00-20:00"
-      ],
+      "середа": [],
       "четвер": [],
-      "п'ятниця": [],
+      "п'ятниця": [
+        "17:00-20:00"
+      ],
       "субота": [],
       "неділя": []
     },
     "3.2": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [
-        "10:00-12:00",
-        "16:00-18:00"
-      ],
+      "середа": [],
       "четвер": [],
-      "п'ятниця": [],
+      "п'ятниця": [
+        "17:00-18:00"
+      ],
       "субота": [],
       "неділя": []
     },
     "4.1": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [
-        "08:00-09:00"
-      ],
+      "середа": [],
       "четвер": [
         "22:00-23:00"
       ],
@@ -130,9 +122,7 @@
     "6.2": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [
-        "22:00-00:00"
-      ],
+      "середа": [],
       "четвер": [
         "19:00-20:00"
       ],
@@ -141,6 +131,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/ZVqJ13WXE-VbT0nwg3XIhvw38FtE7dMIte7Z_08xpsol42dXoPMorgJyu3rRmSnbLdnOXeWyMTdyMuchUdaM-ZUF4n-dmL5V1rCIXULW7LwckABReLbkx5AsgllOopU9UqdAAtLex2HEgpWnFP1f-QZFjao3bGf-K2iHPPKm1et0zJnmMAU_gqYeZkvPd7xDSFJ9zIaksorsRs9XHaVqtPN9ni0S4B_XpCokIk5AIs-FjDAti8WcXq3prwloct0IVetfQYp2qzCFjMUPxok6dCUKJuKRaYkDheZo-ivwlGY9YSmgmCdv0jBbcWaUM7JJ9-clTssq9XXzCl2BcxHxGQ.jpg",
-  "last_processed_text": "💡ГПВ на 12 березня.За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
+  "last_processed_url": "https://cdn4.telesco.pe/file/hu5TT72ET7cs6ORXKQAx6FrM4nQ7dooALN77BERNZdNebpYx1PMp1kLmjbW09upJUpTL2ZR4fUNK3PZrr_iMWcOklmHuCePz12ibC_BFez2zDIM-clG7SueMCrN2i9Aqq9_UlPZ6HE5EWGMkD-Voe4vnSc752Xqh3YnLsmMp8bcFE8z-yib5UcyIYDPeap7pCyviFEE79dSTbiaIckcMLYWViEaxsL1I579onLGcAIe-6fsDVJqG3iMAH3srXdaajU3YbGhh0w4nZ_fqJPltUkKR5gNqA7S4qdO1eIqPe-mhW29BYqZggGxc64m9O2PBDAhKy-_IWZPJwmeMgvwHBA.jpg",
+  "last_processed_text": "💡ГПВ на 13 березня.За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
 }
