@@ -1,5 +1,5 @@
 {
-  "update_time": "18 березня 11:30",
+  "update_time": "18 березня 13:45",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -38,7 +38,8 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [
-        "16:00-20:00"
+        "16:00-20:00",
+        "22:00-00:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -49,7 +50,8 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [
-        "14:00-18:00"
+        "14:00-18:00",
+        "20:00-00:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -60,7 +62,8 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [
-        "12:00-16:00"
+        "12:00-16:00",
+        "18:00-22:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -71,7 +74,8 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [
-        "12:00-14:00"
+        "12:00-14:00",
+        "16:00-20:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -81,7 +85,9 @@
     "4.2": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [],
+      "середа": [
+        "14:00-18:00"
+      ],
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
@@ -90,7 +96,9 @@
     "5.1": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [],
+      "середа": [
+        "14:00-16:00"
+      ],
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
@@ -124,6 +132,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/NiAxZ4UmpLLQWIiCP2PAbXoW-14ZexPVy-7PNj4PSU9BuVgonFmpeY5fZ0zKVFTnFV4Lz69DlpgVHMnePdopj4Z_Z3KQaofJK-8xdPG7CZeTsyRWhJ0V5bc1ja99M9qK3HAWhtI5EBfGMBdMk7KPpbVmAxdw_zaVQaNaS5em5PesXulrMp5Yv-qypKbRhvSrz3u7U3rcUEAFDP01H0BqSBsl1VggrJ4iooF2vJNodG8v0RnF17NCUocHifmaTE-HHOo_QYYVbhG0HzxM5RTgasz8KdVAEEVZKKoNn1eYyDf8fCyKg8OnpouNFH5xBGeFzRYY3hlaeZvF38If1ajRQg.jpg",
-  "last_processed_text": "💡ГПВ на 18 березня. За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
+  "last_processed_url": "https://cdn4.telesco.pe/file/JdVAE8bE-hPcpegVDAsDETSaTs3Xp94kDlb0VBk6u9UGnNAS8jBz0-ZL4TYCVp1nmZWHE2uSUqdJrIMMhFxAu-Nz3QVnJLhAFRxd6Tbq3S3MBTCSpFDgkt5BxotqcD__AvdlruZGYqMYxZatzsrEQ5WrNefBgRZ27geFoK5DvxQXN1MwPSvQA9rvFNh6VrNQ131SlkOeV8OXGYinTgg4lEFTyCYVMZMPjyLxUpnrQDy1J9_RnbFV5hZL5YjzQuzSLMeIZ2eNgVw44QkphsrmoFDoOO20BCWl5Yl14EEpnob-YR_aCPJLlZWcHnonDrd2vY6T7ZIz8ijJnQoyAI119w.jpg",
+  "last_processed_text": "💡ГПВ на 18 березня. За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях. (оновлено 13:34)"
 }
