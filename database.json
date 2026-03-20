@@ -1,5 +1,5 @@
 {
-  "update_time": "20 березня 19:00",
+  "update_time": "20 березня 19:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -7,7 +7,9 @@
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
-      "субота": [],
+      "субота": [
+        "16:00-20:00"
+      ],
       "неділя": []
     },
     "1.2": {
@@ -16,7 +18,9 @@
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
-      "субота": [],
+      "субота": [
+        "14:00-18:00"
+      ],
       "неділя": []
     },
     "2.1": {
@@ -25,7 +29,9 @@
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
-      "субота": [],
+      "субота": [
+        "12:00-16:00"
+      ],
       "неділя": []
     },
     "2.2": {
@@ -36,7 +42,9 @@
       "п'ятниця": [
         "20:00-22:00"
       ],
-      "субота": [],
+      "субота": [
+        "10:00-14:00"
+      ],
       "неділя": []
     },
     "3.1": {
@@ -47,7 +55,9 @@
       "п'ятниця": [
         "18:00-20:00"
       ],
-      "субота": [],
+      "субота": [
+        "08:00-12:00"
+      ],
       "неділя": []
     },
     "3.2": {
@@ -58,7 +68,9 @@
       "п'ятниця": [
         "18:00-19:00"
       ],
-      "субота": [],
+      "субота": [
+        "08:00-10:00"
+      ],
       "неділя": []
     },
     "4.1": {
@@ -113,7 +125,9 @@
       "п'ятниця": [
         "08:00-10:00"
       ],
-      "субота": [],
+      "субота": [
+        "20:00-22:00"
+      ],
       "неділя": []
     },
     "6.2": {
@@ -122,10 +136,12 @@
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
-      "субота": [],
+      "субота": [
+        "18:00-22:00"
+      ],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/qjG5JIz21OLMtvK_EV5Js90Mc6jyoSpfB3pbB_d-MHpY3R4hoiwqSK_9Yajl4dZOdDl9-fJ35ElMzQenqwJLB1GI0-9hB6gCA3RnUc68D8sVEXFtozHrBiREuttpqLqKNS0cWmBHHwo92ULcPlwKamPLqjmqujvIriyAUKfoFt65vZSXxa-4RlBx0xCs5R_Hh1LmGdZO70XbV2v-ZEt_NRJkICZLz3GFM8s-VO-SjRHQ-8Qz5hxaJUuOtSf-qmfiFm1poZ6w12Y4sMFMoEqLX_cIvrQO8xGEW9LZqQhRzUb-Ylhg0W2yyE-LJ_s8JUFuAAl73RKCbO2fJG1_q1SUNg.jpg",
-  "last_processed_text": "💡ГПВ на 20  березня. (оновлено 18:57)За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
+  "last_processed_url": "https://cdn4.telesco.pe/file/PJRqUdXfoybDVdcWeHtHPSz0x6YvVZKPpVZ5uud2YcNdME0UBlOPeSeKxdTLAb9MzpFZIdEqaw4N8kDq9ba8BHsmsLKNfDM8GySzqH_InUWAIw7jU3Ze1HxobGZJgi1Mt311iCkUOX-8ldOPz_Vc0vOHzG_il3S9t5CGWEHJMbWLQkWzQ428XQrug1lF9fPbhO9N-lRCo1sVmmI3fXKPrqJt0SAhifau-lSY79PV5yXhwYaNTq2Pcu6xNELomfkyujOMGRMMf2t0DmWHDJVoWTbnC_MHThfyLiC_G-YGw_04_mv7NuhAdnwiHo0ND3CitA044Wzg3PTOlnJfFELxVg.jpg",
+  "last_processed_text": "💡ГПВ на 21  березня. За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
 }
