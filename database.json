@@ -1,9 +1,9 @@
 {
-  "update_time": "22 березня 19:30",
+  "update_time": "23 березня 10:45",
   "queues": {
     "1.1": {
       "понеділок": [
-        "20:00-22:00"
+        "20:00-21:00"
       ],
       "вівторок": [],
       "середа": [],
@@ -14,7 +14,7 @@
     },
     "1.2": {
       "понеділок": [
-        "18:00-20:00"
+        "19:00-20:00"
       ],
       "вівторок": [],
       "середа": [],
@@ -116,6 +116,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/v3_bssNVfnA1lLpLwk87gXE5Jl0XHes_Iic6kbVgxc2rvtAVwhLx2B4sRqe50sQORseUWhsl-BXqo15mtcP9mjye6aUVPu4r6HvY1ZHBcEseIKlL-Lxew4mcmMi7n5mZ7jVMHYtaC6Cvg1LAHiq0lD95e2t5J0nfnWFGSaPk1JAulqhygVzBh0v5gWIlihha2L_h0Z1-Y2n-ctOnGsf1fIE6_FGcfHxNoVuNdryFc4bT2Qcjy5ZWPf3vfg7rUo2wrNNOZmMcNpApVBoFwczXDjVOcz0pBIENBhq_0l8vonROOXFSZbb-4VscXeobnnKi3VeUFzhAcx_8Q869K6403Q.jpg",
-  "last_processed_text": "💡ГПВ на Сумщині 23 березня.За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
+  "last_processed_url": "https://cdn4.telesco.pe/file/vSWu35sWZ6heAuD0ys9nuwko6-Lm1nJdjuJAvTaTKpDgu5CuS_UYU1uX7OEfofuzsZ4pFeLdxIDinqNtgAt5CuP95WH-awoK5R1GBKcltQvS-xLKr_obzQPxQhCkdHfTN3HwqIlvPysjWq7CPKeWQFci4LPJJ3vVPlQS-lm9k-fThAURzqvN_p7G8FtkbOOWdU7ionrVz8iXnG3JVt3vVAAWcCID9iX3TH4zKwDTW5NQHZvDTm6EEzWdmVgKUxvGjW-8AnxkqOhmLOrodCNQ88HE4yXLF6yWlRemjWCm3uRJTpQVd03lkQ-LPKUt1CIBcupCNZqZFzECfeBSucSEyA.jpg",
+  "last_processed_text": "💡ГПВ на Сумщині 23 березня (оновлено 10:30)За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
 }
