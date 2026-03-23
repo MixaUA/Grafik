@@ -1,5 +1,5 @@
 {
-  "update_time": "23 березня 20:45",
+  "update_time": "23 березня 23:30",
   "queues": {
     "1.1": {
       "понеділок": [
@@ -16,7 +16,9 @@
       "понеділок": [
         "19:00-20:00"
       ],
-      "вівторок": [],
+      "вівторок": [
+        "08:00-10:00"
+      ],
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
@@ -27,7 +29,9 @@
       "понеділок": [
         "17:00-18:00"
       ],
-      "вівторок": [],
+      "вівторок": [
+        "06:00-08:00"
+      ],
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
@@ -72,7 +76,9 @@
     },
     "4.2": {
       "понеділок": [],
-      "вівторок": [],
+      "вівторок": [
+        "20:00-22:00"
+      ],
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
@@ -81,7 +87,9 @@
     },
     "5.1": {
       "понеділок": [],
-      "вівторок": [],
+      "вівторок": [
+        "18:00-22:00"
+      ],
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
@@ -90,7 +98,9 @@
     },
     "5.2": {
       "понеділок": [],
-      "вівторок": [],
+      "вівторок": [
+        "16:00-20:00"
+      ],
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
@@ -99,7 +109,9 @@
     },
     "6.1": {
       "понеділок": [],
-      "вівторок": [],
+      "вівторок": [
+        "16:00-18:00"
+      ],
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
@@ -118,6 +130,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/GstgDKV64hgrJcLMP1VJ0N97YGWW1oRI7VRVCpHNbuEvLriyCzXPOX4PKCF-izqJA4EnF6Hc3v0aZi3P9b5cLfnQQC4_ytyatcwWOreOMIm_tIpn67RYdlmO1YpcQ1fO93OZVUbk2VxiTb2JztR3IdDJztIgrIXb-SfSAFDGq363Wfy6iz9QPnZwTe1iNUrxS3Jc774jRNlZ5TUVzBawPEpZzcDFrEh_EY2HXjw24PRHSsvEnuTKaWmEAMgZbN6Nce_b57xEtTji3ekSMIY_Dwh5hqsvS4iMMkZaqBhso8iu6gUFNuxeovtPG1T2fotUDom8MI51VjKV7JRu4vWH4A.jpg",
-  "last_processed_text": "💡ГПВ на Сумщині 23 березня (оновлено 20:35)За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
+  "last_processed_url": "https://cdn4.telesco.pe/file/HIemn7_j9tbBerU5rbfa-Wfros_cZ7VvuGEo5Jcb8ZEVIClB1XNq0BsUhTNrGbLX9pzWw-IaDpqiTOG_7b7teYTs6sb_K52RGZfq9oPBIS8FnGh-wnZWtAfvfjbAsQ6BWJmJeMCEKHJ-tH9yNR_ibT2S3PZdCuLh4A0CtZBW2E7vZHDgWu7gBsujMlNJF7PNEXcwquo1Z6OsRAJVIeJCOFWPdlwhPoTaOmBcOzfRAIR4fwwu6z8sTQKSpoIbVEzZyp7eLTMzmPMaCFZM8cdurkDlDljVagdTBX5_6gmfG1A0nY--I9qQtwgWZsvQB95z7bbmoKSLGavY9jppUS3M8w.jpg",
+  "last_processed_text": "💡ГПВ на Сумщині 24 березня За подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
 }
