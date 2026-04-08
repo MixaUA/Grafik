@@ -9,6 +9,10 @@ concurrency:
   group: scheduler-data-sync
   cancel-in-progress: false
 
+env:
+  # Примусово використовуємо Node.js 24 для всіх екшенів, щоб прибрати попередження
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   sync-and-build:
     runs-on: ubuntu-latest
