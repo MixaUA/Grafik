@@ -9,10 +9,6 @@ concurrency:
   group: scheduler-data-sync
   cancel-in-progress: false
 
-env:
-  # Примусово використовуємо Node.js 24 для всіх екшенів, щоб прибрати попередження
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   sync-and-build:
     runs-on: ubuntu-latest
@@ -20,12 +16,12 @@ jobs:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 2
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.3.0
         with:
           python-version: '3.11'
 
@@ -40,7 +36,7 @@ jobs:
 
       - name: Commit changes
         id: auto-commit
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v5.1.0
         with:
           commit_message: "feat(data): оновлення бази через новий SDK"
           file_pattern: "database.json"
