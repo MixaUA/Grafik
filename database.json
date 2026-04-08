@@ -1,11 +1,13 @@
 {
-  "update_time": "8 квітня 15:00",
+  "update_time": "8 квітня 19:45",
   "queues": {
     "1.1": {
       "понеділок": [],
       "вівторок": [],
       "середа": [],
-      "четвер": [],
+      "четвер": [
+        "16:00-20:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -14,7 +16,9 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [],
-      "четвер": [],
+      "четвер": [
+        "14:00-18:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -23,7 +27,10 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [],
-      "четвер": [],
+      "четвер": [
+        "12:00-14:00",
+        "15:00-16:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -34,7 +41,9 @@
       "середа": [
         "20:00-22:00"
       ],
-      "четвер": [],
+      "четвер": [
+        "10:00-12:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -45,7 +54,9 @@
       "середа": [
         "19:00-20:00"
       ],
-      "четвер": [],
+      "четвер": [
+        "08:00-11:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -54,7 +65,9 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [],
-      "четвер": [],
+      "четвер": [
+        "07:00-10:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -63,7 +76,9 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [],
-      "четвер": [],
+      "четвер": [
+        "07:00-08:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -105,7 +120,9 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [],
-      "четвер": [],
+      "четвер": [
+        "20:00-22:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -114,12 +131,14 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [],
-      "четвер": [],
+      "четвер": [
+        "18:00-22:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/d0KDxrf-Gm1R-TIKKh4goB9XDcW4T1gaznu-5gM035pzSbaeJUh31Waw9TPO7QIEWMh4aowAn3Rd3FM-i18CMg235PPYc1htSlY5aFk9jH6Gg3ChRLIYb0F-fgm2cAaxtpaknTJFqlM6AiEnL14QAyi_RgUog7Jaxvw1hYRC0osU1bAPa-JlhTy9DoYwVy-6_z582Zmk6-_pdSfuhZ_VK879eX5A-uFGzFEcW-n5stt-fNwrfu5rgQOXdVS-p7Bdtk9HFoZptqJecMT5V77h9c_tU1Xti7IlbSyAdDymYVuUBItR-BttFivuzTPhh8h6o5LvtCLhaOV7N3Mpr94djw.jpg",
-  "last_processed_text": "💡ГПВ 8 квітня на Сумщині. За подальшими оновленнями слідкуйте на сайті Суспільне Суми."
+  "last_processed_url": "https://cdn4.telesco.pe/file/N_clPcyzkz4v5-SgEkyjT4iJNCRCm5ZEdaHRwDUxMmYcLEMR6UDFGLIMHMK7JYgZBQuqLWt2TWpaPVD5_epXlWgXnBBQ8DmUHy-hyoQ6sIsIqkaMQcxIzffX_BcLjgc237kshU2d_1f4PHV7N3WqUlTIvf8hi1Y1fVNxbr9Nk12Ml2Zt7KDI0pMQFPY8j1z0JylR0iouG-V8HvQy0KQfkhoSVtBCFhLsW5z3hlRw5mttLcrI4HIiZMn-nVajIaCuz_QmNbfbwpWISKHHP8XD1gGB67lv-aIubQOeS2ifgsdvyETSaMGdSky9Isrdr03qaaWjHchNPcGJfIoUX9m_KQ.jpg",
+  "last_processed_text": "💡ГПВ 9 квітня на Сумщині. За подальшими оновленнями слідкуйте на сайті Суспільне Суми."
 }
