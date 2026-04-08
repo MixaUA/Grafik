@@ -1,14 +1,12 @@
 {
-  "update_time": "2 квітня 20:00",
+  "update_time": "8 квітня 10:15",
   "queues": {
     "1.1": {
       "понеділок": [],
       "вівторок": [],
       "середа": [],
       "четвер": [],
-      "п'ятниця": [
-        "07:00-08:00"
-      ],
+      "п'ятниця": [],
       "субота": [],
       "неділя": []
     },
@@ -69,7 +67,9 @@
     "4.2": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [],
+      "середа": [
+        "12:00-13:00"
+      ],
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
@@ -78,7 +78,9 @@
     "5.1": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [],
+      "середа": [
+        "11:00-13:00"
+      ],
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
@@ -87,11 +89,11 @@
     "5.2": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [],
-      "четвер": [],
-      "п'ятниця": [
-        "10:00-11:00"
+      "середа": [
+        "11:00-12:00"
       ],
+      "четвер": [],
+      "п'ятниця": [],
       "субота": [],
       "неділя": []
     },
@@ -100,9 +102,7 @@
       "вівторок": [],
       "середа": [],
       "четвер": [],
-      "п'ятниця": [
-        "08:00-11:00"
-      ],
+      "п'ятниця": [],
       "субота": [],
       "неділя": []
     },
@@ -111,13 +111,11 @@
       "вівторок": [],
       "середа": [],
       "четвер": [],
-      "п'ятниця": [
-        "07:00-10:00"
-      ],
+      "п'ятниця": [],
       "субота": [],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/GMwc20wSKBkuGTxmbmV118R7On_LMyMLWBRhK_AdEDnslZn8E65SA33tRHZgOjbE8Tk1LE3as0I83q32a94QMKPSB-_724TF6jT2MoPqZQou1gcSFzu2HIbm_tZvejRIeZdH-peNoWZWTYs1s-UZdt-oReXkJI6hsqHiurFfzhoyfYOCJXBfGghDUaE5jS2JPvVPVMksqOc_FhsM4yrsl2Y5hHfwC7HmLikSH_sHb6gReVHg739xZ2cQdD64dt3Pt1Z4aOm-5bLTnRctkK5zxSYFCfdNH3MI_LB7IPg86fGY3OG59pLSZZtZaLlrXUGBmqJDMMB8BOsHwSlI1IV1bw.jpg",
-  "last_processed_text": "💡ГПВ на Сумщині 3 квітняЗа подальшими оновленнями слідкуйте на сайті Суспільного та у закріплених повідомленнях."
+  "last_processed_url": "https://cdn4.telesco.pe/file/NoaVZ85-lSE-0kXrgj3bv3a_qzFsPsoh8GT-YQBJqu0l9QDTlXEI1PY6ntDGdO61b4Fq74SBotCQvEGT1moVOfWwpLEm7PhiFPB-kQ54zD3pgGDy41QRV5JnY1RR-gqwlOVrNeTHsSgSIZNomIleDMhF4YLyTkQIairS9hd8rXUXglIF_VFh9izME0pFShcp3OIHbzZIoD7YrzaeJAggGiiDcwDxMrpiEA-vhioXxnYXDrC5dNhrT0iWiuApdWBDXweUFG2cqEXpXJxPFngB5jvJJYekv4URASL9FbJmK87-XUjOBv8Kq7fsKQ84d7IdbJ0jVys51mvPIkUe9M5pgQ.jpg",
+  "last_processed_text": "💡ГПВ 8 квітня на Сумщині. За подальшими оновленнями слідкуйте на сайті Суспільне Суми."
 }
