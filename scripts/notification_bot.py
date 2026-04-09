@@ -4,7 +4,7 @@ import os
 import requests
 import re
 import random
-import time  # 🆕 Додано імпорт для пауз
+import time
 
 # --- НАЛАШТУВАННЯ ПОГОДИ ---
 WEATHER_API = (
@@ -906,7 +906,6 @@ def send_weather_tomorrow(weather_data):
 # --- ГОЛОВНИЙ ПОГОДНИЙ ДИСПЕТЧЕР ---
 # ============================================================
 
-# 🆕 ЗМІНА 4: Прибрано подвійне збереження стану
 def run_weather_bot(now_h, now_m):
     """Головна логіка погодного блоку. Вікна: 04-18 та 18-24."""
     print(f"\n{'='*40}")
@@ -914,7 +913,7 @@ def run_weather_bot(now_h, now_m):
     print(f"{'='*40}")
 
     weather_data = fetch_weather_data()
-    if not weather_
+    if not weather_data:  # ✅ ВИПРАВЛЕНО: додано "data:"
         print("❌ [WEATHER] Не вдалося отримати дані погоди. Пропускаємо.")
         return
 
@@ -925,7 +924,6 @@ def run_weather_bot(now_h, now_m):
         if not is_weather_sent(state, "day_report"):
             print("🌅 [WEATHER] Вікно day_report. Прогноз на ЗАЛИШОК СЬОГОДНІ.")
             send_weather_today(weather_data, now_h, now_m)
-            # 🆕 Прибрано: state = mark_weather_sent... (вже є в send_weather_today)
         else:
             print("✅ [WEATHER] day_report вже відправлено сьогодні.")
     
@@ -934,7 +932,6 @@ def run_weather_bot(now_h, now_m):
         if not is_weather_sent(state, "night_report"):
             print("🌙 [WEATHER] Вікно night_report. Прогноз на ЗАВТРА (повний день).")
             send_weather_tomorrow(weather_data)
-            # 🆕 Прибрано: state = mark_weather_sent... (вже є в send_weather_tomorrow)
         else:
             print("✅ [WEATHER] night_report вже відправлено.")
     
