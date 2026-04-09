@@ -1,9 +1,24 @@
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import requests
 import re
 import random
+from zoneinfo import ZoneInfo
+from google import genai
+from google.genai import types
+
+# --- КОНФІГУРАЦІЯ ---
+kyiv_tz = ZoneInfo("Europe/Kiev")
+LAT = 51.10
+LON = 34.38
+MODEL_NAME = 'gemini-2.0-flash'
+STATE_PATH = 'scripts/state.json'
+
+def get_ai_client():
+    api_key = os.getenv('GEMINI_API_KEY')
+    if not api_key: return None
+    return genai.Client(api_key=api_key)
 
 # --- ФОРМАТУВАННЯ ---
 def escape_markdown_v2(text: str) -> str:
@@ -29,70 +44,105 @@ def get_time_icon(total_minutes):
     hour = (int(total_minutes) // 60) % 24
     return "☀️" if 6 <= hour < 20 else "🌙"
 
+# --- БЛОК ПОГОДИ (Open-Meteo + AI) ---
+def get_weather_raw_data():
+    url = f"https://api.open-meteo.com/v1/forecast?latitude={LAT}&longitude={LON}&hourly=temperature_2m,precipitation_probability&timezone=Europe%20Kiev&forecast_days=2"
+    try:
+        r = requests.get(url, timeout=15)
+        return r.json().get('hourly', {})
+    except: return None
+
+def generate_ai_weather_report(weather_data, title_context, indices, now):
+    client = get_ai_client()
+    if not client: return None
+
+    summary = ""
+    for label, idx in indices.items():
+        temp = weather_data['temperature_2m'][idx]
+        prob = weather_data['precipitation_probability'][idx]
+        summary += f"{label}: {temp}°C, ймовірність опадів {prob}%.\n"
+
+    prompt = (
+        f"Ти — інформаційний бот селища Миколаївка. Напиши прогноз погоди {title_context}.\n"
+        f"Дані:\n{summary}\n"
+        "Вимоги:\n"
+        "1. Заголовок ТІЛЬКИ: *Погода в Миколаївці*\n"
+        f"2. Другий рядок: Дата {now.strftime('%d.%m.%Y')}, час {now.strftime('%H:%M')}\n"
+        "3. Далі — короткий, точний, але дружній опис (Ранок/День/Вечір).\n"
+        "4. НЕ згадуй світло чи графіки. Тільки погода. Емодзі дозволені.\n"
+        "5. Макс. 400 символів. Використовуй MarkdownV2 (не екрануй крапки, скрипт зробить це сам)."
+    )
+
+    try:
+        response = client.models.generate_content(model=MODEL_NAME, contents=prompt)
+        return response.text
+    except: return None
+
+def check_and_send_weather(now, state):
+    hour = now.hour
+    today_str = now.strftime("%Y-%m-%d")
+    tomorrow_str = (now + timedelta(days=1)).strftime("%Y-%m-%d")
+
+    if 18 <= hour or hour < 5:
+        segment, target_date = "night_next", tomorrow_str
+        ctx, indices = "на завтра", {"Ранок": 33, "День": 39, "Вечір": 45}
+    elif 5 <= hour < 12:
+        segment, target_date = "morning_today", today_str
+        ctx, indices = "на сьогодні", {"Ранок": 9, "День": 15}
+    elif 12 <= hour < 18:
+        segment, target_date = "evening_today", today_str
+        ctx, indices = "на вечір", {"Вечір": 21}
+    else: return False
+
+    state_key = f"{target_date}_{segment}"
+    if state.get("last_weather_key") == state_key: return False
+
+    raw_w = get_weather_raw_data()
+    if not raw_w: return False
+
+    creative_text = generate_ai_weather_report(raw_w, ctx, indices, now)
+    if creative_text:
+        final_msg = f"{creative_text}\n\n📊 *Сайт:* https://mixaua\\.github\\.io/Mykolayivka/"
+        send_telegram_message(escape_markdown_v2(final_msg))
+        state["last_weather_key"] = state_key
+        return True
+    return False
+
 # --- ПОРАДИ (РАНДОМ) ---
 def get_legacy_tip(event_type):
     tips_off = [
         "🌗 Зараз стане трішки темніше, але це не надовго. Заряджайте пристрої!",
-        "⏸️ Світло вимкнуть ненадовго. Час для теплого настрою та філіжанки кави.",
         "🔋 Перевірте павербанки! Скоро переходимо на автономний режим.",
-        "🌘 Темрява — це просто відсутність світла, а не надії. Тримайтеся!",
-        "⚡ Готуємось до відключення. Все буде Україна!",
         "🕯️ Час підготувати свічки та ліхтарики. Ми впораємося, ми разом!",
-        "📱 Останній шанс зарядити гаджети. Блекаут вже поруч!",
         "💪 Ще одне відключення — ще один шанс почути тишу і зібратись з думками. Тримаємось!",
-        "🌃 Пора перевірити автономні джерела живлення. Скоро темрява.",
-        "🔦 Приготуйте ліхтарики та павербанки. Світло ненадовго піде на перепочинок.",
         "☕ Час для затишку при свічках. Все буде добре!"
     ]
     tips_on = [
         "⏳ От-от з'явиться світло! Готуйтеся вмикати улюблені прилади.",
-        "🔋 Скоро буде світло. Життя повертається у звичний ритм!",
         "💡 Світло вже на підході. Блекаут тимчасово відступив!",
-        "🔥 Світло повертається! Дякуємо енергетикам за працю.",
-        "✨ Ще кілька хвилин — і будемо з електрикою. Гарного вам настрою!",
-        "🎉 Готуйте чайники! Світло вже майже тут. А це значить час запашної кави",
         "⚡ На зв'язку гарні новини! Незабаром запалаємо лампочки і настрій.",
-        "🌟 Світло повертається. Тримайтеся, ще трохи!",
-        "💫 Електрика вже в дорозі. Підготуйте список справ!",
-        "🔌 Розетки знову в грі! Скоро можна буде все підключити.",
+        "🎉 Готуйте чайники! Світло вже майже тут. А це значить час запашної кави",
         "☀️ Цей час невпинно наближається! Світло майже тут."
     ]
     return random.choice(tips_off if event_type == "off" else tips_on)
 
 # --- ЛІТЕРАТУРНИЙ БЛОК ---
-def get_literature_tip(event_type):
+def get_literature_tip(event_type, state):
     lit_path = 'scripts/literature.json'
-    state_path = 'scripts/state.json'
     try:
-        with open(lit_path, 'r', encoding='utf-8') as f:
-            lit_data = json.load(f)
-    except Exception as e:
-        print(f"❌ Помилка завантаження literature.json: {e}")
-        return None
+        with open(lit_path, 'r', encoding='utf-8') as f: lit_data = json.load(f)
+    except: return None
 
     key = "ON_event" if event_type == "on" else "OFF_event"
     quotes = lit_data.get(key, [])
     if not quotes: return None
-
-    state = {"ON_event_index": 0, "OFF_event_index": 0}
-    if os.path.exists(state_path):
-        try:
-            with open(state_path, 'r', encoding='utf-8') as f:
-                state = json.load(f)
-        except: pass
 
     idx_key = f"{key}_index"
     current_idx = state.get(idx_key, 0)
     if current_idx >= len(quotes): current_idx = 0
     
     quote = quotes[current_idx]
-    print(f"📖 [LIT DEBUG] Тип: {event_type}, Взято ID: {quote.get('id')}, Автор: {quote.get('author')}")
-    
     state[idx_key] = (current_idx + 1) % len(quotes)
-    try:
-        with open(state_path, 'w', encoding='utf-8') as f:
-            json.dump(state, f, ensure_ascii=False, indent=4)
-    except: pass
     return quote
 
 # --- ВІДПРАВКА ---
@@ -122,7 +172,7 @@ def send_literature_notif(quote, event_type):
         "Зайшов перевірити, як ви тут. Бачу за графіком, що скоро нам доведеться трохи побути в тиші та темряві. Поки світло ще з нами, вирішив поділитися особливим словом. Зустрінемось ближче до вимкнення!",
         "Друзі, зазирнув у графік — темрява вже готує свій вихід. Поки лампи ще світять, ловіть дещо цікаве для внутрішнього тепла. Нехай ці слова зігрівають вас у темні години очікувань.",
         "Пробігав повз і вирішив нагадати: скоро відключення електрики. Поки є можливість почитати з екрана без ліхтарика — тримайте літературну цікавинку від вашого бота!",
-        "Перевірив черги... Так, скоро вимкнення. Але не варто засмучуватися! Поки маємо час, пропоную трохи зануритися в літературу. А я піду перевірю свої акумулятори.",
+        "Перевірив черги... Так, скоро вимкнення. Але не варто засмучуватися! Поки маємо час, пропоную трохи зануритися в літературу. А я піду перевірю свои акумулятори.",
         "Бот на зв'язку! Бачу, що скоро за планом вимкнення але не зараз. Вирішив заздалегідь підняти вам настрій добрим словом. Тримайте, а я ще повернусь із точним часом!",
         "Привіт! Перевірив розклад і бачу, що скоро відключення. Поки світло ще освітлює ваші екрани, тримайте щось для душі. Готуйте свічки, скоро повернусь!",
         "Привіт! Заглянув у систему — вимкнення вже планується. Але не поспішаймо засмучуватися! Ось вам дещо цікаве на час очікування.",
@@ -173,15 +223,27 @@ def run_bot():
     try:
         with open('database.json', 'r', encoding='utf-8') as f: data = json.load(f)
     except: return
-    now = datetime.now()
-    now_m = now.hour * 60 + now.minute
-    current_time_str = now.strftime("%H:%M")
+
+    # Завантажуємо стан один раз
+    state = {}
+    if os.path.exists(STATE_PATH):
+        try:
+            with open(STATE_PATH, 'r', encoding='utf-8') as f: state = json.load(f)
+        except: state = {}
+
+    now_kyiv = datetime.now(kyiv_tz)
+    now_m = now_kyiv.hour * 60 + now_kyiv.minute
+    current_time_str = now_kyiv.strftime("%H:%M")
     days_ukr_cap = {0: "Понеділок", 1: "Вівторок", 2: "Середа", 3: "Четвер", 4: "П'ятниця", 5: "Субота", 6: "Неділя"}
     days_ukr = {k: v.lower() for k, v in days_ukr_cap.items()}
-    today_dow = now.weekday()
+    today_dow = now_kyiv.weekday()
 
     print(f"🕒 [START] {current_time_str} ({days_ukr_cap[today_dow]}) | Хвилина дня: {now_m}")
 
+    # 1. Перевірка та відправка погоди
+    check_and_send_weather(now_kyiv, state)
+
+    # 2. Розрахунок подій ГПВ
     all_events = []
     for day_offset in range(2):
         target_dow = (today_dow + day_offset) % 7
@@ -202,32 +264,32 @@ def run_bot():
             else: merged.append(curr); curr = nxt
         merged.append(curr)
 
-    # ВІДНОВЛЕНИЙ ВИВІД ГРАФІКА В ЛОГИ
-    print("--- Події в графіку (merged) ---")
-    for ev in merged:
-        print(f"  - {format_time_display(ev['start'])} -> {format_time_display(ev['end'])}")
-    print("--------------------------------")
-
-    sent = False
+    # Логіка повідомлень ГПВ та Літератури
+    sent_notif = False
     for i, ev in enumerate(merged):
         if ev['start'] <= now_m < ev['end']:
             diff = ev['end'] - now_m
             if 0 < diff <= 30:
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['end'], (merged[i+1]['start'] if i+1 < len(merged) else None), diff, "on", merged[i+1:])
-                sent = True; break
+                sent_notif = True; break
             elif 70 < diff <= 90:
-                quote = get_literature_tip("on")
-                if quote: send_literature_notif(quote, "on"); sent = True; break
+                quote = get_literature_tip("on", state)
+                if quote: send_literature_notif(quote, "on"); sent_notif = True; break
         elif ev['start'] > now_m:
             diff = ev['start'] - now_m
             if 0 < diff <= 30:
                 send_notif(current_time_str, days_ukr_cap[today_dow], ev['start'], ev['end'], diff, "off", merged[i+1:])
-                sent = True; break
+                sent_notif = True; break
             elif 70 < diff <= 90:
-                quote = get_literature_tip("off")
-                if quote: send_literature_notif(quote, "off"); sent = True; break
+                quote = get_literature_tip("off", state)
+                if quote: send_literature_notif(quote, "off"); sent_notif = True; break
 
-    if not sent: print("😴 Умов для відправки зараз немає.")
+    if not sent_notif: print("😴 Умов для відправки сповіщень ГПВ зараз немає.")
+
+    # Зберігаємо оновлений стан один раз в кінці
+    with open(STATE_PATH, 'w', encoding='utf-8') as f:
+        json.dump(state, f, ensure_ascii=False, indent=4)
+    print("💾 Стан збережено.")
 
 if __name__ == "__main__":
     run_bot()
