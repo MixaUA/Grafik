@@ -380,24 +380,34 @@ def build_weather_prompt_tomorrow(morning, afternoon, evening, date_str):
 <одне загальне речення>"""
 
 def load_weather_state():
-    """Завантажує стан погодних відправок з state.json."""
+    """Завантажує повний state.json (включно з літературними індексами)."""
     state_path = 'scripts/state.json'
-    state = {}
     if os.path.exists(state_path):
         try:
             with open(state_path, 'r', encoding='utf-8') as f:
-                state = json.load(f)
-        except:
-            pass
-    return state
+                return json.load(f)
+        except Exception as e:
+            print(f"⚠️ [WEATHER] Не вдалось прочитати state.json: {e}")
+    return {}
 
 def save_weather_state(state):
-    """Зберігає стан погодних відправок у state.json."""
+    """Зберігає state.json повністю — всі ключі, включно з літературними."""
     state_path = 'scripts/state.json'
     try:
+        # Читаємо поточний файл ще раз перед записом —
+        # щоб не затерти зміни які могли статись паралельно
+        existing = {}
+        if os.path.exists(state_path):
+            try:
+                with open(state_path, 'r', encoding='utf-8') as f:
+                    existing = json.load(f)
+            except:
+                pass
+        # Мержимо: існуючі дані + наші оновлення
+        existing.update(state)
         with open(state_path, 'w', encoding='utf-8') as f:
-            json.dump(state, f, ensure_ascii=False, indent=4)
-        print("💾 [WEATHER] Стан збережено в state.json")
+            json.dump(existing, f, ensure_ascii=False, indent=4)
+        print("💾 [WEATHER] Стан збережено в state.json (існуючі ключі збережено)")
     except Exception as e:
         print(f"❌ [WEATHER] Помилка збереження стану: {e}")
 
