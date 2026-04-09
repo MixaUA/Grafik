@@ -1,5 +1,5 @@
 {
-  "update_time": "9 квітня 08:30",
+  "update_time": "9 квітня 09:30",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -85,7 +85,7 @@
       "вівторок": [],
       "середа": [],
       "четвер": [
-        "09:00-10:00"
+        "09:00-11:00"
       ],
       "п'ятниця": [],
       "субота": [],
@@ -95,7 +95,9 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [],
-      "четвер": [],
+      "четвер": [
+        "09:30-10:00"
+      ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
@@ -132,6 +134,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/FLPpd6hjdcCKO4DKuidBkmt4bHdSrE8IBqNAeFdtpNOjeGzt8yZPGCls9FrAD1mxaF_VhoL9uu0DkxvbH2pMNo3SYgao7W7guSuWwONn3HOBvmiGm1ZY3GPqwx7SpmKFgmUCV_shgPY6JrMrdM3TuSWclZ_D8PzLd3FJ51z5z45QN6MeAR0DpHQqCw4BC4WgOdto2I1DKVHv6aeE6wCssg9CIcT4jIu0ZmNPIIfaJzdZIYzSrvBmkRzgbNxmNp408-btZLKpJJi1ydrBSE9_HgiswIp3TXSHr9oTJHTOu1KD7BBXLivXbOYPz2ent6ZgT7Ey67va_03BpW6kbebwyQ.jpg",
-  "last_processed_text": "💡ГПВ 9 квітня на Сумщині. За подальшими оновленнями слідкуйте на сайті Суспільне Суми.(Оновлено 08:25)"
+  "last_processed_url": "https://cdn4.telesco.pe/file/l-ukxwTgWDyqQCR5vdbdIcp1lk5uvqE-Ny3y-T6kpoTmNrBTrmHaCd5eltbPzKaGT8X-NOAJE14ryCIr80SiPSIIHOsVeQaKe5ks06TGfx7O-ojGRRVGmAO_Wjm4Zb10rd1c_6BQl9peP9_RrvQb3YpIh-ZDTX6yxF5M1UPe8MUb6Hf68Z-PzoP89UiNyb13Mr0YaTCpHWPmNK8FlhqEvRs94GU-VnqgjsIjsTEGLKNqGgUg2cIV48YK3PYJT_ZezndL-UL_Vj6z5eypZE6Vd2kWg1XC3mh_PDC7kOSUU1wyS9BDGAapnsfBstuVkkIwRxj-ZVWLWJRyJDxxjbWPWQ.jpg",
+  "last_processed_text": "💡ГПВ 9 квітня на Сумщині. За подальшими оновленнями слідкуйте на сайті Суспільне Суми.(Оновлено 09:25)"
 }
