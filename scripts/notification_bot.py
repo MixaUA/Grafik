@@ -4,6 +4,7 @@ import os
 import requests
 import re
 import random
+import time  # 🆕 Додано імпорт для пауз
 
 # --- НАЛАШТУВАННЯ ПОГОДИ ---
 WEATHER_API = (
@@ -276,6 +277,7 @@ def fetch_weather_data():
 def get_hourly_index(day_offset, hour):
     return day_offset * 24 + hour
 
+# 🆕 ЗМІНА: Функція Gemini з повторними спробами (Retry Logic)
 def call_gemini_for_weather(prompt_text):
     api_key = os.environ.get('GEMINI_API_KEY')
     if not api_key:
@@ -289,34 +291,45 @@ def call_gemini_for_weather(prompt_text):
             "maxOutputTokens": 500,
         }
     }
-    try:
-        response = requests.post(
-            f"{GEMINI_API_URL}?key={api_key}",
-            json=payload,
-            timeout=20
-        )
-        if not response.ok:
-            print(f"❌ [WEATHER] Gemini відповів: {response.status_code} — {response.text[:200]}")
-            return None
-        result = response.json()
-        candidates = result.get('candidates', [])
-        if not candidates:
-            print(f"❌ [WEATHER] Gemini: порожній список candidates. Відповідь: {str(result)[:300]}")
-            return None
-        content = candidates[0].get('content', {})
-        parts = content.get('parts', [])
-        if not parts:
-            print(f"❌ [WEATHER] Gemini: порожній список parts. Content: {str(content)[:300]}")
-            return None
-        text = parts[0].get('text', '').strip()
-        if not text:
-            print(f"❌ [WEATHER] Gemini повернув порожній текст.")
-            return None
-        print(f"✅ [WEATHER] Gemini згенерував текст ({len(text)} символів)")
-        return text
-    except Exception as e:
-        print(f"❌ [WEATHER] Помилка Gemini: {e}")
-        return None
+
+    max_retries = 3  # Кількість спроб
+    for attempt in range(max_retries):
+        try:
+            response = requests.post(
+                f"{GEMINI_API_URL}?key={api_key}",
+                json=payload,
+                timeout=25  # Трохи збільшив таймаут для стабільності
+            )
+
+            if response.status_code == 200:
+                result = response.json()
+                candidates = result.get('candidates', [])
+                if candidates:
+                    content = candidates[0].get('content', {})
+                    parts = content.get('parts', [])
+                    if parts:
+                        text = parts[0].get('text', '').strip()
+                        if text:
+                            print(f"✅ [WEATHER] Gemini згенерував текст з {attempt + 1}-ї спроби ({len(text)} символів).")
+                            return text
+            
+            elif response.status_code == 503:
+                print(f"⏳ [WEATHER] Спроба {attempt + 1} невдала (503 - High Demand). Чекаю 5 секунд...")
+                if attempt < max_retries - 1:
+                    time.sleep(5)
+                    continue
+            else:
+                # При інших помилках (наприклад, 400 або 401) немає сенсу повторювати
+                print(f"❌ [WEATHER] Gemini помилка {response.status_code}: {response.text[:200]}")
+                break 
+
+        except Exception as e:
+            print(f"❌ [WEATHER] Помилка запиту (спроба {attempt + 1}): {e}")
+            if attempt < max_retries - 1:
+                time.sleep(5)
+
+    print("⚠️ [WEATHER] Всі спроби вичерпано, переходимо до fallback.")
+    return None
 
 # ============================================================
 # --- ПРОМПТИ ---
@@ -901,7 +914,7 @@ def run_weather_bot(now_h, now_m):
     print(f"{'='*40}")
 
     weather_data = fetch_weather_data()
-    if not weather_data:
+    if not weather_
         print("❌ [WEATHER] Не вдалося отримати дані погоди. Пропускаємо.")
         return
 
