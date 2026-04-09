@@ -1,3 +1,30 @@
 {
-    "weather_day_report_2026-04-09": true
+    "weather_day_report_2026-04-09": true,
+    "forecast_2026-04-10": [
+        {
+            "hour": 6,
+            "code": 61,
+            "temp": 2,
+            "wind": 11,
+            "cloud": 100,
+            "hour_end": 18
+        },
+        {
+            "hour": 18,
+            "code": 3,
+            "temp": 3,
+            "wind": 10,
+            "cloud": 99,
+            "hour_end": 19
+        },
+        {
+            "hour": 19,
+            "code": 61,
+            "temp": 2,
+            "wind": 6,
+            "cloud": 100,
+            "hour_end": 22
+        }
+    ],
+    "weather_night_report_2026-04-09": true
 }
