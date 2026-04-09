@@ -1,4 +1,15 @@
 {
     "ON_event_index": 1,
-    "OFF_event_index": 0
+    "OFF_event_index": 0,
+    "forecast_2026-04-10": [
+        {
+            "hour": 6,
+            "code": 61,
+            "temp": 2,
+            "wind": 7,
+            "cloud": 100,
+            "hour_end": 22
+        }
+    ],
+    "weather_night_report_2026-04-09": true
 }
