@@ -17,7 +17,7 @@ WEATHER_API = (
 
 SITE_URL = "https://mixaua\\.github\\.io/Mykolayivka/"
 
-GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent"
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent"
 
 # --- ФОРМАТУВАННЯ ---
 def escape_markdown_v2(text: str) -> str:
