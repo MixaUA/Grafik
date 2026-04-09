@@ -96,7 +96,8 @@ def get_literature_tip(event_type):
         except: pass
 
     idx_key = f"{key}_index"
-    current_idx = state.get(idx_key, 0)    if current_idx >= len(quotes): current_idx = 0
+    current_idx = state.get(idx_key, 0)    if current_idx >= len(quotes): 
+        current_idx = 0
     
     quote = quotes[current_idx]
     print(f"📖 [LIT DEBUG] Тип: {event_type}, Взято ID: {quote.get('id')}, Автор: {quote.get('author')}")
@@ -144,8 +145,8 @@ def send_literature_notif(quote, event_type):
         "Ваш електронний товариш знову тут! Бачу, що блекаут уже не за горами. Поки маємо світло, давайте проведемо час з користю — тримайте літературну хвилинку!",
         "Вітаю друзі! Моніторив графік і помітив наближення відключення. Вирішив не чекати останньої хвилини та поділитися з вами чимось особливим. Тримайтеся!",
         "Зайшов перевірити стан справ — так, вимкнення на підході. Але це не привід сумувати! Ось вам дещо для натхнення перед темрявою. Повернусь ближче до події!",
-        "Вітаю! Переглянув розклад і бачу, що скоро світло піде відпочивати. Поки воно ще з нами, тримайте літературну паузу від мене. До зустрічі перед відключенням!"
-    ]    title = "💡 *Передчуття світла\\.\\.\\.*" if event_type == "on" else "🌙 *Роздуми при свічках\\.\\.\\.*"
+        "Вітаю! Переглянув розклад і бачу, що скоро світло піде відпочивати. Поки воно ще з нами, тримайте літературну паузу від мене. До зустрічі перед відключенням!"    ]
+    title = "💡 *Передчуття світла\\.\\.\\.*" if event_type == "on" else "🌙 *Роздуми при свічках\\.\\.\\.*"
     greeting = random.choice(on_greetings if event_type == "on" else off_greetings)
     msg = (
         f"{title}\n\n"
@@ -193,8 +194,8 @@ def get_wind_description(speed_kmh):
         return "легкий вітерець"
     elif speed_kmh < 25:
         return "помірний вітер"
-    elif speed_kmh < 40:
-        return "вітряно"    elif speed_kmh < 60:
+    elif speed_kmh < 40:        return "вітряно"
+    elif speed_kmh < 60:
         return "сильний вітер"
     else:
         return "шторм"
@@ -291,8 +292,8 @@ def call_gemini_for_weather(prompt_text):
         try:
             response = requests.post(
                 f"{GEMINI_API_URL}?key={api_key}",
-                json=payload,
-                timeout=30            )
+                json=payload,                timeout=30
+            )
 
             if response.status_code == 200:
                 result = response.json()
@@ -340,8 +341,8 @@ def build_weather_summary_prompt(morning, afternoon, evening, date_str, day_word
     if abs(morning['temp'] - afternoon['temp']) >= 4:
         diff = afternoon['temp'] - morning['temp']
         temp_changes.append(f"вдень {'потепліє' if diff > 0 else 'похолодає'} на {abs(diff)}°")
-    if abs(afternoon['temp'] - evening['temp']) >= 4:
-        diff = evening['temp'] - afternoon['temp']        temp_changes.append(f"ввечері {'потепліє' if diff > 0 else 'похолодає'} на {abs(diff)}°")
+    if abs(afternoon['temp'] - evening['temp']) >= 4:        diff = evening['temp'] - afternoon['temp']
+        temp_changes.append(f"ввечері {'потепліє' if diff > 0 else 'похолодає'} на {abs(diff)}°")
 
     temp_note = f"\nУВАГА — різка зміна: {'; '.join(temp_changes)}!" if temp_changes else ""
     
@@ -389,8 +390,8 @@ def build_weather_summary_prompt(morning, afternoon, evening, date_str, day_word
 
 
 def _fallback_summary(morning, afternoon, evening):
-    has_rain = any(d['precip_prob'] > 40 for d in [morning, afternoon, evening])
-    avg_cloud = round((morning['cloudcover'] + afternoon['cloudcover'] + evening['cloudcover']) / 3)    avg_temp = round((morning['temp'] + afternoon['temp'] + evening['temp']) / 3)
+    has_rain = any(d['precip_prob'] > 40 for d in [morning, afternoon, evening])    avg_cloud = round((morning['cloudcover'] + afternoon['cloudcover'] + evening['cloudcover']) / 3)
+    avg_temp = round((morning['temp'] + afternoon['temp'] + evening['temp']) / 3)
     t = f"+{avg_temp}°" if avg_temp > 0 else f"{avg_temp}°"
     if has_rain:
         return f"День дощовий, середня температура {t}. Варто взяти парасольку та одягнутися тепліше."
@@ -438,8 +439,8 @@ def build_weather_prompt_current(period_name, data, date_str):
 - Тон: теплий, людський, трохи розмовний — як сусід розповідає про погоду
 - Температуру назви числом з градусом (наприклад, +3°)
 - Вітер — ТІЛЬКИ словами: "{data['wind_desc']}", без цифр
-- Небо та опади — описово, живою мовою, без технічних відсотків та цифр
-- Без емодзі всередині тексту- Без формальних привітань ("Доброго ранку", "Доброго дня" тощо)
+- Небо та опади — описово, живою мовою, без технічних відсотків та цифр- Без емодзі всередині тексту
+- Без формальних привітань ("Доброго ранку", "Доброго дня" тощо)
 - НЕ використовуй Markdown-розмітку: жодних зірочок, решіток, підкреслень — лише чистий текст"""
 
 # ============================================================
@@ -487,8 +488,8 @@ def mark_weather_sent(state, key):
     state[full_key] = True
     print(f"🔖 [WEATHER] Позначено як відправлено: '{key}' за {today}")
     return state
-
-def format_date_ua(dt):    months = {1:"січня",2:"лютого",3:"березня",4:"квітня",5:"травня",
+def format_date_ua(dt):
+    months = {1:"січня",2:"лютого",3:"березня",4:"квітня",5:"травня",
               6:"червня",7:"липня",8:"серпня",9:"вересня",10:"жовтня",
               11:"листопада",12:"грудня"}
     days = {0:"понеділок",1:"вівторок",2:"середа",3:"четвер",
@@ -536,8 +537,8 @@ def _fallback_three_sections(morning_data, afternoon_data, evening_data):
         elif c < 50: return "хмарки є, але сонце пробивається"
         elif c < 80: return "хмарно"
         else:        return "небо затягнуло хмарами"
-
-    def rain_note(d):        return ", можливий дощ" if d['precip_prob'] > 40 else ""
+    def rain_note(d):
+        return ", можливий дощ" if d['precip_prob'] > 40 else ""
 
     def fmt(d):
         s = "+" if d['temp'] > 0 else ""
@@ -585,8 +586,8 @@ def get_weather_icon(weathercode, cloudcover=50):
     elif weathercode in (45, 48): return "🌫️"
     elif weathercode in (51, 53, 55, 56, 57): return "🌦️"
     elif weathercode in (61, 63, 65, 80, 81, 82): return "🌧️"
-    elif weathercode in (71, 73, 75, 77, 85, 86): return "🌨️"
-    elif weathercode in (95, 96, 99): return "⛈️"    else: return "🌡️"
+    elif weathercode in (71, 73, 75, 77, 85, 86): return "🌨️"    elif weathercode in (95, 96, 99): return "⛈️"
+    else: return "🌡️"
 
 
 # ============================================================
@@ -634,8 +635,8 @@ def build_timeline_groups(hourly_data, day_offset, hour_from, hour_to):
             cur['hour_end'] = cur['hour'] + 1
     groups.append(cur)
     return groups
-
-def compare_forecasts(old_groups, new_groups):    changes = []
+def compare_forecasts(old_groups, new_groups):
+    changes = []
     def expand(groups):
         hours = {}
         for g in groups:
@@ -732,8 +733,8 @@ def _validate_gemini_text(text, fallback_fn, min_words=15):
 # --- НОВА ДОПОМІЖНА ФУНКЦІЯ: компактний блок погоди + аномалії
 # ============================================================
 
-def build_weather_compact_block(dominant_code, dominant_cloud, avg_wind_kmh,
-                                 temp_min, temp_max, all_codes, all_winds):    """
+def build_weather_compact_block(dominant_code, dominant_cloud, avg_wind_kmh,                                 temp_min, temp_max, all_codes, all_winds):
+    """
     Формує компактний блок. Екранування MarkdownV2 — тільки в кінці!
     """
     # Рядок 1: іконка + стан погоди
@@ -830,8 +831,8 @@ def send_weather_today(weather_data, now_h, now_m):
 
     if changes:
         print(f"🔄 [FORECAST] Знайдено {len(changes)} змін порівняно з вчорашнім прогнозом")
-    else:
-        print(f"✅ [FORECAST] Прогноз збігається з вчорашнім або збереженого немає")
+    else:        print(f"✅ [FORECAST] Прогноз збігається з вчорашнім або збереженого немає")
+
     changed_hours = set()
     for c in changes:
         h_start = int(c['time'].split(':')[0])
@@ -879,8 +880,8 @@ def send_weather_today(weather_data, now_h, now_m):
     state = mark_weather_sent(state, "day_report")
     save_weather_state(state)
 
-
-# ============================================================# --- send_weather_tomorrow — ОНОВЛЕНА ФУНКЦІЯ ---
+# ============================================================
+# --- send_weather_tomorrow — ОНОВЛЕНА ФУНКЦІЯ ---
 # ============================================================
 
 def send_weather_tomorrow(weather_data):
@@ -928,8 +929,8 @@ def send_weather_tomorrow(weather_data):
     print(f"☁️  [WEATHER] Домінантний код: {dominant_code}, хмарність: {avg_cloud}%, вітер (сер.): {avg_wind_kmh} км/г")
 
     # --- Компактний блок (3–4 рядки) ---
-    compact_block = build_weather_compact_block(
-        dominant_code=dominant_code,        dominant_cloud=avg_cloud,
+    compact_block = build_weather_compact_block(        dominant_code=dominant_code,
+        dominant_cloud=avg_cloud,
         avg_wind_kmh=avg_wind_kmh,
         temp_min=temp_min,
         temp_max=temp_max,
@@ -977,8 +978,8 @@ def send_weather_tomorrow(weather_data):
     state = mark_weather_sent(state, "night_report")
     save_weather_state(state)
 
-
-# ============================================================# --- ГОЛОВНИЙ ПОГОДНИЙ ДИСПЕТЧЕР ---
+# ============================================================
+# --- ГОЛОВНИЙ ПОГОДНИЙ ДИСПЕТЧЕР ---
 # ============================================================
 
 def run_weather_bot(now_h, now_m):
@@ -988,7 +989,7 @@ def run_weather_bot(now_h, now_m):
     print(f"{'='*40}")
 
     weather_data = fetch_weather_data()
-    if not weather_data:
+    if not weather_data:  # ✅ ВИПРАВЛЕНО: повна змінна
         print("❌ [WEATHER] Не вдалося отримати дані погоди. Пропускаємо.")
         return
 
@@ -1026,8 +1027,8 @@ def run_bot():
     now_h = now.hour
     now_m = now.minute
     now_m_total = now_h * 60 + now_m
-
-    current_time_str = now.strftime("%H:%M")    days_ukr_cap = {0: "Понеділок", 1: "Вівторок", 2: "Середа", 3: "Четвер", 4: "П'ятниця", 5: "Субота", 6: "Неділя"}
+    current_time_str = now.strftime("%H:%M")
+    days_ukr_cap = {0: "Понеділок", 1: "Вівторок", 2: "Середа", 3: "Четвер", 4: "П'ятниця", 5: "Субота", 6: "Неділя"}
     days_ukr = {k: v.lower() for k, v in days_ukr_cap.items()}
     today_dow = now.weekday()
 
