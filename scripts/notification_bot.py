@@ -46,21 +46,29 @@ def get_time_icon(total_minutes):
 
 # --- БЛОК ПОГОДИ (Open-Meteo + AI) ---
 def get_weather_raw_data():
-    url = f"https://api.open-meteo.com/v1/forecast?latitude={LAT}&longitude={LON}&hourly=temperature_2m,precipitation_probability&timezone=Europe%20Kiev&forecast_days=2"
+    url = f"https://api.open-meteo.com/v1/forecast?latitude={LAT}&longitude={LON}&hourly=temperature_2m,precipitation_probability&timezone=Europe%20Kiev&forecast_days=3"
     try:
         r = requests.get(url, timeout=15)
         return r.json().get('hourly', {})
-    except: return None
+    except Exception as e:
+        print(f"❌ Помилка API погоди: {e}")
+        return None
 
 def generate_ai_weather_report(weather_data, title_context, indices, now):
     client = get_ai_client()
-    if not client: return None
+    if not client: 
+        print("❌ AI Client не ініціалізовано")
+        return None
 
     summary = ""
-    for label, idx in indices.items():
-        temp = weather_data['temperature_2m'][idx]
-        prob = weather_data['precipitation_probability'][idx]
-        summary += f"{label}: {temp}°C, ймовірність опадів {prob}%.\n"
+    try:
+        for label, idx in indices.items():
+            temp = weather_data['temperature_2m'][idx]
+            prob = weather_data['precipitation_probability'][idx]
+            summary += f"{label}: {temp}°C, опади {prob}%.\n"
+    except Exception as e:
+        print(f"❌ Помилка обробки індексів погоди: {e}")
+        return None
 
     prompt = (
         f"Ти — інформаційний бот селища Миколаївка. Напиши прогноз погоди {title_context}.\n"
@@ -70,22 +78,28 @@ def generate_ai_weather_report(weather_data, title_context, indices, now):
         f"2. Другий рядок: Дата {now.strftime('%d.%m.%Y')}, час {now.strftime('%H:%M')}\n"
         "3. Далі — короткий, точний, але дружній опис (Ранок/День/Вечір).\n"
         "4. НЕ згадуй світло чи графіки. Тільки погода. Емодзі дозволені.\n"
-        "5. Макс. 400 символів. Використовуй MarkdownV2 (не екрануй крапки, скрипт зробить це сам)."
+        "5. Макс. 400 символів. Використовуй MarkdownV2 (не екрануй крапки)."
     )
 
     try:
         response = client.models.generate_content(model=MODEL_NAME, contents=prompt)
         return response.text
-    except: return None
+    except Exception as e:
+        print(f"❌ Помилка Gemini: {e}")
+        return None
 
 def check_and_send_weather(now, state):
     hour = now.hour
     today_str = now.strftime("%Y-%m-%d")
     tomorrow_str = (now + timedelta(days=1)).strftime("%Y-%m-%d")
 
-    if 18 <= hour or hour < 5:
+    # Визначаємо вікно
+    if 18 <= hour:
         segment, target_date = "night_next", tomorrow_str
         ctx, indices = "на завтра", {"Ранок": 33, "День": 39, "Вечір": 45}
+    elif 0 <= hour < 5:
+        segment, target_date = "early_morning", today_str
+        ctx, indices = "на сьогодні", {"Ранок": 9, "День": 15, "Вечір": 21}
     elif 5 <= hour < 12:
         segment, target_date = "morning_today", today_str
         ctx, indices = "на сьогодні", {"Ранок": 9, "День": 15}
@@ -95,8 +109,11 @@ def check_and_send_weather(now, state):
     else: return False
 
     state_key = f"{target_date}_{segment}"
-    if state.get("last_weather_key") == state_key: return False
+    if state.get("last_weather_key") == state_key:
+        print(f"ℹ️ Погода {state_key} вже була надіслана.")
+        return False
 
+    print(f"☁️ Спроба сформувати прогноз для: {state_key}")
     raw_w = get_weather_raw_data()
     if not raw_w: return False
 
@@ -105,6 +122,7 @@ def check_and_send_weather(now, state):
         final_msg = f"{creative_text}\n\n📊 *Сайт:* https://mixaua\\.github\\.io/Mykolayivka/"
         send_telegram_message(escape_markdown_v2(final_msg))
         state["last_weather_key"] = state_key
+        print("🚀 Повідомлення про погоду успішно відправлено.")
         return True
     return False
 
@@ -132,15 +150,12 @@ def get_literature_tip(event_type, state):
     try:
         with open(lit_path, 'r', encoding='utf-8') as f: lit_data = json.load(f)
     except: return None
-
     key = "ON_event" if event_type == "on" else "OFF_event"
     quotes = lit_data.get(key, [])
     if not quotes: return None
-
     idx_key = f"{key}_index"
     current_idx = state.get(idx_key, 0)
     if current_idx >= len(quotes): current_idx = 0
-    
     quote = quotes[current_idx]
     state[idx_key] = (current_idx + 1) % len(quotes)
     return quote
@@ -193,7 +208,6 @@ def send_literature_notif(quote, event_type):
         f"✍️ _Підготував: {escape_markdown_v2(quote.get('prepared_by', ''))}_"
     )
     send_telegram_message(msg)
-    print("✅ Літературне повідомлення надіслано.")
 
 def send_notif(cur_time, day, start, end, diff, type, future_events):
     icon = get_time_icon(start)
@@ -216,7 +230,6 @@ def send_notif(cur_time, day, start, end, diff, type, future_events):
         f"📊 *Графік:* https://mixaua\\.github\\.io/Mykolayivka/"
     )
     send_telegram_message(msg)
-    print(f"✅ Технічне повідомлення ({event_label}) надіслано.")
 
 # --- ЛОГІКА ЗАПУСКУ ---
 def run_bot():
@@ -224,7 +237,6 @@ def run_bot():
         with open('database.json', 'r', encoding='utf-8') as f: data = json.load(f)
     except: return
 
-    # Завантажуємо стан один раз
     state = {}
     if os.path.exists(STATE_PATH):
         try:
@@ -240,10 +252,10 @@ def run_bot():
 
     print(f"🕒 [START] {current_time_str} ({days_ukr_cap[today_dow]}) | Хвилина дня: {now_m}")
 
-    # 1. Перевірка та відправка погоди
+    # 1. Спроба відправити погоду
     check_and_send_weather(now_kyiv, state)
 
-    # 2. Розрахунок подій ГПВ
+    # 2. Логіка ГПВ
     all_events = []
     for day_offset in range(2):
         target_dow = (today_dow + day_offset) % 7
@@ -264,7 +276,6 @@ def run_bot():
             else: merged.append(curr); curr = nxt
         merged.append(curr)
 
-    # Логіка повідомлень ГПВ та Літератури
     sent_notif = False
     for i, ev in enumerate(merged):
         if ev['start'] <= now_m < ev['end']:
@@ -286,7 +297,6 @@ def run_bot():
 
     if not sent_notif: print("😴 Умов для відправки сповіщень ГПВ зараз немає.")
 
-    # Зберігаємо оновлений стан один раз в кінці
     with open(STATE_PATH, 'w', encoding='utf-8') as f:
         json.dump(state, f, ensure_ascii=False, indent=4)
     print("💾 Стан збережено.")
