@@ -526,17 +526,21 @@ def _fallback_three_sections(morning_data, afternoon_data, evening_data):
 
 
 def _build_three_section_message(header_emoji, title_str, date_ua, time_str,
-                                  morning_temp, afternoon_temp, evening_temp,
+                                  morning_data, afternoon_data, evening_data,
                                   morning_text, afternoon_text, evening_text,
                                   summary_text):
     """Збирає фінальне Telegram-повідомлення з трьох блоків + підсумок."""
+    m_icon = get_weather_icon(morning_data['weathercode'],   morning_data['cloudcover'])
+    a_icon = get_weather_icon(afternoon_data['weathercode'], afternoon_data['cloudcover'])
+    e_icon = get_weather_icon(evening_data['weathercode'],   evening_data['cloudcover'])
+
     lines = [
         f"{header_emoji} *{escape_markdown_v2(title_str)}*\n\n",
         f"📅 {date_ua}\n",
         f"🕐 {time_str}\n\n",
-        f"🌅 *Ранок* — {escape_markdown_v2(morning_temp)}\n{escape_markdown_v2(morning_text)}\n\n",
-        f"☀️ *День* — {escape_markdown_v2(afternoon_temp)}\n{escape_markdown_v2(afternoon_text)}\n\n",
-        f"🌆 *Вечір* — {escape_markdown_v2(evening_temp)}\n{escape_markdown_v2(evening_text)}\n",
+        f"{m_icon} *Ранок*\n{escape_markdown_v2(morning_text)}\n\n",
+        f"{a_icon} *День*\n{escape_markdown_v2(afternoon_text)}\n\n",
+        f"{e_icon} *Вечір*\n{escape_markdown_v2(evening_text)}\n",
     ]
     if summary_text:
         lines.append(f"\n_{escape_markdown_v2(summary_text)}_\n")
@@ -546,6 +550,27 @@ def _build_three_section_message(header_emoji, title_str, date_ua, time_str,
 
 def _temp_str(d):
     return f"+{d['temp']}°" if d['temp'] > 0 else f"{d['temp']}°"
+
+def get_weather_icon(weathercode, cloudcover=50):
+    """Повертає емодзі за WMO weathercode."""
+    if weathercode == 0:
+        return "☀️"
+    elif weathercode in (1, 2):
+        return "🌤️" if cloudcover < 50 else "⛅"
+    elif weathercode == 3:
+        return "☁️"
+    elif weathercode in (45, 48):
+        return "🌫️"
+    elif weathercode in (51, 53, 55, 56, 57):
+        return "🌦️"
+    elif weathercode in (61, 63, 65, 80, 81, 82):
+        return "🌧️"
+    elif weathercode in (71, 73, 75, 77, 85, 86):
+        return "🌨️"
+    elif weathercode in (95, 96, 99):
+        return "⛈️"
+    else:
+        return "🌡️"
 
 
 def send_weather_today(weather_data):
@@ -590,9 +615,9 @@ def send_weather_today(weather_data):
         title_str      = "Погода в Миколаївці на сьогодні",
         date_ua        = format_date_ua(now),
         time_str       = escape_markdown_v2(now.strftime("%H:%M")),
-        morning_temp   = _temp_str(morning_data),
-        afternoon_temp = _temp_str(afternoon_data),
-        evening_temp   = _temp_str(evening_data),
+        morning_data   = morning_data,
+        afternoon_data = afternoon_data,
+        evening_data   = evening_data,
         morning_text   = morning_text,
         afternoon_text = afternoon_text,
         evening_text   = evening_text,
@@ -711,9 +736,9 @@ def send_weather_tomorrow(weather_data):
         title_str      = "Прогноз на завтра — Миколаївка",
         date_ua        = format_date_ua(tomorrow),
         time_str       = escape_markdown_v2(now.strftime("%H:%M")),
-        morning_temp   = _temp_str(morning_data),
-        afternoon_temp = _temp_str(afternoon_data),
-        evening_temp   = _temp_str(evening_data),
+        morning_data   = morning_data,
+        afternoon_data = afternoon_data,
+        evening_data   = evening_data,
         morning_text   = morning_text,
         afternoon_text = afternoon_text,
         evening_text   = evening_text,
