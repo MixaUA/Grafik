@@ -9,17 +9,16 @@ jobs:
   send-notification:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Дозволяємо боту записувати зміни в репозиторій
+      contents: write
 
     env:
-      # Примусово використовуємо Node.js 24 для всіх екшенів
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
         with:
-          fetch-depth: 0 # Потрібно для коректної роботи git push
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5.3.0
@@ -35,6 +34,7 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           sudo timedatectl set-timezone Europe/Kiev
           python scripts/notification_bot.py
@@ -43,12 +43,10 @@ jobs:
         run: |
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "actions@github.com"
-          # Додаємо файл стану, якщо він був створений або змінений
           git add scripts/state.json || echo "No state file to add"
-          # Перевіряємо, чи є зміни, щоб не створювати порожній коміт
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Update literature state [skip ci]"
+            git commit -m "Update weather+literature state [skip ci]"
             git push
           fi
