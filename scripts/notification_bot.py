@@ -228,6 +228,93 @@ def get_weather_period_data(hourly_data, hours_range):
         'weathercode': dominant_code,
     }
 
+def get_weather_label(weathercode):
+    """Повертає короткий текстовий опис стану погоди за WMO weathercode."""
+    if weathercode == 0:
+        return "ясно"
+    elif weathercode == 1:
+        return "переважно ясно"
+    elif weathercode == 2:
+        return "мінлива хмарність"
+    elif weathercode == 3:
+        return "хмарно"
+    elif weathercode in (45, 48):
+        return "туман"
+    elif weathercode in (51, 53, 55):
+        return "мряка"
+    elif weathercode in (56, 57):
+        return "крижана мряка"
+    elif weathercode in (61, 80):
+        return "невеликий дощ"
+    elif weathercode in (63, 81):
+        return "дощ"
+    elif weathercode in (65, 82):
+        return "сильний дощ"
+    elif weathercode in (71, 85):
+        return "невеликий сніг"
+    elif weathercode in (73, 86):
+        return "сніг"
+    elif weathercode == 75:
+        return "сильний сніг"
+    elif weathercode == 77:
+        return "снігова крупа"
+    elif weathercode == 95:
+        return "гроза"
+    elif weathercode in (96, 99):
+        return "гроза з градом"
+    else:
+        return "мінлива погода"
+
+def build_hourly_timeline(hourly_data, day_offset, hour_from, hour_to):
+    """
+    Збирає погодинні дані за діапазон і групує суміжні години
+    з однаковим weathercode в рядки виду:
+        06:00–09:00  ☁️ хмарно, +3°, легкий вітерець
+    Повертає список рядків (вже готових до відображення).
+    """
+    hours = list(range(hour_from, hour_to))
+    raw = []
+    for h in hours:
+        idx = get_hourly_index(day_offset, h)
+        code  = hourly_data['weathercode'][idx]
+        temp  = round(hourly_data['temperature_2m'][idx])
+        wind  = round(hourly_data['windspeed_10m'][idx])
+        cloud = round(hourly_data['cloudcover'][idx])
+        raw.append({'hour': h, 'code': code, 'temp': temp,
+                    'wind': wind, 'cloud': cloud})
+
+    if not raw:
+        return []
+
+    # Групуємо суміжні години з однаковим weathercode
+    groups = []
+    cur = dict(raw[0])
+    cur['hour_end'] = cur['hour'] + 1
+    for r in raw[1:]:
+        if r['code'] == cur['code']:
+            # Усереднюємо числові поля всередині групи
+            cur['temp']  = round((cur['temp'] + r['temp']) / 2)
+            cur['wind']  = round((cur['wind'] + r['wind']) / 2)
+            cur['cloud'] = round((cur['cloud'] + r['cloud']) / 2)
+            cur['hour_end'] = r['hour'] + 1
+        else:
+            groups.append(cur)
+            cur = dict(r)
+            cur['hour_end'] = cur['hour'] + 1
+    groups.append(cur)
+
+    lines = []
+    for g in groups:
+        h_start = f"{g['hour']:02d}:00"
+        h_end   = f"{g['hour_end'] % 24:02d}:00"
+        t_str   = f"+{g['temp']}°" if g['temp'] > 0 else f"{g['temp']}°"
+        icon    = get_weather_icon(g['code'], g['cloud'])
+        label   = get_weather_label(g['code'])
+        wind    = get_wind_description(g['wind'])
+        lines.append(f"🕐 {h_start}–{h_end}\n{icon} {label}, {t_str}, {wind}")
+
+    return lines
+
 def fetch_weather_data():
     print("🌤️ [WEATHER] Завантажуємо дані з Open-Meteo...")
     try:
@@ -291,86 +378,47 @@ def call_gemini_for_weather(prompt_text):
 # --- ПРОМПТИ ---
 # ============================================================
 
-def build_weather_prompt_today(morning, afternoon, evening, date_str):
+def build_weather_summary_prompt(morning, afternoon, evening, date_str, day_word):
     """
-    Промпт для ранкового повідомлення: прогноз на весь поточний день
-    (ранок + день + вечір). Аналогічний формат до прогнозу на завтра,
-    але з «сьогоднішнім» настроєм і ранковим тоном вступу.
+    Промпт для одного підсумкового речення про день.
+    day_word = 'сьогодні' або 'завтра'.
     """
-    def period_desc(d):
+    def pd(d):
         s = "+" if d['temp'] > 0 else ""
         cloud = "ясно" if d['cloudcover'] < 30 else ("мінлива хмарність" if d['cloudcover'] < 70 else "хмарно")
         precip = "можливий дощ" if d['precip_prob'] > 40 else "без опадів"
         return f"{s}{d['temp']}°, {cloud}, {d['wind_desc']}, {precip}"
 
-    return f"""Ти — погодний помічник для невеликого українського села Миколаївка.
-Напиши ранковий прогноз погоди на сьогодні ({date_str}) для Telegram.
+    return f"""Ти — погодний помічник для українського села Миколаївка.
+Напиши ОДНЕ коротке речення-підсумок про погоду {day_word} ({date_str}).
 
-Люди щойно прокинулись і хочуть знати, що чекає їх упродовж усього дня.
-Почни з ранку — що зустрічає за вікном просто зараз — і проведи читача крізь день і вечір.
-
-Дані по частинах доби:
-- Ранок: {period_desc(morning)}
-- День: {period_desc(afternoon)}
-- Вечір: {period_desc(evening)}
+Дані:
+- Ранок: {pd(morning)}
+- День: {pd(afternoon)}
+- Вечір: {pd(evening)}
 
 Вимоги:
-- Три частини: ранок, день, вечір — по 1-2 речення кожна
-- Ранок — з живим відчуттям «щойно прокинулись», але без банальних «доброго ранку»
-- Жива природна українська мова, тепла й трохи розмовна
-- Температуру називай числом з градусом (наприклад, +8°)
-- Вітер — ТІЛЬКИ словами, без цифр
-- В кінці — одне коротке загальне речення про весь день
-- НЕ використовуй Markdown-розмітку: жодних зірочок, решіток, підкреслень — лише чистий текст
-- Розділяй частини ТОЧНО так, як показано нижче — я парсю текст за цими мітками:
+- Рівно одне речення, 10-20 слів
+- Жива розмовна українська мова
+- Без температур і технічних цифр — лише загальне враження від дня
+- Без Markdown-розмітки"""
 
-###РАНОК###
-<текст про ранок>
-###ДЕНЬ###
-<текст про день>
-###ВЕЧІР###
-<текст про вечір>
-###ПІДСУМОК###
-<одне загальне речення про сьогодні>"""
-
-def build_weather_prompt_tomorrow(morning, afternoon, evening, date_str):
-    """Промпт для прогнозу на завтра (три частини доби)."""
-    def period_desc(d):
-        s = "+" if d['temp'] > 0 else ""
-        cloud = "ясно" if d['cloudcover'] < 30 else ("мінлива хмарність" if d['cloudcover'] < 70 else "хмарно")
-        precip = "можливий дощ" if d['precip_prob'] > 40 else "без опадів"
-        return f"{s}{d['temp']}°, {cloud}, {d['wind_desc']}, {precip}"
-
-    return f"""Ти — погодний помічник для невеликого українського села Миколаївка.
-Напиши прогноз погоди на завтра ({date_str}) для Telegram.
-
-Дані по частинах доби:
-- Ранок: {period_desc(morning)}
-- День: {period_desc(afternoon)}
-- Вечір: {period_desc(evening)}
-
-Вимоги:
-- Три частини: ранок, день, вечір — по 1-2 речення кожна
-- Жива природна українська мова, в міру офіційна, в міру тепла
-- Температуру називай числом з градусом (наприклад, +8°)
-- Вітер — ТІЛЬКИ словами, без цифр
-- В кінці — одне коротке загальне речення про завтрашній день
-- НЕ використовуй Markdown-розмітку: жодних зірочок, решіток, підкреслень — лише чистий текст
-- Розділяй частини ТОЧНО так, як показано нижче — я парсю текст за цими мітками:
-
-###РАНОК###
-<текст про ранок>
-###ДЕНЬ###
-<текст про день>
-###ВЕЧІР###
-<текст про вечір>
-###ПІДСУМОК###
-<одне загальне речення>"""
+def _fallback_summary(morning, afternoon, evening):
+    """Простий текстовий підсумок без Gemini."""
+    has_rain = any(d['precip_prob'] > 40 for d in [morning, afternoon, evening])
+    avg_cloud = round((morning['cloudcover'] + afternoon['cloudcover'] + evening['cloudcover']) / 3)
+    if has_rain:
+        return "День дощовий, варто взяти парасольку."
+    elif avg_cloud < 30:
+        return "День очікується ясний і сонячний."
+    elif avg_cloud < 70:
+        return "Хмарно, але без опадів."
+    else:
+        return "Похмурий день без суттєвих опадів."
 
 def build_weather_prompt_current(period_name, data, date_str):
     """Промпт для одиночного середньоденного або вечірнього повідомлення."""
     temp_sign = "+" if data['temp'] > 0 else ""
-    precip_note = ""
     if data['precip_prob'] > 60:
         precip_note = f"висока ймовірність опадів ({data['precip_prob']}%), очікується {data['precip_mm']} мм"
     elif data['precip_prob'] > 30:
@@ -575,8 +623,8 @@ def get_weather_icon(weathercode, cloudcover=50):
 
 def send_weather_today(weather_data):
     """
-    Ранкове повідомлення: прогноз на ВЕСЬ поточний день (ранок + день + вечір).
-    Відправляється у вікні 4–8 годин.
+    Ранкове повідомлення: погодинний таймлайн на весь день (6–22)
+    + короткий підсумок від Gemini (або fallback).
     """
     print(f"\n🌅 [WEATHER] Формуємо ранковий прогноз на сьогодні...")
 
@@ -587,166 +635,169 @@ def send_weather_today(weather_data):
     hourly = weather_data.get('hourly', {})
     now    = datetime.now()
 
+    # Таймлайн з поточної години до 22:00
+    start_hour = max(now.hour, 6)
+    timeline   = build_hourly_timeline(hourly, 0, start_hour, 22)
+
+    # Усереднені дані для промпту Gemini (підсумок дня)
     morning_data   = get_weather_period_data(hourly, (get_hourly_index(0, 6),  get_hourly_index(0, 10)))
     afternoon_data = get_weather_period_data(hourly, (get_hourly_index(0, 11), get_hourly_index(0, 16)))
     evening_data   = get_weather_period_data(hourly, (get_hourly_index(0, 17), get_hourly_index(0, 21)))
 
-    print(f"📊 [WEATHER] Сьогодні ранок: t={morning_data['temp']}°, вітер={morning_data['wind_desc']}, "
-          f"опади={morning_data['precip_prob']}%")
-    print(f"📊 [WEATHER] Сьогодні день:  t={afternoon_data['temp']}°, вітер={afternoon_data['wind_desc']}, "
-          f"опади={afternoon_data['precip_prob']}%")
-    print(f"📊 [WEATHER] Сьогодні вечір: t={evening_data['temp']}°, вітер={evening_data['wind_desc']}, "
-          f"опади={evening_data['precip_prob']}%")
-
-    date_str_plain = now.strftime("%d.%m")
-    prompt   = build_weather_prompt_today(morning_data, afternoon_data, evening_data, date_str_plain)
-    ai_text  = call_gemini_for_weather(prompt)
-
-    if ai_text:
-        morning_text, afternoon_text, evening_text, summary_text = _parse_three_sections(ai_text)
-    else:
-        print("⚠️ [WEATHER] Gemini недоступний, формуємо ранковий fallback.")
-        morning_text, afternoon_text, evening_text, summary_text = _fallback_three_sections(
-            morning_data, afternoon_data, evening_data
-        )
-
-    msg = _build_three_section_message(
-        header_emoji   = "🌤️",
-        title_str      = "Погода в Миколаївці на сьогодні",
-        date_ua        = format_date_ua(now),
-        time_str       = escape_markdown_v2(now.strftime("%H:%M")),
-        morning_data   = morning_data,
-        afternoon_data = afternoon_data,
-        evening_data   = evening_data,
-        morning_text   = morning_text,
-        afternoon_text = afternoon_text,
-        evening_text   = evening_text,
-        summary_text   = summary_text,
+    # Один рядок-підсумок від Gemini
+    summary_prompt = build_weather_summary_prompt(morning_data, afternoon_data, evening_data,
+                                                   now.strftime("%d.%m"), "сьогодні")
+    summary_text = call_gemini_for_weather(summary_prompt) or _fallback_summary(
+        morning_data, afternoon_data, evening_data
     )
 
-    send_telegram_message(msg)
+    date_ua  = format_date_ua(now)
+    time_str = escape_markdown_v2(now.strftime("%H:%M"))
+
+    timeline_block = "\n\n".join(timeline)
+    lines = [
+        f"🌤️ *{escape_markdown_v2('Погода в Миколаївці на сьогодні')}*\n\n",
+        f"📅 {date_ua}\n",
+        f"🗓 {time_str}\n\n",
+        f"{escape_markdown_v2(timeline_block)}\n\n",
+    ]
+    if summary_text:
+        lines.append(f"_{escape_markdown_v2(summary_text)}_\n\n")
+    lines.append(f"📊 *Сайт:* https://mixaua\\.github\\.io/Mykolayivka/")
+
+    send_telegram_message("".join(lines))
     print(f"✅ [WEATHER] Ранковий прогноз на сьогодні відправлено.")
 
     state = mark_weather_sent(state, "morning")
     save_weather_state(state)
 
 
-def send_weather_current(period_key, header_emoji, period_name, weather_data, day_offset, hour_start, hour_end):
-    """Відправляє погодне повідомлення для одиночного поточного періоду (полудень або вечір)."""
-    print(f"\n🌤️ [WEATHER] Формуємо повідомлення: {period_name}")
+def send_weather_current(period_key, header_emoji, title_str, weather_data, day_offset, hour_start, hour_end):
+    """Відправляє погодне повідомлення для поточного періоду у форматі таймлайну.
+    Для вечірнього блоку (period_key='evening') додатково додає прогноз на завтра."""
+    print(f"\n🌤️ [WEATHER] Формуємо повідомлення: {title_str}")
 
     state = load_weather_state()
     if is_weather_sent(state, period_key):
         return
 
-    hourly    = weather_data.get('hourly', {})
-    idx_start = get_hourly_index(day_offset, hour_start)
-    idx_end   = get_hourly_index(day_offset, hour_end)
-    print(f"📊 [WEATHER] Беремо години {hour_start}:00-{hour_end}:00 (індекси {idx_start}-{idx_end})")
+    hourly = weather_data.get('hourly', {})
+    now    = datetime.now()
 
-    period_data = get_weather_period_data(hourly, (idx_start, idx_end))
-    print(f"📊 [WEATHER] Дані: t={period_data['temp']}°, вітер={period_data['wind_kmh']}км/г "
-          f"({period_data['wind_desc']}), хмари={period_data['cloudcover']}%, "
-          f"опади={period_data['precip_prob']}%")
+    def render_timeline(timeline):
+        """Екранує і з'єднує блоки таймлайну через подвійний перенос."""
+        return "\n\n".join(escape_markdown_v2(block) for block in timeline)
 
-    now            = datetime.now()
-    date_str_plain = now.strftime("%d.%m")
-    prompt         = build_weather_prompt_current(period_name, period_data, date_str_plain)
-    ai_text        = call_gemini_for_weather(prompt)
-
-    if not ai_text:
-        print("⚠️ [WEATHER] Gemini недоступний, формуємо fallback-текст.")
-        temp_sign = "+" if period_data['temp'] > 0 else ""
-        t      = f"{temp_sign}{period_data['temp']}°"
-        wind   = period_data['wind_desc']
-        cloud  = period_data['cloudcover']
-        precip = period_data['precip_prob']
-
-        if cloud < 20:   sky = "небо ясне"
-        elif cloud < 50: sky = "хмарки є, але сонце пробивається"
-        elif cloud < 80: sky = "хмарно"
-        else:            sky = "небо затягнуло хмарами"
-
-        rain = ", можливий дощ" if precip > 40 else ""
-
-        period_phrases = {
-            "полудень": f"О півдні надворі {t}. {sky.capitalize()}, {wind}{rain}.",
-            "вечір":    f"Вечоріє. Надворі {t}, {sky}, {wind}{rain}.",
-        }
-        ai_text = period_phrases.get(period_name, f"Зараз {t}, {sky}, {wind}{rain}.")
-
-    date_ua  = format_date_ua(now)
-    time_str = escape_markdown_v2(now.strftime("%H:%M"))
-    ai_escaped = escape_markdown_v2(ai_text)
-
-    msg = (
-        f"{header_emoji} *Погода в Миколаївці*\n\n"
-        f"📅 {date_ua}\n"
-        f"🕐 {time_str}\n\n"
-        f"{ai_escaped}\n\n"
-        f"📊 *Сайт:* https://mixaua\\.github\\.io/Mykolayivka/"
+    # --- Сьогодні ---
+    start_hour     = max(now.hour, hour_start)
+    timeline_today = build_hourly_timeline(hourly, day_offset, start_hour, hour_end)
+    period_data    = get_weather_period_data(
+        hourly, (get_hourly_index(day_offset, hour_start), get_hourly_index(day_offset, hour_end))
     )
+    print(f"📊 [WEATHER] Дані: t={period_data['temp']}°, вітер={period_data['wind_desc']}, "
+          f"хмари={period_data['cloudcover']}%, опади={period_data['precip_prob']}%")
 
-    send_telegram_message(msg)
-    print(f"✅ [WEATHER] Повідомлення '{period_name}' відправлено.")
+    summary_text = call_gemini_for_weather(
+        build_weather_prompt_current(title_str.lower(), period_data, now.strftime("%d.%m"))
+    )
+    if not summary_text:
+        t    = f"+{period_data['temp']}°" if period_data['temp'] > 0 else f"{period_data['temp']}°"
+        sky  = ("небо ясне" if period_data['cloudcover'] < 20 else
+                "хмарки є, але сонце пробивається" if period_data['cloudcover'] < 50 else
+                "хмарно" if period_data['cloudcover'] < 80 else "небо затягнуло хмарами")
+        rain = ", можливий дощ" if period_data['precip_prob'] > 40 else ""
+        summary_text = f"Надворі {t}, {sky}, {period_data['wind_desc']}{rain}."
+
+    lines = [
+        f"{header_emoji} *{escape_markdown_v2(title_str)}*\n\n",
+        f"📅 {format_date_ua(now)}\n\n",
+        f"{render_timeline(timeline_today)}\n\n",
+        f"_{escape_markdown_v2(summary_text)}_\n\n",
+    ]
+
+    # --- Завтра (лише для вечірнього блоку) ---
+    if period_key == "evening":
+        tomorrow          = now + timedelta(days=1)
+        timeline_tomorrow = build_hourly_timeline(hourly, 1, 6, 22)
+        morning_data      = get_weather_period_data(hourly, (get_hourly_index(1, 6),  get_hourly_index(1, 10)))
+        afternoon_data    = get_weather_period_data(hourly, (get_hourly_index(1, 11), get_hourly_index(1, 16)))
+        evening_data      = get_weather_period_data(hourly, (get_hourly_index(1, 17), get_hourly_index(1, 21)))
+        tmr_summary       = call_gemini_for_weather(
+            build_weather_summary_prompt(morning_data, afternoon_data, evening_data,
+                                          tomorrow.strftime("%d.%m"), "завтра")
+        ) or _fallback_summary(morning_data, afternoon_data, evening_data)
+
+        date_tmr = format_date_ua(tomorrow)
+        lines += [
+            f"🗓️ *{escape_markdown_v2('Завтра')} — {date_tmr}*\n\n",
+            f"{render_timeline(timeline_tomorrow)}\n\n",
+            f"_{escape_markdown_v2(tmr_summary)}_\n\n",
+        ]
+        state = mark_weather_sent(state, "tomorrow")
+
+    lines.append(f"📊 *Сайт:* https://mixaua\\.github\\.io/Mykolayivka/")
+
+    send_telegram_message("".join(lines))
+    print(f"✅ [WEATHER] Повідомлення '{title_str}' відправлено.")
 
     state = mark_weather_sent(state, period_key)
     save_weather_state(state)
 
 
-def send_weather_tomorrow(weather_data):
+def send_weather_evening_and_tomorrow(weather_data):
     """
-    Вечірній прогноз на завтра (після 18:00): три частини доби + підсумок.
+    Вечірнє повідомлення після 18:00: залишок сьогоднішнього вечора (18–22)
+    + повний прогноз на завтра (6–22) — все в одному повідомленні.
     """
-    print(f"\n🔮 [WEATHER] Формуємо прогноз на завтра...")
+    print(f"\n🌆🔮 [WEATHER] Формуємо вечірній прогноз + завтра...")
 
     state = load_weather_state()
     if is_weather_sent(state, "tomorrow"):
         return
 
     hourly   = weather_data.get('hourly', {})
-    tomorrow = datetime.now() + timedelta(days=1)
+    now      = datetime.now()
+    tomorrow = now + timedelta(days=1)
 
+    # --- Сьогодні: залишок вечора ---
+    start_hour     = max(now.hour, 18)
+    today_timeline = build_hourly_timeline(hourly, 0, start_hour, 22)
+
+    # --- Завтра: повний день ---
+    tmrw_timeline  = build_hourly_timeline(hourly, 1, 6, 22)
+
+    # Усереднені дані завтра для підсумку Gemini
     morning_data   = get_weather_period_data(hourly, (get_hourly_index(1, 6),  get_hourly_index(1, 10)))
     afternoon_data = get_weather_period_data(hourly, (get_hourly_index(1, 11), get_hourly_index(1, 16)))
     evening_data   = get_weather_period_data(hourly, (get_hourly_index(1, 17), get_hourly_index(1, 21)))
 
-    print(f"📊 [WEATHER] Завтра ранок: t={morning_data['temp']}°, вітер={morning_data['wind_desc']}, "
-          f"опади={morning_data['precip_prob']}%")
-    print(f"📊 [WEATHER] Завтра день:  t={afternoon_data['temp']}°, вітер={afternoon_data['wind_desc']}, "
-          f"опади={afternoon_data['precip_prob']}%")
-    print(f"📊 [WEATHER] Завтра вечір: t={evening_data['temp']}°, вітер={evening_data['wind_desc']}, "
-          f"опади={evening_data['precip_prob']}%")
+    summary_text = call_gemini_for_weather(
+        build_weather_summary_prompt(morning_data, afternoon_data, evening_data,
+                                     tomorrow.strftime("%d.%m"), "завтра")
+    ) or _fallback_summary(morning_data, afternoon_data, evening_data)
 
-    date_str_plain = tomorrow.strftime("%d.%m")
-    prompt   = build_weather_prompt_tomorrow(morning_data, afternoon_data, evening_data, date_str_plain)
-    ai_text  = call_gemini_for_weather(prompt)
+    today_date_ua = format_date_ua(now)
+    tmrw_date_ua  = format_date_ua(tomorrow)
 
-    if ai_text:
-        morning_text, afternoon_text, evening_text, summary_text = _parse_three_sections(ai_text)
-    else:
-        print("⚠️ [WEATHER] Gemini недоступний, формуємо fallback для завтра.")
-        morning_text, afternoon_text, evening_text, summary_text = _fallback_three_sections(
-            morning_data, afternoon_data, evening_data
-        )
+    today_block = "\n\n".join(today_timeline)
+    tmrw_block  = "\n\n".join(tmrw_timeline)
 
-    now = datetime.now()
-    msg = _build_three_section_message(
-        header_emoji   = "🗓️",
-        title_str      = "Прогноз на завтра — Миколаївка",
-        date_ua        = format_date_ua(tomorrow),
-        time_str       = escape_markdown_v2(now.strftime("%H:%M")),
-        morning_data   = morning_data,
-        afternoon_data = afternoon_data,
-        evening_data   = evening_data,
-        morning_text   = morning_text,
-        afternoon_text = afternoon_text,
-        evening_text   = evening_text,
-        summary_text   = summary_text,
-    )
+    lines = [
+        f"🌇 *{escape_markdown_v2('Погода в Миколаївці')}*\n\n",
+        # --- Сьогодні ---
+        f"📅 {today_date_ua} — *вечір*\n\n",
+        f"{escape_markdown_v2(today_block)}\n\n",
+        f"➖➖➖➖➖➖➖➖\n\n",
+        # --- Завтра ---
+        f"📅 {tmrw_date_ua} — *завтра*\n\n",
+        f"{escape_markdown_v2(tmrw_block)}\n\n",
+    ]
+    if summary_text:
+        lines.append(f"_{escape_markdown_v2(summary_text)}_\n\n")
+    lines.append(f"📊 *Сайт:* https://mixaua\\.github\\.io/Mykolayivka/")
 
-    send_telegram_message(msg)
-    print(f"✅ [WEATHER] Прогноз на завтра відправлено.")
+    send_telegram_message("".join(lines))
+    print(f"✅ [WEATHER] Вечірній прогноз + завтра відправлено.")
 
     state = mark_weather_sent(state, "tomorrow")
     save_weather_state(state)
@@ -767,24 +818,20 @@ def run_weather_bot(now_h):
         return
 
     if 4 <= now_h < 8:
-        # Ранок: повний прогноз на весь день (ранок + день + вечір)
         print("🌅 [WEATHER] Вікно: ранок (4-8). Відправляємо прогноз на весь день.")
         send_weather_today(weather_data)
 
     elif 10 <= now_h < 14:
-        # Полудень: короткий поточний стан
         print("☀️ [WEATHER] Вікно: полудень (10-14). Відправляємо денну погоду.")
-        send_weather_current("afternoon", "☀️", "полудень", weather_data, 0, 11, 16)
+        send_weather_current("afternoon", "☀️", "Погода в Миколаївці — день", weather_data, 0, 11, 16)
 
     elif 16 <= now_h < 18:
-        # Вечір: короткий поточний стан
         print("🌆 [WEATHER] Вікно: вечір (16-18). Відправляємо вечірню погоду.")
-        send_weather_current("evening", "🌇", "вечір", weather_data, 0, 17, 21)
+        send_weather_current("evening", "🌇", "Погода в Миколаївці — вечір", weather_data, 0, 16, 22)
 
     elif 18 <= now_h < 24:
-        # Після 18: повний прогноз на завтра (ранок + день + вечір)
-        print("🔮 [WEATHER] Вікно: прогноз (18-24). Відправляємо прогноз на завтра.")
-        send_weather_tomorrow(weather_data)
+        print("🌆 [WEATHER] Вікно: після 18. Відправляємо вечір + прогноз на завтра.")
+        send_weather_evening_and_tomorrow(weather_data)
 
     else:
         print(f"😴 [WEATHER] Година {now_h} — поза погодними вікнами (4-8, 10-14, 16-18, 18-24).")
