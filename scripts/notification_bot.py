@@ -17,7 +17,6 @@ WEATHER_API = (
 
 SITE_URL = "https://mixaua\\.github\\.io/Mykolayivka/"
 
-# 🆕 ЗМІНА 1: Використовуємо Gemini 2.5 Flash
 GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 
 # --- ФОРМАТУВАННЯ ---
@@ -286,8 +285,8 @@ def call_gemini_for_weather(prompt_text):
     payload = {
         "contents": [{"parts": [{"text": prompt_text}]}],
         "generationConfig": {
-            "temperature": 0.8,
-            "maxOutputTokens": 300,
+            "temperature": 0.9,  # 🆕 Трохи більше креативності
+            "maxOutputTokens": 500,  # 🆕 Ще більше місця для тексту
         }
     }
     try:
@@ -323,6 +322,7 @@ def call_gemini_for_weather(prompt_text):
 # --- ПРОМПТИ ---
 # ============================================================
 
+# 🆕 ЗМІНА: Більше свободи для Gemini!
 def build_weather_summary_prompt(morning, afternoon, evening, date_str, day_word):
     def pd(d):
         s = "+" if d['temp'] > 0 else ""
@@ -331,18 +331,25 @@ def build_weather_summary_prompt(morning, afternoon, evening, date_str, day_word
         return f"{s}{d['temp']}°, {cloud}, {d['wind_desc']}, {precip}"
 
     return f"""Ти — погодний помічник для українського села Миколаївка.
-Напиши ОДНЕ коротке речення-підсумок про погоду {day_word} ({date_str}).
+Напиши живий підсумок про погоду {day_word} ({date_str}).
 
 Дані:
 - Ранок: {pd(morning)}
 - День: {pd(afternoon)}
 - Вечір: {pd(evening)}
 
-Вимоги:
-- Рівно одне речення, 10-20 слів
-- Жива розмовна українська мова
-- Без температур і технічних цифр — лише загальне враження від дня
-- Без Markdown-розмітки"""
+📋 ПРАВИЛА:
+1. 2-3 речення (не одне, а декілька!)
+2. Додай практичну пораду: "візьміть парасольку", "одягайтеся тепліше", "ідеально для прогулянки", "вітер сильний — тримайте капелюхи"
+3. Згадай особливості: хмарність, вітер, опади — не просто "буде дощ", а "дощ із вітром, тому парасолька може не врятувати"
+4. Будь природним, розмовним, теплим — як сусід розповідає
+5. Закінчуй крапкою, без Markdown
+6. Не рахуй слова — пиши скільки треба для повноти
+
+Приклад ХОРОШОЇ відповіді:
+"Сьогодні хмарно з періодичним дощем, тому парасолька обов'язкова. Ввечері вітер посилиться до помірного — краще залишитися вдома з чашкою чаю. Загалом день не надто вдалий для прогулянок, але якщо вийдете — одягайтеся тепліше."
+
+Напиши зараз:"""
 
 def _fallback_summary(morning, afternoon, evening):
     has_rain = any(d['precip_prob'] > 40 for d in [morning, afternoon, evening])
@@ -646,9 +653,13 @@ def build_changes_prompt(changes, date_str):
 Зміни:
 {changes_text}
 
-Напиши ОДНЕ коротке живе речення (10-15 слів) яке передає суть цих змін.
-Тон — спокійний, інформативний, без паніки.
-Без Markdown, без емодзі, лише чистий текст."""
+📋 ПРАВИЛА:
+- Напиши 1-2 речення (не одне!)
+- ОБОВ'ЯЗКОВО закінчуй крапкою, НЕ комою!
+- Тон — спокійний, інформативний, без паніки
+- Додай пораду або коментар
+- Без Markdown, без емодзі, лише чистий текст
+- Перевір що речення завершене!"""
 
 
 # 🆕 ЗМІНА 2: Функція send_weather_today тепер приймає час запуску
@@ -660,7 +671,7 @@ def send_weather_today(weather_data, now_h, now_m):
     print(f"\n🌅 [WEATHER] Формуємо прогноз на сьогодні (Запуск о {now_h}:{now_m})...")
 
     state = load_weather_state()
-    if is_weather_sent(state, "day_report"): # Оновлено ключ
+    if is_weather_sent(state, "day_report"):
         return
 
     hourly   = weather_data.get('hourly', {})
@@ -669,23 +680,19 @@ def send_weather_today(weather_data, now_h, now_m):
 
     # 🆕 Логіка динамічного старту
     if now_h < 6:
-        start_hour = 6  # Якщо рано вранці, чекаємо до 06:00
+        start_hour = 6
     else:
-        # Якщо день, починаємо з наступної повної години
         start_hour = now_h + 1 if now_m > 0 else now_h
     
-    # Якщо вже дуже пізно (наприклад 22:15), не відправляємо
     if start_hour >= 22:
         print(f"⚠️ [WEATHER] Занадто пізно для денного звіту (зараз {now_h}:{now_m}). Пропускаємо.")
         return
 
     print(f"📊 [WEATHER] Таймлайн на сьогодні: {start_hour:02d}:00 – 22:00")
 
-    # Актуальні групи на сьогодні (з динамічним початком)
     groups   = build_timeline_groups(hourly, 0, start_hour, 22)
     timeline = format_groups_as_timeline(groups)
 
-    # Усереднені дані для підсумку (залишаємо загалом на день, щоб Gemini міг описати)
     morning_data   = get_weather_period_data(hourly, (get_hourly_index(0, 6),  get_hourly_index(0, 10)))
     afternoon_data = get_weather_period_data(hourly, (get_hourly_index(0, 11), get_hourly_index(0, 16)))
     evening_data   = get_weather_period_data(hourly, (get_hourly_index(0, 17), get_hourly_index(0, 21)))
@@ -693,7 +700,34 @@ def send_weather_today(weather_data, now_h, now_m):
     summary_text = call_gemini_for_weather(
         build_weather_summary_prompt(morning_data, afternoon_data, evening_data,
                                      now.strftime("%d.%m"), "сьогодні")
-    ) or _fallback_summary(morning_data, afternoon_data, evening_data)
+    )
+    
+    # 🆕 ВАЛІДАЦІЯ ТА ОБРОБКА ВІДПОВІДІ GEMINI
+    final_summary = ""
+    if summary_text:
+        # Очищаємо текст
+        summary_text = summary_text.strip()
+        
+        # Перевіряємо на обрізання (закінчується на кому)
+        if summary_text.rstrip().endswith(','):
+            print(f"⚠️ [WEATHER] Gemini обрізав текст (закінчується на кому): '{summary_text}'")
+            # Прибираємо кому і додаємо крапку
+            summary_text = summary_text.rstrip().rstrip(',') + '.'
+        
+        # Перевіряємо довжину
+        if len(summary_text) < 30:  # 🆕 Збільшили мінімум (бо тепер 2-3 речення)
+            print(f"⚠️ [WEATHER] Текст занадто короткий ({len(summary_text)}с), використовуємо fallback")
+            final_summary = _fallback_summary(morning_data, afternoon_data, evening_data)
+        else:
+            # Перевіряємо чи закінчується на крапку
+            if not summary_text.endswith('.'):
+                print(f"⚠️ [WEATHER] Текст не закінчується крапкою, додаємо")
+                summary_text = summary_text.rstrip() + '.'
+            final_summary = summary_text
+            print(f"✅ [WEATHER] Прийнято summary: '{final_summary}'")
+    else:
+        print(f"⚠️ [WEATHER] Gemini не повернув текст, використовуємо fallback")
+        final_summary = _fallback_summary(morning_data, afternoon_data, evening_data)
 
     # --- Порівняння з вчорашнім прогнозом ---
     old_groups = load_forecast_snapshot(today_str)
@@ -726,7 +760,15 @@ def send_weather_today(weather_data, now_h, now_m):
         changes_text = call_gemini_for_weather(
             build_changes_prompt(changes, now.strftime("%d.%m"))
         ) or f"Прогноз підкоригувався у {len(changes)} період(ах)."
-        changes_line = f"🔄 _{escape_markdown_v2(changes_text)}_\n\n"
+        
+        # 🆕 Валідація тексту змін
+        if changes_text:
+            changes_text = changes_text.strip()
+            if changes_text.endswith(','):
+                changes_text = changes_text.rstrip(',') + '.'
+            if not changes_text.endswith('.'):
+                changes_text = changes_text + '.'
+            changes_line = f"🔄 _{escape_markdown_v2(changes_text)}_\n\n"
 
     date_ua  = format_date_ua(now)
     time_str = escape_markdown_v2(now.strftime("%H:%M"))
@@ -736,7 +778,7 @@ def send_weather_today(weather_data, now_h, now_m):
         f"📅 {date_ua}\n",
         f"🕙 {time_str}\n\n",
         f"{timeline_block}\n\n",
-        f"_{escape_markdown_v2(summary_text)}_\n\n",
+        f"_{escape_markdown_v2(final_summary)}_\n\n",
     ]
     if changes_line:
         lines.append(changes_line)
@@ -745,7 +787,8 @@ def send_weather_today(weather_data, now_h, now_m):
     send_telegram_message("".join(lines))
     print(f"✅ [WEATHER] Ранковий прогноз на сьогодні відправлено.")
 
-    state = mark_weather_sent(state, "day_report") # Оновлено ключ
+    # 🆕 Зберігаємо стан ТУТ (єдине місце!)
+    state = mark_weather_sent(state, "day_report")
     save_weather_state(state)
 
 
@@ -758,7 +801,7 @@ def send_weather_tomorrow(weather_data):
     print(f"\n🔮 [WEATHER] Формуємо прогноз на завтра...")
 
     state = load_weather_state()
-    if is_weather_sent(state, "night_report"): # Оновлено ключ
+    if is_weather_sent(state, "night_report"):
         return
 
     hourly    = weather_data.get('hourly', {})
@@ -766,12 +809,10 @@ def send_weather_tomorrow(weather_data):
     tomorrow  = now + timedelta(days=1)
     tmrw_str  = tomorrow.strftime("%Y-%m-%d")
 
-    # 🆕 Фіксований діапазон для завтра (з 06:00 до 22:00)
     start_hour = 6
     end_hour = 22
     print(f"📊 [WEATHER] Таймлайн на завтра ({tmrw_str}): {start_hour:02d}:00 – {end_hour:02d}:00")
 
-    # Сирі групи — для збереження і відображення
     groups   = build_timeline_groups(hourly, 1, start_hour, end_hour)
     timeline = format_groups_as_timeline(groups)
 
@@ -782,9 +823,28 @@ def send_weather_tomorrow(weather_data):
     summary_text = call_gemini_for_weather(
         build_weather_summary_prompt(morning_data, afternoon_data, evening_data,
                                      tomorrow.strftime("%d.%m"), "завтра")
-    ) or _fallback_summary(morning_data, afternoon_data, evening_data)
+    )
+    
+    # 🆕 ВАЛІДАЦІЯ ВІДПОВІДІ GEMINI
+    final_summary = ""
+    if summary_text:
+        summary_text = summary_text.strip()
+        
+        if summary_text.rstrip().endswith(','):
+            print(f"⚠️ [WEATHER] Gemini обрізав текст (закінчується на кому)")
+            summary_text = summary_text.rstrip().rstrip(',') + '.'
+        
+        if len(summary_text) < 30:  # 🆕 Збільшили мінімум
+            print(f"⚠️ [WEATHER] Текст занадто короткий ({len(summary_text)}с)")
+            final_summary = _fallback_summary(morning_data, afternoon_data, evening_data)
+        else:
+            if not summary_text.endswith('.'):
+                summary_text = summary_text.rstrip() + '.'
+            final_summary = summary_text
+            print(f"✅ [WEATHER] Прийнято summary: '{final_summary}'")
+    else:
+        final_summary = _fallback_summary(morning_data, afternoon_data, evening_data)
 
-    # Зберігаємо прогноз для завтрашнього ранкового порівняння
     save_forecast_snapshot(tmrw_str, groups)
 
     timeline_block = "\n\n".join(escape_markdown_v2(b) for b in timeline)
@@ -793,14 +853,15 @@ def send_weather_tomorrow(weather_data):
         f"🗓️ *{escape_markdown_v2('Прогноз на завтра — Миколаївка')}*\n\n",
         f"📅 {format_date_ua(tomorrow)}\n\n",
         f"{timeline_block}\n\n",
-        f"_{escape_markdown_v2(summary_text)}_\n\n",
+        f"_{escape_markdown_v2(final_summary)}_\n\n",
         f"📊 *Сайт:* https://mixaua\\.github\\.io/Mykolayivka/",
     ]
 
     send_telegram_message("".join(lines))
     print(f"✅ [WEATHER] Прогноз на завтра відправлено і збережено для порівняння.")
 
-    state = mark_weather_sent(state, "night_report") # Оновлено ключ
+    # 🆕 Зберігаємо стан ТУТ (єдине місце!)
+    state = mark_weather_sent(state, "night_report")
     save_weather_state(state)
 
 
@@ -808,7 +869,7 @@ def send_weather_tomorrow(weather_data):
 # --- ГОЛОВНИЙ ПОГОДНИЙ ДИСПЕТЧЕР ---
 # ============================================================
 
-# 🆕 ЗМІНА 4: Оновлення диспетчера
+# 🆕 ЗМІНА 4: Прибрано подвійне збереження стану
 def run_weather_bot(now_h, now_m):
     """Головна логіка погодного блоку. Вікна: 04-18 та 18-24."""
     print(f"\n{'='*40}")
@@ -816,7 +877,7 @@ def run_weather_bot(now_h, now_m):
     print(f"{'='*40}")
 
     weather_data = fetch_weather_data()
-    if not weather_data:
+    if not weather_
         print("❌ [WEATHER] Не вдалося отримати дані погоди. Пропускаємо.")
         return
 
@@ -827,9 +888,7 @@ def run_weather_bot(now_h, now_m):
         if not is_weather_sent(state, "day_report"):
             print("🌅 [WEATHER] Вікно day_report. Прогноз на ЗАЛИШОК СЬОГОДНІ.")
             send_weather_today(weather_data, now_h, now_m)
-            
-            state = mark_weather_sent(state, "day_report")
-            save_weather_state(state)
+            # 🆕 Прибрано: state = mark_weather_sent... (вже є в send_weather_today)
         else:
             print("✅ [WEATHER] day_report вже відправлено сьогодні.")
     
@@ -838,9 +897,7 @@ def run_weather_bot(now_h, now_m):
         if not is_weather_sent(state, "night_report"):
             print("🌙 [WEATHER] Вікно night_report. Прогноз на ЗАВТРА (повний день).")
             send_weather_tomorrow(weather_data)
-            
-            state = mark_weather_sent(state, "night_report")
-            save_weather_state(state)
+            # 🆕 Прибрано: state = mark_weather_sent... (вже є в send_weather_tomorrow)
         else:
             print("✅ [WEATHER] night_report вже відправлено.")
     
