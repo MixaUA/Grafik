@@ -17,7 +17,7 @@ WEATHER_API = (
 
 SITE_URL = "https://mixaua\\.github\\.io/Mykolayivka/"
 
-GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
 
 # --- ФОРМАТУВАННЯ ---
 def escape_markdown_v2(text: str) -> str:
@@ -316,24 +316,33 @@ def build_weather_prompt_current(period_name, data, date_str):
     else:
         cloud_note = "суцільна хмарність"
 
-    return f"""Ти — погодний помічник для невеликого українського села Миколаївка.
-Напиши коротке погодне повідомлення для Telegram на {period_name} ({date_str}).
+    period_context = {
+        "ранок": "Починається новий день. Люди прокидаються, збираються на роботу чи у двір. Розкажи яка погода зустрічає їх цього ранку.",
+        "полудень": "Середина дня. Хтось на обіді, хтось в полі чи городі. Розкажи яка погода зараз на вулиці.",
+        "вечір": "День добігає кінця. Люди повертаються додому, виходять на прогулянку. Розкажи яка погода надворі цього вечора.",
+    }
+    context = period_context.get(period_name, "")
 
-Дані:
-- Температура: {temp_sign}{data['temp']}°C
+    return f"""Ти — погодний помічник для невеликого українського села Миколаївка.
+Напиши живе погодне повідомлення для Telegram. Час доби: {period_name}, дата: {date_str}.
+
+{context}
+
+Погодні дані:
+- Температура: {temp_sign}{data['temp']}°
 - Небо: {cloud_note}
 - Вітер: {data['wind_desc']}
 - Опади: {precip_note}
 
-Вимоги:
-- 2-3 речення, живою природною українською мовою
-- Тон: в міру офіційний, в міру теплий, без пафосу та перегинів
-- Назви температуру числом з градусом (наприклад, +12°)
+Вимоги до тексту:
+- 2-3 речення живою природною українською мовою
+- Обов'язково згадай що зараз {period_name} — органічно, без штампів
+- Тон: теплий, людський, трохи розмовний — як сусід розповідає про погоду
+- Температуру назви числом з градусом (наприклад, +3°)
 - Вітер — ТІЛЬКИ словами: "{data['wind_desc']}", без цифр
-- Опади та небо — описово, без технічних цифр
-- Без зайвих емодзі всередині тексту
-- Без привітань типу "Доброго дня"
-- Просто короткий живий опис погоди
+- Небо та опади — описово, живою мовою, без технічних відсотків та цифр
+- Без емодзі всередині тексту
+- Без формальних привітань ("Доброго ранку", "Доброго дня" тощо)
 - НЕ використовуй Markdown-розмітку: жодних зірочок, решіток, підкреслень — лише чистий текст"""
 
 def build_weather_prompt_tomorrow(morning, afternoon, evening, date_str):
@@ -442,9 +451,32 @@ def send_weather_current(period_key, header_emoji, period_name, weather_data, da
     ai_text = call_gemini_for_weather(prompt)
 
     if not ai_text:
+        print("⚠️ [WEATHER] Gemini недоступний, формуємо fallback-текст.")
         temp_sign = "+" if period_data['temp'] > 0 else ""
-        ai_text = (f"{temp_sign}{period_data['temp']}°, {period_data['wind_desc']}. "
-                   f"Хмарність {period_data['cloudcover']}%.")
+        t = f"{temp_sign}{period_data['temp']}°"
+        wind = period_data['wind_desc']
+        cloud = period_data['cloudcover']
+        precip = period_data['precip_prob']
+
+        if cloud < 20:
+            sky = "небо ясне"
+        elif cloud < 50:
+            sky = "хмарки є, але сонце пробивається"
+        elif cloud < 80:
+            sky = "хмарно"
+        else:
+            sky = "небо затягнуло хмарами"
+
+        rain = ", можливий дощ" if precip > 40 else ""
+
+        period_phrases = {
+            "ранок":   f"Ранок у Миколаївці зустрічає {t}. На вулиці {sky}, {wind}{rain}.",
+            "полудень": f"О півдні надворі {t}. {sky.capitalize()}, {wind}{rain}.",
+            "вечір":   f"Вечоріє. Надворі {t}, {sky}, {wind}{rain}.",
+        }
+        ai_text = period_phrases.get(period_name,
+            f"Зараз {t}, {sky}, {wind}{rain}."
+        )
 
     date_ua = format_date_ua(now)
     time_str = escape_markdown_v2(now.strftime("%H:%M"))
