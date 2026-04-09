@@ -17,7 +17,7 @@ WEATHER_API = (
 
 SITE_URL = "https://mixaua\\.github\\.io/Mykolayivka/"
 
-GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent"
 
 # --- ФОРМАТУВАННЯ ---
 def escape_markdown_v2(text: str) -> str:
@@ -484,7 +484,8 @@ def send_weather_current(period_key, header_emoji, period_name, weather_data, da
 
     msg = (
         f"{header_emoji} *Погода в Миколаївці*\n\n"
-        f"📅 {date_ua}, {time_str}\n\n"
+        f"📅 {date_ua}\n"
+        f"🕐 {time_str}\n\n"
         f"{ai_escaped}\n\n"
         f"📊 *Сайт:* https://mixaua\\.github\\.io/Mykolayivka/"
     )
@@ -566,7 +567,8 @@ def send_weather_tomorrow(weather_data):
 
     lines = [
         f"🗓️ *Прогноз на завтра — Миколаївка*\n\n",
-        f"📅 {date_ua}, {time_str}\n\n",
+        f"📅 {date_ua}\n",
+        f"🕐 {time_str}\n\n",
         f"🌅 *Ранок* — {escape_markdown_v2(morning_temp)}\n{escape_markdown_v2(morning_text)}\n\n",
         f"☀️ *День* — {escape_markdown_v2(afternoon_temp)}\n{escape_markdown_v2(afternoon_text)}\n\n",
         f"🌆 *Вечір* — {escape_markdown_v2(evening_temp)}\n{escape_markdown_v2(evening_text)}\n",
