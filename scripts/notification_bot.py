@@ -277,7 +277,6 @@ def fetch_weather_data():
 def get_hourly_index(day_offset, hour):
     return day_offset * 24 + hour
 
-# FIX 1: Збільшено maxOutputTokens з 500 до 1500, додано retry з backoff
 def call_gemini_for_weather(prompt_text):
     api_key = os.environ.get('GEMINI_API_KEY')
     if not api_key:
@@ -288,7 +287,7 @@ def call_gemini_for_weather(prompt_text):
         "contents": [{"parts": [{"text": prompt_text}]}],
         "generationConfig": {
             "temperature": 0.9,
-            "maxOutputTokens": 1500,  # FIX: було 500 — головна причина обрізання!
+            "maxOutputTokens": 1500,
         }
     }
 
@@ -314,7 +313,7 @@ def call_gemini_for_weather(prompt_text):
                             return text
 
             elif response.status_code == 503:
-                wait = 5 * (attempt + 1)  # FIX: поступово збільшуємо паузу
+                wait = 5 * (attempt + 1)
                 print(f"⏳ [WEATHER] Спроба {attempt + 1} невдала (503). Чекаю {wait} секунд...")
                 if attempt < max_retries - 1:
                     time.sleep(wait)
@@ -335,7 +334,6 @@ def call_gemini_for_weather(prompt_text):
 # --- ПРОМПТИ ---
 # ============================================================
 
-# FIX 2: Компактніший промпт + більше прикладів для кращого розуміння формату
 def build_weather_summary_prompt(morning, afternoon, evening, date_str, day_word):
     def pd(d):
         s = "+" if d['temp'] > 0 else ""
@@ -715,43 +713,99 @@ def build_changes_prompt(changes, date_str):
 - Без вступних фраз"""
 
 
-# FIX 3: Єдина функція валідації тексту від Gemini — без дублювання коду
 def _validate_gemini_text(text, fallback_fn, min_words=15):
-    """
-    Перевіряє текст від Gemini:
-    - Видаляє вступні фрази
-    - Перевіряє мінімальну кількість слів
-    - Гарантує завершення крапкою
-    Повертає (валідний_текст, використано_fallback)
-    """
     if not text:
         return fallback_fn(), True
 
     text = text.strip()
-
-    # Видаляємо типові вступні фрази Gemini
     text = re.sub(
         r'^(ось|звісно|тримайте|будь ласка|пропоную|відповідь|результат|готово|тримай|на\s)[:\s]+',
         '', text, flags=re.IGNORECASE
     ).strip()
 
-    # Обрізаний текст на комі — прибираємо кому і додаємо крапку
     if text.endswith(','):
         print(f"⚠️ [WEATHER] Текст обрізано на комі, виправляємо")
         text = text.rstrip(',').rstrip() + '.'
 
-    # Перевірка мінімальної кількості слів
     word_count = len(text.split())
     if word_count < min_words:
         print(f"⚠️ [WEATHER] Текст занадто короткий ({word_count} слів < {min_words}), fallback")
         return fallback_fn(), True
 
-    # Гарантуємо завершення крапкою
     if not text.endswith('.'):
         text = text.rstrip() + '.'
 
     return text, False
 
+
+# ============================================================
+# --- НОВА ДОПОМІЖНА ФУНКЦІЯ: компактний блок погоди + аномалії
+# ============================================================
+
+def build_weather_compact_block(dominant_code, dominant_cloud, avg_wind_kmh,
+                                 temp_min, temp_max, all_codes, all_winds):
+    """
+    Формує компактний блок для повідомлення 'на завтра':
+
+    🌧️ невеликий дощ
+    🌡️ +2°...+5°
+    💨 легкий вітерець
+    ⚠️ Гроза! Сильний вітер!   ← тільки якщо є аномалії
+    """
+
+    # Рядок 1: іконка + стан погоди
+    weather_icon = get_weather_icon(dominant_code, dominant_cloud)
+    weather_label = get_weather_label(dominant_code)
+    line1 = f"{weather_icon} {weather_label}"
+
+    # Рядок 2: діапазон температур
+    def fmt_t(t):
+        return f"+{t}°" if t > 0 else f"{t}°"
+    if temp_min == temp_max:
+        temp_range = fmt_t(temp_min)
+    else:
+        temp_range = f"{fmt_t(temp_min)}\\.\\.\\. {fmt_t(temp_max)}"
+    line2 = f"🌡️ {temp_range}"
+
+    # Рядок 3: вітер словами
+    wind_desc = get_wind_description(avg_wind_kmh)
+    line3 = f"💨 {wind_desc}"
+
+    # Рядок 4 (опціональний): аномалії
+    anomalies = []
+
+    # Гроза (з будь-якої години дня)
+    if any(c in (95, 96, 99) for c in all_codes):
+        anomalies.append("Гроза")
+
+    # Туман
+    if any(c in (45, 48) for c in all_codes):
+        anomalies.append("Туман")
+
+    # Сильний вітер (максимальний за день, не середній)
+    max_wind = max(all_winds) if all_winds else avg_wind_kmh
+    if max_wind >= 40:
+        anomalies.append("Сильний вітер")
+
+    # Екстремальна спека
+    if temp_max >= 35:
+        anomalies.append("Екстремальна спека")
+
+    # Екстремальний мороз
+    if temp_min <= -15:
+        anomalies.append("Екстремальний мороз")
+
+    line4 = ""
+    if anomalies:
+        anomaly_str = " ".join(f"{a}\\!" for a in anomalies)
+        line4 = f"\n⚠️ {anomaly_str}"
+
+    return f"{escape_markdown_v2(line1)}\n{escape_markdown_v2(line2)}\n{escape_markdown_v2(line3)}{line4}"
+
+
+# ============================================================
+# --- send_weather_today — БЕЗ ЗМІН ---
+# ============================================================
 
 def send_weather_today(weather_data, now_h, now_m):
     """
@@ -796,7 +850,6 @@ def send_weather_today(weather_data, now_h, now_m):
     if not used_fallback:
         print(f"✅ [WEATHER] Прийнято summary: '{final_summary}'")
 
-    # Порівняння з вчорашнім прогнозом
     old_groups = load_forecast_snapshot(today_str)
     changes    = compare_forecasts(old_groups, groups) if old_groups else []
 
@@ -836,7 +889,7 @@ def send_weather_today(weather_data, now_h, now_m):
     time_str = escape_markdown_v2(now.strftime("%H:%M"))
 
     lines = [
-        f"🌤️ *{escape_markdown_v2('Погода в Миколаївці на сьогодні')}*\n\n",
+        f"🌤️ *{escape_markdown_v2('Погода в Миколаївці — на сьогодні')}*\n\n",
         f"📅 {date_ua}\n",
         f"🕙 {time_str}\n\n",
         f"{timeline_block}\n\n",
@@ -853,9 +906,26 @@ def send_weather_today(weather_data, now_h, now_m):
     save_weather_state(state)
 
 
+# ============================================================
+# --- send_weather_tomorrow — ОНОВЛЕНА ФУНКЦІЯ ---
+# ============================================================
+
 def send_weather_tomorrow(weather_data):
     """
-    Вечірнє повідомлення: прогноз на завтра (6–22).
+    Вечірнє повідомлення: компактний прогноз на завтра.
+    Формат:
+        🌤️ Погода в Миколаївці — на завтра
+
+        📅 10 квітня (п'ятниця)
+
+        🌧️ невеликий дощ
+        🌡️ +2°...+5°
+        💨 легкий вітерець
+        ⚠️ Гроза!   ← якщо є аномалії
+
+        Текстовий підсумок від Gemini.
+
+        📊 Сайт: ...
     """
     print(f"\n🔮 [WEATHER] Формуємо прогноз на завтра...")
 
@@ -863,18 +933,47 @@ def send_weather_tomorrow(weather_data):
     if is_weather_sent(state, "night_report"):
         return
 
-    hourly    = weather_data.get('hourly', {})
-    now       = datetime.now()
-    tomorrow  = now + timedelta(days=1)
-    tmrw_str  = tomorrow.strftime("%Y-%m-%d")
+    hourly   = weather_data.get('hourly', {})
+    daily    = weather_data.get('daily', {})
+    now      = datetime.now()
+    tomorrow = now + timedelta(days=1)
+    tmrw_str = tomorrow.strftime("%Y-%m-%d")
 
-    start_hour = 6
-    end_hour   = 22
-    print(f"📊 [WEATHER] Таймлайн на завтра ({tmrw_str}): {start_hour:02d}:00 – {end_hour:02d}:00")
+    # --- Діапазон температур з daily (індекс 1 = завтра) ---
+    try:
+        temp_max = round(daily['temperature_2m_max'][1])
+        temp_min = round(daily['temperature_2m_min'][1])
+        print(f"🌡️ [WEATHER] Діапазон з daily: {temp_min}°...{temp_max}°")
+    except (KeyError, IndexError, TypeError) as e:
+        print(f"⚠️ [WEATHER] Не вдалось взяти daily діапазон: {e}, рахуємо з hourly")
+        period = get_weather_period_data(hourly, (get_hourly_index(1, 6), get_hourly_index(1, 22)))
+        temp_min = temp_max = period['temp']
 
-    groups   = build_timeline_groups(hourly, 1, start_hour, end_hour)
-    timeline = format_groups_as_timeline(groups)
+    # --- Домінантний weathercode та хмарність (6–22, день 1) ---
+    start_idx = get_hourly_index(1, 6)
+    end_idx   = get_hourly_index(1, 22)
+    day_codes  = hourly['weathercode'][start_idx:end_idx]
+    day_clouds = hourly['cloudcover'][start_idx:end_idx]
+    day_winds  = hourly['windspeed_10m'][start_idx:end_idx]
 
+    dominant_code  = max(set(day_codes),  key=day_codes.count)  if day_codes  else 0
+    avg_cloud      = round(sum(day_clouds) / len(day_clouds))    if day_clouds else 50
+    avg_wind_kmh   = round(sum(day_winds)  / len(day_winds))     if day_winds  else 0
+
+    print(f"☁️  [WEATHER] Домінантний код: {dominant_code}, хмарність: {avg_cloud}%, вітер (сер.): {avg_wind_kmh} км/г")
+
+    # --- Компактний блок (3–4 рядки) ---
+    compact_block = build_weather_compact_block(
+        dominant_code=dominant_code,
+        dominant_cloud=avg_cloud,
+        avg_wind_kmh=avg_wind_kmh,
+        temp_min=temp_min,
+        temp_max=temp_max,
+        all_codes=day_codes,
+        all_winds=day_winds,
+    )
+
+    # --- Текстовий підсумок від Gemini ---
     morning_data   = get_weather_period_data(hourly, (get_hourly_index(1, 6),  get_hourly_index(1, 10)))
     afternoon_data = get_weather_period_data(hourly, (get_hourly_index(1, 11), get_hourly_index(1, 16)))
     evening_data   = get_weather_period_data(hourly, (get_hourly_index(1, 17), get_hourly_index(1, 21)))
@@ -890,20 +989,21 @@ def send_weather_tomorrow(weather_data):
     if not used_fallback:
         print(f"✅ [WEATHER] Прийнято summary: '{final_summary}'")
 
+    # --- Зберігаємо snapshot для порівняння завтра ---
+    groups = build_timeline_groups(hourly, 1, 6, 22)
     save_forecast_snapshot(tmrw_str, groups)
 
-    timeline_block = "\n\n".join(escape_markdown_v2(b) for b in timeline)
-
+    # --- Збираємо повідомлення ---
     lines = [
-        f"🗓️ *{escape_markdown_v2('Прогноз на завтра — Миколаївка')}*\n\n",
+        f"🌤️ *{escape_markdown_v2('Погода в Миколаївці — на завтра')}*\n\n",
         f"📅 {format_date_ua(tomorrow)}\n\n",
-        f"{timeline_block}\n\n",
+        f"{compact_block}\n\n",
         f"_{escape_markdown_v2(final_summary)}_\n\n",
         f"📊 *Сайт:* https://mixaua\\.github\\.io/Mykolayivka/",
     ]
 
     send_telegram_message("".join(lines))
-    print(f"✅ [WEATHER] Прогноз на завтра відправлено і збережено для порівняння.")
+    print(f"✅ [WEATHER] Прогноз на завтра відправлено.")
 
     state = mark_weather_sent(state, "night_report")
     save_weather_state(state)
