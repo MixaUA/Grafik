@@ -1,6 +1,6 @@
 {
     "ON_event_index": 1,
-    "OFF_event_index": 0,
+    "OFF_event_index": 1,
     "forecast_2026-04-10": [
         {
             "hour": 6,
