@@ -18,7 +18,14 @@ WEATHER_API = (
 
 SITE_URL = "https://mixaua\\.github\\.io/Mykolayivka/"
 
-GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent"
+# --- КАСКАД МОДЕЛЕЙ (від основної до резервної) ---
+GEMINI_MODELS = [
+    "gemini-3.1-flash-lite-preview",  # Основна: 15 RPM, 500 RPD
+    "gemini-2.5-flash",               # Запасна 1: 5 RPM, 20 RPD
+    "gemini-2.5-flash-lite",          # Запасна 2: 10 RPM, 20 RPD
+    "gemini-2.0-flash-lite",          # Резерв: стабільна
+]
+GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
 # --- ФОРМАТУВАННЯ ---
 def escape_markdown_v2(text: str) -> str:
@@ -275,6 +282,10 @@ def fetch_weather_data():
 def get_hourly_index(day_offset, hour):
     return day_offset * 24 + hour
 
+# ============================================================
+# --- ВИКЛИК GEMINI З КАСКАДОМ МОДЕЛЕЙ ---
+# ============================================================
+
 def call_gemini_for_weather(prompt_text):
     api_key = os.environ.get('GEMINI_API_KEY')
     if not api_key:
@@ -289,43 +300,44 @@ def call_gemini_for_weather(prompt_text):
         }
     }
 
-    max_retries = 3
-    for attempt in range(max_retries):
-        try:
-            response = requests.post(
-                f"{GEMINI_API_URL}?key={api_key}",
-                json=payload,
-                timeout=30
-            )
+    for model_id in GEMINI_MODELS:
+        url = f"{GEMINI_API_BASE.format(model=model_id)}?key={api_key}"
+        print(f"🔄 [WEATHER] Спроба моделі: {model_id}")
 
-            if response.status_code == 200:
-                result = response.json()
-                candidates = result.get('candidates', [])
-                if candidates:
-                    content = candidates[0].get('content', {})
-                    parts = content.get('parts', [])
-                    if parts:
-                        text = parts[0].get('text', '').strip()
-                        if text:
-                            print(f"✅ [WEATHER] Gemini згенерував текст з {attempt + 1}-ї спроби ({len(text)} символів).")
-                            return text
+        for attempt in range(1, 4):
+            try:
+                response = requests.post(url, json=payload, timeout=30)
 
-            elif response.status_code == 503:
-                wait = 5 * (attempt + 1)
-                print(f"⏳ [WEATHER] Спроба {attempt + 1} невдала (503). Чекаю {wait} секунд...")
-                if attempt < max_retries - 1:
-                    time.sleep(wait)
-                    continue
-            else:
-                print(f"❌ [WEATHER] Gemini помилка {response.status_code}: {response.text[:200]}")
-                break
+                if response.status_code == 200:
+                    result = response.json()
+                    text = (result.get('candidates', [{}])[0]
+                                  .get('content', {})
+                                  .get('parts', [{}])[0]
+                                  .get('text', '').strip())
+                    if text:
+                        print(f"✅ [WEATHER] {model_id} — спроба {attempt} успішна ({len(text)} символів)")
+                        return text
+                    else:
+                        print(f"⚠️ [WEATHER] {model_id} — порожня відповідь на спробі {attempt}")
 
-        except Exception as e:
-            print(f"❌ [WEATHER] Помилка запиту (спроба {attempt + 1}): {e}")
-            if attempt < max_retries - 1:
-                time.sleep(5)
+                elif response.status_code in (429, 503):
+                    wait = 5 * attempt  # 5s → 10s → 15s
+                    print(f"⏳ [WEATHER] {model_id} — {response.status_code}, чекаю {wait}s (спроба {attempt}/3)")
+                    if attempt < 3:
+                        time.sleep(wait)
 
-    print("⚠️ [WEATHER] Всі спроби вичерпано, переходимо до fallback.")
+                else:
+                    print(f"❌ [WEATHER] {model_id} — HTTP {response.status_code}, переходимо до наступної моделі")
+                    break  # Фатальна помилка — одразу наступна модель
+
+            except Exception as e:
+                print(f"❌ [WEATHER] {model_id} — помилка спроби {attempt}: {e}")
+                if attempt < 3:
+                    time.sleep(5)
+
+        print(f"⚠️ [WEATHER] {model_id} вичерпала спроби — перемикаємось...")
+
+    print("🚨 [WEATHER] Всі моделі недоступні, повертаємо None.")
     return None
 
 # ============================================================
@@ -350,24 +362,14 @@ def build_weather_summary_prompt(morning, afternoon, evening, date_str, day_word
 
     temp_note = f"\nУВАГА — різка зміна: {'; '.join(temp_changes)}!" if temp_changes else ""
 
-    def ft(t):
-        return f"+{t}°" if t > 0 else f"{t}°"
-
-    range_note = ""
-    if temp_min is not None and temp_max is not None:
-        range_note = (
-            f"\nДіапазон температур за добу: від {ft(temp_min)} до {ft(temp_max)}. "
-            f"Використовуй САМЕ ЦІ цифри у тексті — не вигадуй інших значень!"
-        )
-
     examples = """
 Приклади правильних відповідей:
 
 Дощовий прохолодний день:
-"Завтра дощитиме майже весь день, тому парасолька — обов'язково. Вітер помірний, але з дощем буде відчуватися значно холодніше, ніж показує термометр. Ввечері трохи відпустить, але краще лишатися вдома."
+"Завтра дощитиме майже весь день, тому парасолька — обов'язково. Вітер помірний, але з дощем буде відчуватися значно холодніше. Ввечері трохи відпустить, але краще лишатися вдома."
 
 Різка зміна температури:
-"Вранці ще доволі тепло — близько +12°, але вдень різко похолодає на 7 градусів, тож одягайтеся шарами. Хмарно, без опадів, вітер помірний. Ввечері вже справжня осінь — куртка обов'язкова."
+"Вранці ще доволі тепло, але вдень різко похолодає — одягайтеся шарами. Хмарно, без опадів, вітер помірний. Ввечері вже справжня осінь — куртка обов'язкова."
 
 Гарний сонячний день:
 "Завтра справжній подарунок — ясно, тепло, без опадів. Ідеальний день для городу або прогулянки. Вітер легкий, тож навіть увечері буде приємно на вулиці."
@@ -376,7 +378,7 @@ def build_weather_summary_prompt(morning, afternoon, evening, date_str, day_word
 "Хмарно, але дощу не очікується — можна сміливо планувати справи на вулиці. Температура стабільна впродовж дня, вітер помірний. Загалом нічого страшного, просто без сонця."
 
 Вітряний день з дощем:
-"Дощ із сильним вітром — парасолька навряд чи врятує, краще плащ або непромокальна куртка. Температура близько нуля, відчуватиметься ще холодніше через вітер. Якщо є змога, цього дня краще не виходити зайвий раз."
+"Дощ із сильним вітром — парасолька навряд чи врятує, краще плащ або непромокальна куртка. Відчуватиметься холодніше через вітер. Якщо є змога, цього дня краще не виходити зайвий раз."
 """
 
     if changes:
@@ -401,12 +403,13 @@ def build_weather_summary_prompt(morning, afternoon, evening, date_str, day_word
 Дані:
 - Ранок: {pd(morning)}
 - День: {pd(afternoon)}
-- Вечір: {pd(evening)}{temp_note}{range_note}{changes_note}
+- Вечір: {pd(evening)}{temp_note}{changes_note}
 
 Правила:
 - Пиши живою українською, як сусід розповідає
 - Обов'язково дай практичну пораду (парасолька, куртка, прогулянка тощо)
-- Якщо є різкі зміни температури — обов'язково згадай
+- Якщо є різкі зміни між частинами дня — згадай словами ("вдень потепліє", "ввечері похолодає")
+- НЕ називай конкретні температури в градусах — описуй словами (тепло, прохолодно, холодно)
 - Кожне речення має бути повністю завершеним, закінчуватись крапкою
 - Одразу текст без вступних фраз ("Ось прогноз", "Звісно", "Будь ласка" тощо)
 - Без Markdown та емодзі всередині тексту
@@ -824,17 +827,6 @@ def build_weather_summary_prompt_two_days(
         rain = ", можливий дощ" if d['precip_prob'] > 40 else ""
         return f"{s}{d['temp']}°, {cloud}, {d['wind_desc']}{rain}"
 
-    def ft(t):
-        return f"+{t}°" if t > 0 else f"{t}°"
-
-    def range_note(mn, mx, label):
-        if mn is not None and mx is not None:
-            return (
-                f"\nДіапазон температур {label}: від {ft(mn)} до {ft(mx)}. "
-                f"Використовуй САМЕ ЦІ цифри — не вигадуй інших!"
-            )
-        return ""
-
     changes_note = ""
     if changes:
         changes_list = "\n".join(
@@ -852,18 +844,20 @@ def build_weather_summary_prompt_two_days(
 === СЬОГОДНІ ({today_str}) ===
 - Ранок: {pd(today_morning)}
 - День:  {pd(today_afternoon)}
-- Вечір: {pd(today_evening)}{range_note(today_temp_min, today_temp_max, "сьогодні")}{changes_note}
+- Вечір: {pd(today_evening)}{changes_note}
 
 === ЗАВТРА ({tomorrow_str}) ===
 - Ранок: {pd(tmrw_morning)}
 - День:  {pd(tmrw_afternoon)}
-- Вечір: {pd(tmrw_evening)}{range_note(tmrw_temp_min, tmrw_temp_max, "завтра")}
+- Вечір: {pd(tmrw_evening)}
 
 Правила:
 - Для сьогодні — 3-4 повних завершених речення
 - Для завтра — 2-3 повних завершених речення
 - Пиши живою українською, як сусід розповідає
 - Обов'язково дай практичну пораду (парасолька, куртка, прогулянка тощо)
+- Якщо є різкі зміни між частинами дня — згадай словами ("вдень потепліє", "ввечері похолодає")
+- НЕ називай конкретні температури в градусах — описуй словами (тепло, прохолодно, холодно)
 - Кожне речення закінчується крапкою
 - Без вступних фраз, без Markdown, без емодзі
 
