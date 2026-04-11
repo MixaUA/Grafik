@@ -60,5 +60,48 @@
         }
     ],
     "weather_day_report_2026-04-10": true,
-    "weather_night_report_2026-04-10": true
+    "weather_night_report_2026-04-10": true,
+    "forecast_2026-04-12": [
+        {
+            "hour": 6,
+            "code": 3,
+            "temp": 2,
+            "wind": 4,
+            "cloud": 100,
+            "hour_end": 8
+        },
+        {
+            "hour": 8,
+            "code": 2,
+            "temp": 3,
+            "wind": 5,
+            "cloud": 70,
+            "hour_end": 9
+        },
+        {
+            "hour": 9,
+            "code": 3,
+            "temp": 8,
+            "wind": 5,
+            "cloud": 96,
+            "hour_end": 18
+        },
+        {
+            "hour": 18,
+            "code": 2,
+            "temp": 8,
+            "wind": 2,
+            "cloud": 76,
+            "hour_end": 21
+        },
+        {
+            "hour": 21,
+            "code": 3,
+            "temp": 6,
+            "wind": 4,
+            "cloud": 92,
+            "hour_end": 22
+        }
+    ],
+    "weather_day_report_2026-04-11": true
 }
