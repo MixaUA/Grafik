@@ -172,5 +172,80 @@
         }
     ],
     "weather_day_report_2026-04-12": true,
-    "weather_night_report_2026-04-12": true
+    "weather_night_report_2026-04-12": true,
+    "forecast_2026-04-14": [
+        {
+            "hour": 6,
+            "code": 0,
+            "temp": 6,
+            "wind": 10,
+            "cloud": 6,
+            "hour_end": 10
+        },
+        {
+            "hour": 10,
+            "code": 2,
+            "temp": 9,
+            "wind": 13,
+            "cloud": 52,
+            "hour_end": 11
+        },
+        {
+            "hour": 11,
+            "code": 3,
+            "temp": 10,
+            "wind": 18,
+            "cloud": 86,
+            "hour_end": 13
+        },
+        {
+            "hour": 13,
+            "code": 2,
+            "temp": 12,
+            "wind": 20,
+            "cloud": 74,
+            "hour_end": 15
+        },
+        {
+            "hour": 15,
+            "code": 1,
+            "temp": 13,
+            "wind": 21,
+            "cloud": 46,
+            "hour_end": 16
+        },
+        {
+            "hour": 16,
+            "code": 2,
+            "temp": 12,
+            "wind": 18,
+            "cloud": 78,
+            "hour_end": 19
+        },
+        {
+            "hour": 19,
+            "code": 3,
+            "temp": 10,
+            "wind": 13,
+            "cloud": 83,
+            "hour_end": 20
+        },
+        {
+            "hour": 20,
+            "code": 2,
+            "temp": 9,
+            "wind": 11,
+            "cloud": 66,
+            "hour_end": 21
+        },
+        {
+            "hour": 21,
+            "code": 1,
+            "temp": 8,
+            "wind": 13,
+            "cloud": 42,
+            "hour_end": 22
+        }
+    ],
+    "weather_day_report_2026-04-13": true
 }
