@@ -338,9 +338,13 @@ def load_weather_state():
     if os.path.exists(state_path):
         try:
             with open(state_path, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                content = f.read().strip()
+            if not content:
+                print("⚠️ [WEATHER] state.json порожній, починаємо з нуля.")
+                return {}
+            return json.loads(content)
         except Exception as e:
-            print(f"⚠️ [WEATHER] Не вдалось прочитати state.json: {e}")
+            print(f"⚠️ [WEATHER] Не вдалось прочитати state.json: {e}, починаємо з нуля.")
     return {}
 
 def save_weather_state(state):
