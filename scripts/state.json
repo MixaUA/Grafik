@@ -3,112 +3,6 @@
         "today": "Ранок у Миколаївці буде прохолодним та хмарним, з легким вітерцем, тож не поспішайте скидати теплий одяг. Вдень помітно потеплішає, стане досить приємно, але хмари залишаться, а вітер трохи посилиться. Вечір обіцяє бути лагідним, лише вітер відчутніший. Тож сміливо виходьте на прогулянку, але зранку не забудьте легку курточку.",
         "tomorrow": "Завтрашній ранок принесе прохолоду та хмарність, не виключений невеличкий дощик. Протягом дня буде свіжо, і мокрий настрій може тривати, адже можливі опади. Обов'язково візьміть з собою парасольку, щоб негода не застала вас зненацька."
     },
-    "forecast_2026-05-27": [
-        {
-            "hour": 6,
-            "code": 61,
-            "temp": 12,
-            "wind": 9,
-            "cloud": 100,
-            "hour_end": 9
-        },
-        {
-            "hour": 9,
-            "code": 3,
-            "temp": 14,
-            "wind": 14,
-            "cloud": 87,
-            "hour_end": 10
-        },
-        {
-            "hour": 10,
-            "code": 2,
-            "temp": 16,
-            "wind": 17,
-            "cloud": 71,
-            "hour_end": 11
-        },
-        {
-            "hour": 11,
-            "code": 3,
-            "temp": 17,
-            "wind": 22,
-            "cloud": 77,
-            "hour_end": 12
-        },
-        {
-            "hour": 12,
-            "code": 2,
-            "temp": 19,
-            "wind": 20,
-            "cloud": 69,
-            "hour_end": 14
-        },
-        {
-            "hour": 14,
-            "code": 3,
-            "temp": 20,
-            "wind": 22,
-            "cloud": 85,
-            "hour_end": 15
-        },
-        {
-            "hour": 15,
-            "code": 2,
-            "temp": 20,
-            "wind": 19,
-            "cloud": 79,
-            "hour_end": 16
-        },
-        {
-            "hour": 16,
-            "code": 3,
-            "temp": 20,
-            "wind": 20,
-            "cloud": 82,
-            "hour_end": 17
-        },
-        {
-            "hour": 17,
-            "code": 2,
-            "temp": 19,
-            "wind": 19,
-            "cloud": 75,
-            "hour_end": 18
-        },
-        {
-            "hour": 18,
-            "code": 80,
-            "temp": 17,
-            "wind": 18,
-            "cloud": 7,
-            "hour_end": 19
-        },
-        {
-            "hour": 19,
-            "code": 0,
-            "temp": 17,
-            "wind": 16,
-            "cloud": 19,
-            "hour_end": 20
-        },
-        {
-            "hour": 20,
-            "code": 2,
-            "temp": 16,
-            "wind": 14,
-            "cloud": 55,
-            "hour_end": 21
-        },
-        {
-            "hour": 21,
-            "code": 1,
-            "temp": 14,
-            "wind": 9,
-            "cloud": 33,
-            "hour_end": 22
-        }
-    ],
     "forecast_2026-05-28": [
         {
             "hour": 6,
@@ -289,6 +183,63 @@
             "hour_end": 22
         }
     ],
-    "weather_day_report_2026-05-28": true,
-    "weather_night_report_2026-05-28": true
+    "forecast_2026-05-30": [
+        {
+            "hour": 6,
+            "code": 61,
+            "temp": 9,
+            "wind": 6,
+            "cloud": 100,
+            "hour_end": 12
+        },
+        {
+            "hour": 12,
+            "code": 3,
+            "temp": 12,
+            "wind": 6,
+            "cloud": 93,
+            "hour_end": 14
+        },
+        {
+            "hour": 14,
+            "code": 2,
+            "temp": 12,
+            "wind": 9,
+            "cloud": 81,
+            "hour_end": 15
+        },
+        {
+            "hour": 15,
+            "code": 80,
+            "temp": 12,
+            "wind": 10,
+            "cloud": 86,
+            "hour_end": 18
+        },
+        {
+            "hour": 18,
+            "code": 2,
+            "temp": 12,
+            "wind": 9,
+            "cloud": 61,
+            "hour_end": 20
+        },
+        {
+            "hour": 20,
+            "code": 1,
+            "temp": 10,
+            "wind": 4,
+            "cloud": 46,
+            "hour_end": 21
+        },
+        {
+            "hour": 21,
+            "code": 2,
+            "temp": 9,
+            "wind": 3,
+            "cloud": 77,
+            "hour_end": 22
+        }
+    ],
+    "weather_day_report_2026-05-29": true
 }
