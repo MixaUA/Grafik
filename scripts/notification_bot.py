@@ -20,7 +20,7 @@ SITE_URL = "https://mixaua\\.github\\.io/Mykolayivka/"
 
 # --- КАСКАД МОДЕЛЕЙ (від основної до резервної) ---
 GEMINI_MODELS = [
-    "gemini-3.1-flash-lite-preview",  # Основна: 15 RPM, 500 RPD
+    "gemini-3.1-flash-lite",          # Основна: 15 RPM, 500 RPD
     "gemini-2.5-flash",               # Запасна 1: 5 RPM, 20 RPD
     "gemini-2.5-flash-lite",          # Запасна 2: 10 RPM, 20 RPD
     "gemini-2.0-flash-lite",          # Резерв: стабільна
