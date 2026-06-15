@@ -217,5 +217,6 @@
             "hour_end": 22
         }
     ],
-    "weather_day_report_2026-06-15": true
+    "weather_day_report_2026-06-15": true,
+    "weather_night_report_2026-06-15": true
 }
