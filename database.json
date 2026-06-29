@@ -1,5 +1,5 @@
 {
-  "update_time": "11 квітня 00:15",
+  "update_time": "29 червня 19:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -12,7 +12,9 @@
     },
     "1.2": {
       "понеділок": [],
-      "вівторок": [],
+      "вівторок": [
+        "20:00-22:00"
+      ],
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
@@ -21,7 +23,9 @@
     },
     "2.1": {
       "понеділок": [],
-      "вівторок": [],
+      "вівторок": [
+        "18:00-20:00"
+      ],
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
@@ -30,7 +34,9 @@
     },
     "2.2": {
       "понеділок": [],
-      "вівторок": [],
+      "вівторок": [
+        "17:00-20:00"
+      ],
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
@@ -70,9 +76,7 @@
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
-      "субота": [
-        "06:00-08:00"
-      ],
+      "субота": [],
       "неділя": []
     },
     "5.1": {
@@ -112,6 +116,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/AMhKDMGDhzOQ7b8s0r35q6YyievsWNFhKOG2hqF4HBrALtNTUUUuWKTkW05xorbCgnYNr33zrtczL4I9T7rY82S0SnHwWR0jame9Dk1ZFE5SzGYbcsOOp2-rfJAa6SHnwqhqOatk6MWHLWx8dacOAsNRo9ehvCCylVOHhj9kfJAHtCEvozZdYtskrj48HhTyH2rXfeDkIEMEFsMZPNH05VXS02LjAKwnV9RfIOxq52mELxpaWhk9SI1rraD7dbH98ifAJ9I5FmltJdjnEVjrmlWQvHomKuOp08HgIlmXt5SgF-dy-7Y4_b1qu4dCt_r6gz5jOx9wwQ_h5TTEn8FOdQ.jpg",
-  "last_processed_text": "💡ГПВ 11 квітня на Сумщині.За подальшими оновленнями слідкуйте на сайті Суспільне Суми."
+  "last_processed_url": "https://cdn4.telesco.pe/file/GJat4dpNIGYBxbW05bj6DaHrH2eUpSZ6xXrj83ABvHtulR84HnA_9LrR3m_25cdszTQrDOBjVrQVapz7dygZg11ZNmkAlPBUnSx96wPBZCmcinLweFDO_4T-fFsb_c6Ocp3XPQN0veRf6FUhFNkDhwrOcFNCJIKlmqJZyZQPq8FoRxDlECs5CbuUbxpuvqoS7gwC1d2UBWbO6DW6ToDSKn8U9I1zLrS-zue6R9PccsF4SQWKY56ra70PMMXuiQGq8VkxXDPSTtyXJLxTiWCLOXxPe5vjHKhlyi5f4HrHlhiJ1F0V2hVwgpNO_8aOTZYLz-965ub6T5MX0IxvBbd-5g.jpg",
+  "last_processed_text": "💡30 червня на Сумщині діятимуть графіки відключення світла, повідомили в \"Сумиобленерго\"."
 }
