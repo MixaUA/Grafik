@@ -1,5 +1,5 @@
 {
-  "update_time": "29 червня 19:15",
+  "update_time": "30 червня 16:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -26,7 +26,9 @@
       "вівторок": [
         "18:00-20:00"
       ],
-      "середа": [],
+      "середа": [
+        "20:00-22:00"
+      ],
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
@@ -37,7 +39,9 @@
       "вівторок": [
         "17:00-20:00"
       ],
-      "середа": [],
+      "середа": [
+        "18:00-22:00"
+      ],
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
@@ -46,7 +50,9 @@
     "3.1": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [],
+      "середа": [
+        "16:00-20:00"
+      ],
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
@@ -55,7 +61,9 @@
     "3.2": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [],
+      "середа": [
+        "15:00-18:00"
+      ],
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
@@ -64,7 +72,10 @@
     "4.1": {
       "понеділок": [],
       "вівторок": [],
-      "середа": [],
+      "середа": [
+        "15:00-16:00",
+        "18:00-20:00"
+      ],
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
@@ -116,6 +127,6 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/GJat4dpNIGYBxbW05bj6DaHrH2eUpSZ6xXrj83ABvHtulR84HnA_9LrR3m_25cdszTQrDOBjVrQVapz7dygZg11ZNmkAlPBUnSx96wPBZCmcinLweFDO_4T-fFsb_c6Ocp3XPQN0veRf6FUhFNkDhwrOcFNCJIKlmqJZyZQPq8FoRxDlECs5CbuUbxpuvqoS7gwC1d2UBWbO6DW6ToDSKn8U9I1zLrS-zue6R9PccsF4SQWKY56ra70PMMXuiQGq8VkxXDPSTtyXJLxTiWCLOXxPe5vjHKhlyi5f4HrHlhiJ1F0V2hVwgpNO_8aOTZYLz-965ub6T5MX0IxvBbd-5g.jpg",
-  "last_processed_text": "💡30 червня на Сумщині діятимуть графіки відключення світла, повідомили в \"Сумиобленерго\"."
+  "last_processed_url": "https://cdn4.telesco.pe/file/RMx0gxmZ-E78n9KCiKlHBscLbf51eQsWgS7m5J1yc2VpU3k2XlsGh-WecL0bpvtyb-wYftvhGDDmRQ7zOt1FUaqO6qw-XN-Vke38a4cT7d_5ZQoAFu8pUJcekoJkxePG74hMLAzfndZCiYGRUiGz6u9P9LRr7eNvdbf7hIa7QyMnf-mHE_QwX9nob-e1m3-h5YyYpBcRuq_j_lXMZ_GN3jqytX6oOzCL4QuKYe9m8_Ko_vLTsK04dMG05pCxKsRwE6DUK7Z3sBBZd2h0_0lJxmIoZX4FobMTUMPHnJjRGJGeF3pTXgvE2H0jGnhgTZJdg-Vb536_pnLzdPn128BM7Q.jpg",
+  "last_processed_text": "💡1 липня на Сумщині діятимуть графіки погодинних відключень світла, повідомили в \"Сумиобленерго\"."
 }
