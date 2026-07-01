@@ -22,42 +22,95 @@ def get_ua_date(date_str):
         return f"{int(day)} {months.get(month, month)}"
     except: return date_str
 
+def check_text_keywords(text):
+    """Перевіряє наявність ключових слів з урахуванням різних закінчень (розумний пошук)"""
+    if not text:
+        return False
+    text_lower = text.lower()
+    
+    # Шаблони для пошуку за сенсом (ігноруючи відмінки та закінчення)
+    patterns = [
+        r"сумиобленерго",
+        r"аварійн.*відключен",
+        r"спеціальн.*графік.*аварійн.*відключен",
+        r"пошкоджен.*енергосист",
+        r"обленерго",
+        r"відсутн.*електропостач",
+        r"робот.*електромереж"
+    ]
+    
+    return any(re.search(p, text_lower) for p in patterns)
+
 def extract_data_from_msg(msg):
-    """Витягує текст та URL фото з повідомлення Telegram"""
+    """Витягує текст, URL фото та URL самого повідомлення Telegram. Відео — ігнорує."""
     text_area = msg.find('div', class_='tgme_widget_message_text')
     photo_wrap = msg.find('a', class_='tgme_widget_message_photo_wrap')
-    if photo_wrap and text_area:
-        text = text_area.get_text().strip()
-        if any(word in text.lower() for word in ["гпв", "графік", "черги"]):
-            style = photo_wrap.get('style', '')
-            match = re.search(r'url\(["\']?(.*?)["\']?\)', style)
-            if match:
-                img_url = match.group(1)
-                if img_url.startswith('//'): img_url = 'https:' + img_url
-                return {"url": img_url, "text": text}
-    return None
+    link_area = msg.find('a', class_='tgme_widget_message_date')
+    
+    # ПЕРЕВІРКА НА ВІДЕО: якщо всередині повідомлення є відео, медіа не чіпаємо
+    is_video = msg.find('video') is not None or msg.find('div', class_='tgme_widget_message_video_wrap') is not None
+    
+    msg_url = link_area.get('href') if link_area else None
+    text = text_area.get_text().strip() if text_area else ""
+    img_url = None
 
-def get_latest_msg_data():
-    """Шукає актуальний графік у закріпах або стрічці"""
+    # Завантажуємо картинку тільки якщо це не відео
+    if photo_wrap and not is_video:
+        style = photo_wrap.get('style', '')
+        match = re.search(r'url\(["\']?(.*?)["\']?\)', style)
+        if match:
+            img_url = match.group(1)
+            if img_url.startswith('//'): img_url = 'https:' + img_url
+
+    return {"url": img_url, "text": text, "msg_url": msg_url}
+
+def get_latest_messages():
+    """Збирає останні повідомлення з каналу для аналізу новин та графіків"""
     channel_url = "https://t.me/s/suspilnesumy"
     headers = {'User-Agent': 'Mozilla/5.0'}
     try:
         response = requests.get(channel_url, headers=headers, timeout=20)
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # 1. Пріоритет закріпленим повідомленням
-        pinned_msg = soup.find('div', class_='tgme_widget_message_pinned')
-        if pinned_msg:
-            data = extract_data_from_msg(pinned_msg)
-            if data: return data
-
-        # 2. Якщо в закріпах немає - стрічка
+        # Шукаємо всі повідомлення в стрічці
         messages = soup.find_all('div', class_='tgme_widget_message_wrap')
-        for msg in reversed(messages):
+        extracted_msgs = []
+        for msg in messages:
+            if 'tgme_widget_message_user_not_supported' in msg.get('class', []):
+                continue
             data = extract_data_from_msg(msg)
-            if data: return data
-        return None
-    except Exception: return None
+            if data and (data["text"] or data["url"]):
+                extracted_msgs.append(data)
+        return extracted_msgs
+    except Exception: return []
+
+def send_to_telegram(text, img_url=None):
+    """Відправляє текстову новину або новину з фото в телеграм канал"""
+    bot_token = os.environ.get('TELEGRAM_TOKEN')
+    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+    if not bot_token or not chat_id:
+        print("⚠️ Не знайдено TELEGRAM_TOKEN або TELEGRAM_CHAT_ID в оточенні.")
+        return
+
+    # Обов'язкове додавання джерела без переходу в самий кінець повідомлення
+    full_text = f"{text}\n\nДжерело: Суспільне Суми"
+
+    try:
+        if img_url:
+            url = f"https://api.telegram.org/bot{bot_token}/sendPhoto"
+            payload = {'chat_id': chat_id, 'caption': full_text}
+            img_data = requests.get(img_url, timeout=15).content
+            files = {'photo': ('image.jpg', img_data, 'image/jpeg')}
+            response = requests.post(url, data=payload, files=files, timeout=20)
+        else:
+            url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+            payload = {'chat_id': chat_id, 'text': full_text}
+            response = requests.post(url, json=payload, timeout=15)
+
+        if not response.ok:
+            print(f"⚠️ Telegram помилка відправки новини: {response.status_code} — {response.text}")
+    except Exception as e:
+        print(f"❌ Помилка під час відправки в Telegram: {e}")
 
 def main():
     db_path = 'database.json'
@@ -78,14 +131,42 @@ def main():
     if retry_after and time.time() < retry_after:
         return
 
-    msg_data = get_latest_msg_data()
+    all_msgs = get_latest_messages()
+    if not all_msgs:
+        print("☕ Не вдалося отримати дописи з каналу.")
+        return
+
+    # ============================================================
+    # БЛОК 1: ПЕРЕВІРКА ОПЕРАТИВНИХ НОВИН (ПЕРЕПОСТ ПО КЛЮЧАХ)
+    # ============================================================
+    latest_news = all_msgs[-1] if all_msgs else None
+    
+    if latest_news and latest_news["msg_url"] != db.get("last_processed_news_url"):
+        if check_text_keywords(latest_news["text"]):
+            print(f"📰 Знайдено важливу новину про енергетику! Пересилаю...")
+            send_to_telegram(latest_news["text"], latest_news["url"])
+            
+            # Безпечно оновлюємо мітку новин без зачіпання логіки графіків
+            db["last_processed_news_url"] = latest_news["msg_url"]
+            with open(db_path, 'w', encoding='utf-8') as f:
+                json.dump(db, f, ensure_ascii=False, indent=2)
+
+    # ============================================================
+    # БЛОК 2: СТАНДАРТНА ЛОГІКА ПОШУКУ ТА ОБРОБКИ ГРАФІКІВ (БЕЗ ЗМІН)
+    # ============================================================
+    msg_data = None
+    for msg in reversed(all_msgs):
+        if msg["text"] and any(word in msg["text"].lower() for word in ["гпв", "графік", "черги"]):
+            if msg["url"]: # обов'язково з картинкою графіку для ШІ
+                msg_data = msg
+                break
+
     if not msg_data or db.get("last_processed_url") == msg_data["url"]:
-        print("☕ Змін немає, графік той самий.")
+        print("☕ Змін у графіках немає.")
         return
 
     try:
         img_data = requests.get(msg_data["url"]).content
-        # Промпт фокусується лише на цифрах та даті
         prompt = (
             "Це таблиця ГПВ. Твоє завдання:\n"
             "1. Визнач дату (DD.MM.YYYY).\n"
@@ -103,44 +184,36 @@ def main():
             res = json.loads(json_match.group())
             source = res.get('queues', res)
             
-            # --- РОЗУМНЕ ВИЗНАЧЕННЯ ДНЯ ТИЖНЯ ---
             raw_date = res.get('date', kyiv_now.strftime("%d.%m.%Y"))
             try:
-                # Python обчислює день тижня на основі знайденої дати
                 date_obj = datetime.strptime(raw_date, "%d.%m.%Y").replace(tzinfo=kyiv_tz)
                 target_day = ua_days[date_obj.weekday()]
             except:
                 target_day = today_name
             
-            # --- ПЕРЕЗБІРКА БАЗИ (Сьогодні + Завтра) ---
             all_q_names = [f"{i}.{j}" for i in range(1, 7) for j in range(1, 3)]
             new_queues = {q: {d: [] for d in ua_days} for q in all_q_names}
             
-            # Копіюємо старі дані, якщо вони ще актуальні
             if "queues" in db:
                 for q in all_q_names:
                     for d in [today_name, tomorrow_name]:
                         if d in db["queues"][q]:
                             new_queues[q][d] = db["queues"][q][d]
 
-            # Записуємо нові дані від ШІ у правильну «комірку»
             for q in all_q_names:
                 if q in source and source[q]:
                     new_queues[q][target_day] = source[q]
 
-            # --- ЗМІНЕНО: ТЕПЕР ВИВОДИМО ДАТУ ОНОВЛЕННЯ ЗАМІСТЬ ДАТИ ГРАФІКА ---
             update_day_formatted = get_ua_date(kyiv_now.strftime("%d.%m.%Y"))
             
-            output = {
-                "update_time": f"{update_day_formatted} {kyiv_now.strftime('%H:%M')}",
-                "queues": new_queues,
-                "last_processed_url": msg_data["url"],
-                "last_processed_text": msg_data["text"]
-            }
+            db["update_time"] = f"{update_day_formatted} {kyiv_now.strftime('%H:%M')}"
+            db["queues"] = new_queues
+            db["last_processed_url"] = msg_data["url"]
+            db["last_processed_text"] = msg_data["text"]
 
             with open(db_path, 'w', encoding='utf-8') as f:
-                json.dump(output, f, ensure_ascii=False, indent=2)
-            print(f"🎉 Графік на {raw_date} ({target_day}) оновлено!")
+                json.dump(db, f, ensure_ascii=False, indent=2)
+            print(f"🎉 Графік на {raw_date} ({target_day}) оновлено в базі!")
 
     except Exception as e:
         if "429" in str(e):
