@@ -1,5 +1,5 @@
 {
-  "update_time": "6 жовтня 12:30",
+  "update_time": "6 жовтня 17:45",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -37,7 +37,8 @@
     "2.2": {
       "понеділок": [],
       "вівторок": [
-        "16:00-20:00"
+        "16:00-20:00",
+        "22:00-00:00"
       ],
       "середа": [],
       "четвер": [],
@@ -48,7 +49,8 @@
     "3.1": {
       "понеділок": [],
       "вівторок": [
-        "15:00-18:00"
+        "15:00-18:00",
+        "20:00-22:00"
       ],
       "середа": [],
       "четвер": [],
@@ -59,7 +61,8 @@
     "3.2": {
       "понеділок": [],
       "вівторок": [
-        "15:00-16:00"
+        "15:00-16:00",
+        "18:00-20:00"
       ],
       "середа": [],
       "четвер": [],
@@ -122,7 +125,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/mC8iNRcvYbtO8UQ8P7RgKRw7WRfiGnlmahZZYU-wwH_UD32pdNbUNb6-eRIV5_PotZVl9UWzGy1-FB6MyCQJQN2zR1IbZ8Z2Ij5Qs3wcEiQvkC6k6c1Ncf-NtdBw14X-Fxlu74G_OnXfhT9qJB3qc5B3WX4fjcy1a9az3iMXQ-iRF80Iymb9mKxnkaJKRIYFaYwmqfmtG3vmV1NxP6ZkDN2X3rlQ11gm2M7iw_c8eD35PQa0hS3o0oC-cM7_6MRs9iTVXLdHSBmPgjZOowReFKqon3ICWeIm5d5-zRRfuV19vqEt3xijOi_mirau0CYcumawuXsf4-w4Wuikc5GxIw.jpg",
-  "last_processed_text": "6 жовтня на Сумщині запровадили графіки погодинних відключень світла, повідомили в \"Сумиобленерго\".",
+  "last_processed_url": "https://cdn4.telesco.pe/file/SESj9Ce3cKcx5O9uxhmS6H-tEkqz4jt8J9ytMPOz7U-UMOVR7E7-joYUj7AnXlXmwJCmoqBAoQHBd3RmLZbWAOzpexolPLoBvwHON8FOwesysJvT6noax4b2YvI9Mdwa96jeye5yYbFi8CJN3rBbpW6-d8Vr6wuLv_2Yf4OGfHa7Th975G22XUEbduUR5s2IM45He-8AcJPzhRzVamq6V-q1ZdvkJwFiPLdxW5kXrlRsnlipDzFfJLQ2lCWFIUSkvY9tNe09kSoelxcwY3xXUeslnX9lZCdNcuF5yIAd-6smjEH71FKbNxPo9wuC1Nr_glie5xZu9JYNnrJWuR9gIQ.jpg",
+  "last_processed_text": "Зміни у ГПВ на Сумщині 6 жовтня.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48440"
 }
