@@ -28,15 +28,21 @@ def check_text_keywords(text):
         return False
     text_lower = text.lower()
     
-    # Шаблони для пошуку за сенсом (ігноруючи відмінки та закінчення)
+    # Ігноруємо стандартні дописи з графіками, бо вони йдуть в Блок 2
+    if any(g_word in text_lower for g_word in ["гпв", "графік", "черги"]):
+        return False
+
+    # Гнучкі шаблони для пошуку оперативних новин енергетики
     patterns = [
         r"сумиобленерго",
-        r"аварійн.*відключен",
-        r"спеціальн.*графік.*аварійн.*відключен",
-        r"пошкоджен.*енергосист",
         r"обленерго",
+        r"аварійн.*відключ",
+        r"аварійн.*знеструмл",
+        r"пошкодж.*енерг",
         r"відсутн.*електропостач",
-        r"робот.*електромереж"
+        r"відсутн.*світл",
+        r"робот.*електромереж",
+        r"укренерго"
     ]
     
     return any(re.search(p, text_lower) for p in patterns)
@@ -139,17 +145,22 @@ def main():
     # ============================================================
     # БЛОК 1: ПЕРЕВІРКА ОПЕРАТИВНИХ НОВИН (ПЕРЕПОСТ ПО КЛЮЧАХ)
     # ============================================================
-    latest_news = all_msgs[-1] if all_msgs else None
+    last_news_url = db.get("last_processed_news_url")
     
-    if latest_news and latest_news["msg_url"] != db.get("last_processed_news_url"):
-        if check_text_keywords(latest_news["text"]):
+    # Шукаємо серед останніх повідомлень нове із ключовими словами
+    for msg in reversed(all_msgs):
+        if msg["msg_url"] and msg["msg_url"] == last_news_url:
+            break  # Дойшли до вже обробленого повідомлення, зупиняємо пошук
+
+        if check_text_keywords(msg["text"]):
             print(f"📰 Знайдено важливу новину про енергетику! Пересилаю...")
-            send_to_telegram(latest_news["text"], latest_news["url"])
+            send_to_telegram(msg["text"], msg["url"])
             
-            # Безпечно оновлюємо мітку новин без зачіпання логіки графіків
-            db["last_processed_news_url"] = latest_news["msg_url"]
+            # Оновлюємо мітку та зберігаємо в базу
+            db["last_processed_news_url"] = msg["msg_url"]
             with open(db_path, 'w', encoding='utf-8') as f:
                 json.dump(db, f, ensure_ascii=False, indent=2)
+            break
 
     # ============================================================
     # БЛОК 2: СТАНДАРТНА ЛОГІКА ПОШУКУ ТА ОБРОБКИ ГРАФІКІВ (БЕЗ ЗМІН)
