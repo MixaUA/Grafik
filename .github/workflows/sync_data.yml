@@ -98,10 +98,22 @@ jobs:
 
           if [ "$HAS_TOMORROW" == "true" ]; then
             SCHEDULE_TEXT=$(get_schedule "$TOMORROW_UA")
-            MSG="🤖 *Увага! Ваш помічник отримав графік черги 6.2 на завтра!*%0A%0A📅 *${FULL_DATE_TOMORROW}* (${TOMORROW_UA})%0A%0A*Графік:*%0A${SCHEDULE_TEXT}%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
+            
+            # Якщо немає вимкнень для 6.2
+            if [ -z "$SCHEDULE_TEXT" ]; then
+              SCHEDULE_TEXT="ℹ️ Для черги 6.2 відключень не заплановано (зміни стосуються інших черг).%0A"
+            fi
+            
+            MSG="🤖 *Увага! Ваш помічник отримав графік черги 6.2 на завтра!*%0A%0A📅 *${FULL_DATE_TOMORROW}* (${TOMORROW_UA})%0A%0A*Графік:*%0A${SCHEDULE_TEXT}%0A📊 *Повний графік для всіх черг на сайті:*%0Ahttps://mixaua.github.io/Mykolayivka/"
           else
             SCHEDULE_TEXT=$(get_schedule "$TODAY_UA")
-            MSG="🤖 *Оновлення!*%0A%0A🔄 Внесено зміни в поточний графік від *${UPDATE_TIME}*.%0A%0A📅 *${FULL_DATE_TODAY}* (${TODAY_UA})%0A%0A*Графік:*%0A${SCHEDULE_TEXT}%0A⚠️ Даних на завтра (${FULL_DATE_TOMORROW}) поки немає.%0A%0A📊 *Сайт:* https://mixaua.github.io/Mykolayivka/"
+            
+            # Якщо немає вимкнень для 6.2
+            if [ -z "$SCHEDULE_TEXT" ]; then
+              SCHEDULE_TEXT="ℹ️ Для черги 6.2 відключень не заплановано (зміни стосуються інших черг).%0A"
+            fi
+            
+            MSG="🤖 *Оновлення!*%0A%0A🔄 Внесено зміни в поточний графік від *${UPDATE_TIME}*.%0A%0A📅 *${FULL_DATE_TODAY}* (${TODAY_UA})%0A%0A*Графік:*%0A${SCHEDULE_TEXT}%0A⚠️ Даних на завтра (${FULL_DATE_TOMORROW}) поки немає.%0A%0A📊 *Повний графік для всіх черг на сайті:*%0Ahttps://mixaua.github.io/Mykolayivka/"
           fi
 
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
