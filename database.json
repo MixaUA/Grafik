@@ -1,12 +1,13 @@
 {
-  "update_time": "7 жовтня 18:45",
+  "update_time": "7 жовтня 21:15",
   "queues": {
     "1.1": {
       "понеділок": [],
       "вівторок": [],
       "середа": [
         "12:00-16:00",
-        "18:00-20:00"
+        "18:00-20:00",
+        "20:30-22:00"
       ],
       "четвер": [
         "02:00-04:00"
@@ -20,7 +21,8 @@
       "вівторок": [],
       "середа": [
         "10:00-14:00",
-        "16:00-18:00"
+        "16:00-18:00",
+        "22:00-00:00"
       ],
       "четвер": [
         "00:00-02:00"
@@ -34,7 +36,8 @@
       "вівторок": [],
       "середа": [
         "08:00-12:00",
-        "15:00-16:00"
+        "15:00-16:00",
+        "20:30-22:00"
       ],
       "четвер": [
         "22:00-00:00"
@@ -60,7 +63,6 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [
-        "04:00-06:00",
         "07:00-08:00"
       ],
       "четвер": [
@@ -87,7 +89,7 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [
-        "00:00-02:00"
+        "00:00-01:30"
       ],
       "четвер": [
         "14:00-18:00",
@@ -143,7 +145,8 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [
-        "16:00-20:00"
+        "16:00-20:00",
+        "22:00-00:00"
       ],
       "четвер": [
         "06:00-10:00"
@@ -157,7 +160,7 @@
       "вівторок": [],
       "середа": [
         "14:00-18:00",
-        "20:00-22:00"
+        "20:00-00:00"
       ],
       "четвер": [
         "04:00-06:00",
@@ -168,7 +171,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/NSB94BM0dqjRMVMmlIWDb1kg7Ml__UuQ23lYQvaLryQmCFET3kbDlPTGbbVHiI_sSUEx0ubvGu5hf3KAuhhLN11zIvvfwknMy7n7Z7cjCwrutcIT-K3jVp_2Q_L4kTKK3rG1nyQQaq9ofhr18-g_3t4DGePccqGeukeromBE6m9b1MTvh9SPK25M7kIiiWPHEUMdwVHt_Q3vGv0xTwA9_qO1qSuuUMw_28tdvFqtM1UEB9As_MHp7gsQvlkSuYleNA-uwQIkZxkqQTbmAxSxM9W6ZAuAzmwkSvEZ5VPyNNzhpyXwVipQUBDOXKnG_sUWaCBCB1DqXHn0fbmbNbGs3A.jpg",
-  "last_processed_text": "ГПВ на Сумщині на 8 жовтня.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/KrIN7Ptn5ZIsQAkmryTs6KBGuTWh7MkJ_MMdn1cnbtOZqbwrR1POUCPjtQJ5xllA3k4Yba76-bKeYOQ6C37wo8bDYwswWEnu24r_PF0aZUmyQEJUzr818Pl5BsUkDb6cGnA4EBysAQmlALmIJ3LDKIdnd_MA5HpQYTawakuNdEpCZ7hZWzJh49fBcaTXT9nZy_gGSBYV4HMoMftaXyStbTjlOkHtu6oT9ycZ3v_gmQvJoIpu_V0PmdIx1wMKE7ggRZcwHYGkkwcUKwcx_Y4l-m8zu0mzD5q6uGD2_LqNQzzKpQtfgUzlz4J3CqLaLLiFyXxcOS5eycpNNNSKb0X8Pg.jpg",
+  "last_processed_text": "Зміни в ГПВ електроенергії на Сумщині 8 жовтня.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48446"
 }
