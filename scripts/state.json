@@ -4,65 +4,7 @@
         "tomorrow": "Завтрашній ранок принесе прохолоду та хмарність, не виключений невеличкий дощик. Протягом дня буде свіжо, і мокрий настрій може тривати, адже можливі опади. Обов'язково візьміть з собою парасольку, щоб негода не застала вас зненацька."
     },
     "OFF_event_index": 5,
-    "ON_event_index": 5,
-    "forecast_2026-10-06": [
-        {
-            "hour": 6,
-            "code": 2,
-            "temp": 9,
-            "wind": 4,
-            "cloud": 70,
-            "hour_end": 7
-        },
-        {
-            "hour": 7,
-            "code": 3,
-            "temp": 9,
-            "wind": 4,
-            "cloud": 91,
-            "hour_end": 8
-        },
-        {
-            "hour": 8,
-            "code": 2,
-            "temp": 12,
-            "wind": 6,
-            "cloud": 76,
-            "hour_end": 11
-        },
-        {
-            "hour": 11,
-            "code": 3,
-            "temp": 14,
-            "wind": 8,
-            "cloud": 83,
-            "hour_end": 12
-        },
-        {
-            "hour": 12,
-            "code": 2,
-            "temp": 16,
-            "wind": 10,
-            "cloud": 74,
-            "hour_end": 14
-        },
-        {
-            "hour": 14,
-            "code": 3,
-            "temp": 16,
-            "wind": 11,
-            "cloud": 90,
-            "hour_end": 17
-        },
-        {
-            "hour": 17,
-            "code": 2,
-            "temp": 12,
-            "wind": 5,
-            "cloud": 70,
-            "hour_end": 22
-        }
-    ],
+    "ON_event_index": 6,
     "forecast_2026-10-07": [
         {
             "hour": 6,
@@ -131,6 +73,55 @@
             "hour_end": 22
         }
     ],
-    "weather_day_report_2026-10-07": true,
-    "weather_night_report_2026-10-07": true
+    "forecast_2026-10-09": [
+        {
+            "hour": 6,
+            "code": 2,
+            "temp": 11,
+            "wind": 10,
+            "cloud": 69,
+            "hour_end": 7
+        },
+        {
+            "hour": 7,
+            "code": 3,
+            "temp": 13,
+            "wind": 16,
+            "cloud": 90,
+            "hour_end": 11
+        },
+        {
+            "hour": 11,
+            "code": 1,
+            "temp": 18,
+            "wind": 20,
+            "cloud": 17,
+            "hour_end": 14
+        },
+        {
+            "hour": 14,
+            "code": 2,
+            "temp": 20,
+            "wind": 20,
+            "cloud": 56,
+            "hour_end": 15
+        },
+        {
+            "hour": 15,
+            "code": 3,
+            "temp": 19,
+            "wind": 13,
+            "cloud": 100,
+            "hour_end": 20
+        },
+        {
+            "hour": 20,
+            "code": 61,
+            "temp": 16,
+            "wind": 10,
+            "cloud": 100,
+            "hour_end": 22
+        }
+    ],
+    "weather_day_report_2026-10-08": true
 }
