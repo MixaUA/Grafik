@@ -1,5 +1,5 @@
 {
-  "update_time": "8 жовтня 15:00",
+  "update_time": "8 жовтня 17:45",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -8,7 +8,7 @@
       "четвер": [
         "02:00-06:00",
         "08:00-12:00",
-        "14:00-18:00"
+        "14:00-17:30"
       ],
       "п'ятниця": [],
       "субота": [],
@@ -136,7 +136,7 @@
       "четвер": [
         "06:00-10:00",
         "12:00-16:00",
-        "18:00-22:00"
+        "18:00-20:00"
       ],
       "п'ятниця": [],
       "субота": [],
@@ -149,14 +149,14 @@
       "четвер": [
         "04:00-08:00",
         "10:00-14:00",
-        "16:00-20:00"
+        "16:00-18:00"
       ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/fjtOBtR2iTx-7pwW5z-A5KIuejxsVEPmJI5thyXGcp78SbK8-tfFicNRplLQ9oWmJRdJnH1DVgvOZzFKXoxRyHV5yuCBU1gIi0JSW-UeZxrIONbYy0oZedAN1O6_QHeoWS1dOG8pb2zYBVGQWeRdqH8e2-nTVb97G8sDFiS0a7gF96ulfuXU6v_MbuX3QSqPukSu-yiSkkquMMwjq3whpUFbOcRdc97c-9oH6RSLQJjdz81LFF9cLLv67FfQo9OMX05bfbHgv3o2zvqzQO-I0iCU-m1jXQB9t4mAyrNKJDq20tQM53ShIui-VcXt-4XHu5WJL8zMfGEZ8nIlSWBF-A.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/FvVHpBkzGC3ewQgz0YhAVFEsJHk3za5EHT-wsf2GQG1o7PxEjV48rGKoJkHvO8ZiKyKlZ5LzXaMCuMMrik9ivoCdlf1YfOk2R9x7hzYmdrCcmOHtKZIEuBQu9KdYshGHGJVuzYDP6zGNp5kqsdXtmsF7D-O5jiJ_j1wqife437XgJmtB-l7msXcgHNmD5QW-gmLlnm1aRNg4hBkSx37-cCyxDiRDdugyGrDASfWuoZGIXHpM2Qyvvq-bGeC_VrwzaZc0o149kPUitPpOuwJBFQIh-is9aMYSQjhkk-Mu0aU-fEV3--UC5rejX6VfpB3Q6g4J1xasQrrYOqauMqYuaQ.jpg",
   "last_processed_text": "Зміни у ГПВ на сьогодні",
   "last_processed_news_url": "https://t.me/suspilnesumy/48446"
 }
