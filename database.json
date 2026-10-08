@@ -1,5 +1,5 @@
 {
-  "update_time": "8 жовтня 07:45",
+  "update_time": "8 жовтня 15:00",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -8,7 +8,7 @@
       "четвер": [
         "02:00-06:00",
         "08:00-12:00",
-        "14:00-16:00"
+        "14:00-18:00"
       ],
       "п'ятниця": [],
       "субота": [],
@@ -21,7 +21,7 @@
       "четвер": [
         "00:00-04:00",
         "06:00-10:00",
-        "12:00-15:00"
+        "12:00-16:00"
       ],
       "п'ятниця": [],
       "субота": [],
@@ -136,7 +136,7 @@
       "четвер": [
         "06:00-10:00",
         "12:00-16:00",
-        "18:00-20:00"
+        "18:00-22:00"
       ],
       "п'ятниця": [],
       "субота": [],
@@ -149,14 +149,14 @@
       "четвер": [
         "04:00-08:00",
         "10:00-14:00",
-        "16:00-18:00"
+        "16:00-20:00"
       ],
       "п'ятниця": [],
       "субота": [],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/DPd9lAaC9gxXhgP4akTuxDnaOBSng32fr6PdvXzLHXQmHaiQM5Yl-dyO4Zj89n4UGD2jHHTjFk9vFaiDUWCApjAYlKp8Ggu7KQzmsmZ9oOCVNnlZrtjBbV3D3Avwot1Qnkm7utFbH8s8GcWCmimHeDDw14kPVAQRdBDZ4Z_hDYTxD4j1M9w9ambZI0x4cGfwCYm5HRjl_Km3s-OYaEGTjbyg3nY3Tq6Div7wClr1bbK5myNcKfIj9zi9uJ-__tL580Qm-42kA8jwGnx71TbCPUMXchLCid1AaaEyci6vEwgXq3AbSNPQNiwMfhoeYHnCrSDH63lfwYEsVzvPdkcb8Q.jpg",
-  "last_processed_text": "Зміни в ГПВ електроенергії на 8 жовтня.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/fjtOBtR2iTx-7pwW5z-A5KIuejxsVEPmJI5thyXGcp78SbK8-tfFicNRplLQ9oWmJRdJnH1DVgvOZzFKXoxRyHV5yuCBU1gIi0JSW-UeZxrIONbYy0oZedAN1O6_QHeoWS1dOG8pb2zYBVGQWeRdqH8e2-nTVb97G8sDFiS0a7gF96ulfuXU6v_MbuX3QSqPukSu-yiSkkquMMwjq3whpUFbOcRdc97c-9oH6RSLQJjdz81LFF9cLLv67FfQo9OMX05bfbHgv3o2zvqzQO-I0iCU-m1jXQB9t4mAyrNKJDq20tQM53ShIui-VcXt-4XHu5WJL8zMfGEZ8nIlSWBF-A.jpg",
+  "last_processed_text": "Зміни у ГПВ на сьогодні",
   "last_processed_news_url": "https://t.me/suspilnesumy/48446"
 }
