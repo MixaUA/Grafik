@@ -1,5 +1,5 @@
 {
-  "update_time": "9 жовтня 08:15",
+  "update_time": "9 жовтня 18:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -58,7 +58,9 @@
         "08:00-12:00",
         "15:00-18:00"
       ],
-      "субота": [],
+      "субота": [
+        "22:00-00:00"
+      ],
       "неділя": []
     },
     "3.2": {
@@ -70,7 +72,9 @@
         "06:00-10:00",
         "15:00-16:00"
       ],
-      "субота": [],
+      "субота": [
+        "20:00-00:00"
+      ],
       "неділя": []
     },
     "4.1": {
@@ -82,7 +86,9 @@
         "06:00-08:00",
         "10:00-11:00"
       ],
-      "субота": [],
+      "субота": [
+        "18:00-22:00"
+      ],
       "неділя": []
     },
     "4.2": {
@@ -93,7 +99,10 @@
       "п'ятниця": [
         "08:00-10:00"
       ],
-      "субота": [],
+      "субота": [
+        "16:00-20:00",
+        "22:00-00:00"
+      ],
       "неділя": []
     },
     "5.1": {
@@ -104,7 +113,10 @@
       "п'ятниця": [
         "00:00-01:30"
       ],
-      "субота": [],
+      "субота": [
+        "15:00-18:00",
+        "20:00-22:00"
+      ],
       "неділя": []
     },
     "5.2": {
@@ -116,7 +128,10 @@
         "00:00-01:00",
         "22:00-00:00"
       ],
-      "субота": [],
+      "субота": [
+        "15:00-16:00",
+        "18:00-22:00"
+      ],
       "неділя": []
     },
     "6.1": {
@@ -127,7 +142,9 @@
       "п'ятниця": [
         "20:00-00:00"
       ],
-      "субота": [],
+      "субота": [
+        "16:00-20:00"
+      ],
       "неділя": []
     },
     "6.2": {
@@ -138,11 +155,14 @@
       "п'ятниця": [
         "18:00-22:00"
       ],
-      "субота": [],
+      "субота": [
+        "15:00-16:00",
+        "17:00-18:00"
+      ],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/oXSxTnp3ZmsUU2V_gCNkhHrZh0M0VhjmQi1AmIPkl2lI1gKcuerIQgiioy_f-c7JN1BtYUBCIH9lIKdTLheed9FKiSXWXCwFZe5stIOBTLLuVAWON_NHSINHI0Gvu_hQGT0dEHE6R2DRMESnpK5DzBkwJgbYlqkRISto2UiHcMS4sLjnauN4DHWMKxv2CRAFFclmmBal4TuiMFxLfKGEcDp9ax4ykByCoS6kYZQ5zf7n12y8Ol5mag3P0x7eWUvO-ghBMO6OzPoONlRGqmNZpoPQci3jd1eX4Mj9iTGphQi5sn8maVUn1zmt99JT0tH_LdJizMDEd-fmULRcMbsJRQ.jpg",
-  "last_processed_text": "ГПВ на 9 жовтня (зміни від 01:30)За оновленнями графіків вимкнення світла слідкуйте на Суспільному.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/ut5EckYNGEkbqUuc_LZGmbpm-E89wpN3RulcufSyV0ND8yU_VTNoE2r1j9n0xxQinSCaALoSxHvcqltCO9VUE3QXDES8o2D4nrgX-h9rdcCbcMrANSs7QWtxReDYNUrhFZantR6MDXaqvMLKipNc6KBpbH9EnVMnLdUuF-cXVta3q53z_b99bGHX8rveFjdRO81FZ6m1fcWBYGS8bKbfRgQNEWElvrkjXyHsf84a1tjz5J4t1p9E135NApJB605c_ctlEFvBFGi6k7CbbBimF4SASz4kYFQjy1qC8TpVBsV0AskE7q2aLcirmJ_ENc-SJor1bld-3h0TpEAlU4T6bw.jpg",
+  "last_processed_text": "ГПВ на 10 жовтня.За оновленнями графіків вимкнення світла слідкуйте на Суспільному.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48514"
 }
