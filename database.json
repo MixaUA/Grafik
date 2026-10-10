@@ -1,5 +1,5 @@
 {
-  "update_time": "10 жовтня 19:15",
+  "update_time": "10 жовтня 19:45",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -8,7 +8,9 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": []
+      "неділя": [
+        "20:00-22:00"
+      ]
     },
     "1.2": {
       "понеділок": [],
@@ -17,7 +19,9 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": []
+      "неділя": [
+        "18:00-22:00"
+      ]
     },
     "2.1": {
       "понеділок": [],
@@ -26,7 +30,9 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": []
+      "неділя": [
+        "16:00-20:00"
+      ]
     },
     "2.2": {
       "понеділок": [],
@@ -35,7 +41,10 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": []
+      "неділя": [
+        "17:00-18:00",
+        "20:00-22:00"
+      ]
     },
     "3.1": {
       "понеділок": [],
@@ -46,7 +55,9 @@
       "субота": [
         "22:00-00:00"
       ],
-      "неділя": []
+      "неділя": [
+        "18:00-20:00"
+      ]
     },
     "3.2": {
       "понеділок": [],
@@ -57,7 +68,9 @@
       "субота": [
         "20:00-00:00"
       ],
-      "неділя": []
+      "неділя": [
+        "17:00-18:00"
+      ]
     },
     "4.1": {
       "понеділок": [],
@@ -125,10 +138,12 @@
       "субота": [
         "17:00-18:00"
       ],
-      "неділя": []
+      "неділя": [
+        "22:00-00:00"
+      ]
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/kLlV97Ibft8Ufr4bVRQi4IQx4acXhLjLdh7c5mQTmDqndy-auPZ6b3n4ZMOpvF8Hb78bpvOY8YdomsZLXjlHBsqpBU7LOElyquurJww2eNjK03h9a2oTJ8lI450zy_CHUksbJvbnHs4FHypTfEScj4jCPyyBJ_FG1TdEV5VGCTd_M6PHaVV8qNcSvrFjQPg4rhIMjZmFPPL2MmGhU0OfY412albvmxWO4jgg8VVzanhfo_hdXB9TYFprYAAfOvXRhmwSbjLvgHDOoTdNnEY2gF_zd2_9CjjMYbwf8Zz-vA7z3ObXWVCkaJNLAJ4-xYXsT3v5ycj1SEafrEuVOVm4Hg.jpg",
-  "last_processed_text": "Зміни ГПВ на Сумщині 10 жовтня, — обленерго.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/JPsN5xaVsxFMlA8u1yFjiq9sF6Xr1EU8-Rz5ZgLjbSGhy29idhM6QUy9_VJu3LozmVzRQXBeC6luAbE8Z7FFHYdv0-8DlPcohlEX91Qr87SmSNC-flQUrbU5mhQaIpPjEtYjnhr2r_4Z-OWfk4U_QftE_N8VvfQU0Bo9cRDUoIsvdSEOgJOUUP2ZpTJD8tyQFDsAgGOYnWrXm9bZcnSXAPvaUpsN1cl6pnC0InCwqX_eqSFqHwrbklQKiOgAdpvnfo4kTOvK7PGSLMfDPgVKKZESVYaebsXSN_Ug2Z3TSASGIXYtEEnLj7TTllOJ_2lzu1ECCCdux2WXn2A2UfKQ_g.jpg",
+  "last_processed_text": "Графіки відключень світла у Сумській області 11 жовтня.За оновленнями графіків вимкнення світла слідкуйте на Суспільному.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48514"
 }
