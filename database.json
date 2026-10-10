@@ -1,5 +1,5 @@
 {
-  "update_time": "10 жовтня 18:00",
+  "update_time": "10 жовтня 19:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -89,7 +89,7 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [
-        "15:00-18:00",
+        "16:00-18:00",
         "20:00-22:00"
       ],
       "неділя": []
@@ -101,8 +101,7 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [
-        "15:00-16:00",
-        "18:00-22:00"
+        "18:00-20:00"
       ],
       "неділя": []
     },
@@ -113,7 +112,7 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [
-        "16:00-20:00"
+        "17:00-18:30"
       ],
       "неділя": []
     },
@@ -124,13 +123,12 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [
-        "15:00-16:00",
         "17:00-18:00"
       ],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/Z3lHAqesVTWDuDio5pllh3-RfdfcibL2Mm_rBZLnYBN4joFwruOZqTLoMQ_SYKhMff2erpc9sD3StVdmV2_KNAiezf2OExAhbYm9PUs5pAD79WTrqQXsJVQRub6KjJlcQ8xTm5c38qjaIV-5Ot6Av3AHtiKoTW3u8bsY6BJL55NPi33ekyqCyznx5qvSbjTyPbGKjKtzihTuN9GIVKiF8LmgSpNpH7EhtfplOMj9BwHJqiKPuPyReJyuZZBkRSvW3PR-ircHlQdsJr-5w0QcEB7vew6bhss2GDei2PJ5_Q3LX4r5sZz4k-YHPSGYZtVJUHfNsYUNwHZ9KRpIy-EukA.jpg",
-  "last_processed_text": "ГПВ на 10 жовтня.За оновленнями графіків вимкнення світла слідкуйте на Суспільному.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/kLlV97Ibft8Ufr4bVRQi4IQx4acXhLjLdh7c5mQTmDqndy-auPZ6b3n4ZMOpvF8Hb78bpvOY8YdomsZLXjlHBsqpBU7LOElyquurJww2eNjK03h9a2oTJ8lI450zy_CHUksbJvbnHs4FHypTfEScj4jCPyyBJ_FG1TdEV5VGCTd_M6PHaVV8qNcSvrFjQPg4rhIMjZmFPPL2MmGhU0OfY412albvmxWO4jgg8VVzanhfo_hdXB9TYFprYAAfOvXRhmwSbjLvgHDOoTdNnEY2gF_zd2_9CjjMYbwf8Zz-vA7z3ObXWVCkaJNLAJ4-xYXsT3v5ycj1SEafrEuVOVm4Hg.jpg",
+  "last_processed_text": "Зміни ГПВ на Сумщині 10 жовтня, — обленерго.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48514"
 }
