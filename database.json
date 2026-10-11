@@ -1,8 +1,11 @@
 {
-  "update_time": "11 жовтня 17:45",
+  "update_time": "11 жовтня 20:15",
   "queues": {
     "1.1": {
-      "понеділок": [],
+      "понеділок": [
+        "10:00-12:00",
+        "16:00-18:00"
+      ],
       "вівторок": [],
       "середа": [],
       "четвер": [],
@@ -13,7 +16,10 @@
       ]
     },
     "1.2": {
-      "понеділок": [],
+      "понеділок": [
+        "08:00-10:00",
+        "15:00-16:00"
+      ],
       "вівторок": [],
       "середа": [],
       "четвер": [],
@@ -72,7 +78,9 @@
       ]
     },
     "4.1": {
-      "понеділок": [],
+      "понеділок": [
+        "22:00-00:00"
+      ],
       "вівторок": [],
       "середа": [],
       "четвер": [],
@@ -83,7 +91,9 @@
       ]
     },
     "4.2": {
-      "понеділок": [],
+      "понеділок": [
+        "20:00-22:00"
+      ],
       "вівторок": [],
       "середа": [],
       "четвер": [],
@@ -92,7 +102,9 @@
       "неділя": []
     },
     "5.1": {
-      "понеділок": [],
+      "понеділок": [
+        "18:00-22:00"
+      ],
       "вівторок": [],
       "середа": [],
       "четвер": [],
@@ -101,7 +113,9 @@
       "неділя": []
     },
     "5.2": {
-      "понеділок": [],
+      "понеділок": [
+        "16:00-20:00"
+      ],
       "вівторок": [],
       "середа": [],
       "четвер": [],
@@ -110,7 +124,10 @@
       "неділя": []
     },
     "6.1": {
-      "понеділок": [],
+      "понеділок": [
+        "14:00-18:00",
+        "20:00-22:00"
+      ],
       "вівторок": [],
       "середа": [],
       "четвер": [],
@@ -119,7 +136,11 @@
       "неділя": []
     },
     "6.2": {
-      "понеділок": [],
+      "понеділок": [
+        "12:00-14:00",
+        "15:00-16:00",
+        "18:00-20:00"
+      ],
       "вівторок": [],
       "середа": [],
       "четвер": [],
@@ -130,7 +151,7 @@
       ]
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/mjFde_SgI2mgvvYM6e1EFbqI-coXoadldwh10Swxun_VMh78MbkUCvd1MIiXmVIZCUkJPCg9p-rwc0uvBorDcjq0pnszH9IQOQ65Lq7qq5ksncq13R8-sBrqFta9tm4XqvqEYafernLTCN765w_Qa4uOK7aFSxTIbvDIeqPDXEzeiwlwVSnkNLtIazYiqckGoMWgQ4o8GJN7bCiGXmz12VmZY8ic4oZmIWGoCSfNZUiQ9cDiyOG1WElDkBv3nAmKFIfKUhNVYl9j_msjMUGRQ3wl9Lvh1FTTUFssPdJ_oK6bNdA4C9KbgvAjf7zXtL8lKk-wEy6cI1S8EKY-uFzwCw.jpg",
-  "last_processed_text": "Зміни в ГПВ на 11 жовтня, повідомили в обленерго.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/rfmTaP-38nlpYCqB_KPeJr7iETh2MTOQP9Qa9c_5HeZ99fnqlrluRyHkJLgMg1Uk59q1QDw9PiSXz4hFbxpMuGdKZ_yhPiq1SIR77g-PzQ-yXtM1DFQU4d4_10mqyxG9PrIS9OPIG30zQFeO_1Gj_x1wbx3liFyQXOOsbT6Gdca_0dic2Nn7dNpvJxodqOdQHPe_VbSaAT0JUVqHn3EQv7jvS0ySWHuZoQLgQts2azgM-_yb3HPiFrcv00Egy3cGLVx-xhJqLVnkBCnfQpEUwyVdnqgAQvv1QSSJ8g2GQ3jOQ1WqC9DXiKbL7cYphhmN8qiWUCs3l6Z_0aaDh5gSlQ.jpg",
+  "last_processed_text": "Графіки відключень світла у Сумській області 12 жовтня.За оновленнями графіків вимкнення світла слідкуйте на Суспільному.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48545"
 }
