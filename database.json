@@ -1,5 +1,5 @@
 {
-  "update_time": "11 жовтня 11:15",
+  "update_time": "11 жовтня 17:45",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -31,7 +31,7 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "16:00-20:00"
+        "17:00-20:00"
       ]
     },
     "2.2": {
@@ -42,7 +42,7 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "14:00-16:00",
+        "14:00-14:30",
         "17:00-18:00",
         "20:00-22:00"
       ]
@@ -55,8 +55,8 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "12:00-16:00",
-        "18:00-20:00"
+        "12:00-14:00",
+        "19:00-20:00"
       ]
     },
     "3.2": {
@@ -67,8 +67,8 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "10:30-14:00",
-        "17:00-18:00"
+        "10:30-12:30",
+        "17:00-17:30"
       ]
     },
     "4.1": {
@@ -130,7 +130,7 @@
       ]
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/bGZ6ly3ozFl9sHg4-I33LHSzfkt2nE9zLek1kaIW9s6WcSkgAeo9Wgkg9ezwZVQ3BoFcw4TN5NpuG4APaDUI13lqBRyJ7P5Xp0nnBJh5A-cCFq2dFFruI712RWeWpgoTq-y4akV8IvbEVcupawR_1eWRy8XvnLl7MKiqQoaYihLMmXDArpHIEw35y3majbZ6Up37WlRhw0JtyInEi_h9Mk88jwP32qUcyy28CwjiMKJMHfVYejWIUbIwvA2Uusu1QPTzJT0Z2P3_Tt5fg4HT6qxsemgxEg27V67QTbFr9Gk1yOQ4_JTUPZpP-FYREn9gRKdIPChbzJdS9hmApFv56A.jpg",
-  "last_processed_text": "Зміни у ГПВ на сьогодні.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/mjFde_SgI2mgvvYM6e1EFbqI-coXoadldwh10Swxun_VMh78MbkUCvd1MIiXmVIZCUkJPCg9p-rwc0uvBorDcjq0pnszH9IQOQ65Lq7qq5ksncq13R8-sBrqFta9tm4XqvqEYafernLTCN765w_Qa4uOK7aFSxTIbvDIeqPDXEzeiwlwVSnkNLtIazYiqckGoMWgQ4o8GJN7bCiGXmz12VmZY8ic4oZmIWGoCSfNZUiQ9cDiyOG1WElDkBv3nAmKFIfKUhNVYl9j_msjMUGRQ3wl9Lvh1FTTUFssPdJ_oK6bNdA4C9KbgvAjf7zXtL8lKk-wEy6cI1S8EKY-uFzwCw.jpg",
+  "last_processed_text": "Зміни в ГПВ на 11 жовтня, повідомили в обленерго.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48545"
 }
