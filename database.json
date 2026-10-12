@@ -1,5 +1,5 @@
 {
-  "update_time": "12 жовтня 10:15",
+  "update_time": "12 жовтня 11:45",
   "queues": {
     "1.1": {
       "понеділок": [
@@ -16,7 +16,7 @@
     "1.2": {
       "понеділок": [
         "08:00-12:00",
-        "15:00-16:00"
+        "14:00-16:00"
       ],
       "вівторок": [],
       "середа": [],
@@ -26,7 +26,9 @@
       "неділя": []
     },
     "2.1": {
-      "понеділок": [],
+      "понеділок": [
+        "12:00-14:00"
+      ],
       "вівторок": [],
       "середа": [],
       "четвер": [],
@@ -130,7 +132,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/tdLejajC8nXgV0y7f39F2NrTtksZF1MOyzzioEYXjocs6rkS1fxQ5vRMz5EXmRMAim3tZrIfBOHcQLTGcXkCLHCi8RKz0YR-nDohr8ROltvnay8EH6YEg7kN_bJ-Ncf3RI6ZKX43IfRMnGioQSdTmVA6LMpJ2CpW9nDaUmKDlgAL_bxTxmnAn-fzsVzjxu3rT8r5Z9wdBtvwMAQSzBozsOITTIObWT8QVe5orbNMS7wbelyw7rXIha9m1UpqmA2XJyZeemNGuEruZqqu4OzYAeL90UlG2NR5U9DvTsPrcbPNRb1hXqnweb5D5fTckqH_yvfpwRl74e8nVG1mRnIwyg.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/YgkdF9cPrie8l7i4Jhr0Fn70lJq9tvHWHaT6SHFZQf8Ax6C0jINas1BlIeXG2vypuprB7PLHXO7KWkYfbrFg1ghb9xkWlOPMxeRodsNHTB3RtYqA32bMJZE_-QgerJnByFDETDn_PAUWvEU5Fa_u9TtoZLOGnXlS77J-gv3AvC4N8RZ5E5Rp9JOFLN-uEhqBiwE-9XIO5jYtPjomLwWfHyvts8lm9TP53O2cRtIaDhGn8xnwkW2Q3-8zv-5omJ4M6luuHchmpnpWzbD-pOoPqFpgRn9m9HLmL14TPg0sHG1CxehcQ5L0dcbV7pcGcGRbdtGD9WQUepXr7qCDmFJLFA.jpg",
   "last_processed_text": "Графіки відключень світла у Сумській області 12 жовтня.За оновленнями графіків вимкнення світла слідкуйте на Суспільному.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48545"
 }
