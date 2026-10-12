@@ -1,9 +1,9 @@
 {
-  "update_time": "11 жовтня 20:15",
+  "update_time": "12 жовтня 10:15",
   "queues": {
     "1.1": {
       "понеділок": [
-        "10:00-12:00",
+        "10:00-14:00",
         "16:00-18:00"
       ],
       "вівторок": [],
@@ -11,13 +11,11 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": [
-        "20:00-22:00"
-      ]
+      "неділя": []
     },
     "1.2": {
       "понеділок": [
-        "08:00-10:00",
+        "08:00-12:00",
         "15:00-16:00"
       ],
       "вівторок": [],
@@ -25,9 +23,7 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": [
-        "18:00-22:00"
-      ]
+      "неділя": []
     },
     "2.1": {
       "понеділок": [],
@@ -36,9 +32,7 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": [
-        "17:00-20:00"
-      ]
+      "неділя": []
     },
     "2.2": {
       "понеділок": [],
@@ -47,11 +41,7 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": [
-        "14:00-14:30",
-        "17:00-18:00",
-        "20:00-22:00"
-      ]
+      "неділя": []
     },
     "3.1": {
       "понеділок": [],
@@ -60,10 +50,7 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": [
-        "12:00-14:00",
-        "19:00-20:00"
-      ]
+      "неділя": []
     },
     "3.2": {
       "понеділок": [],
@@ -72,10 +59,7 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": [
-        "10:30-12:30",
-        "17:00-17:30"
-      ]
+      "неділя": []
     },
     "4.1": {
       "понеділок": [
@@ -86,9 +70,7 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": [
-        "10:30-12:00"
-      ]
+      "неділя": []
     },
     "4.2": {
       "понеділок": [
@@ -137,8 +119,7 @@
     },
     "6.2": {
       "понеділок": [
-        "12:00-14:00",
-        "15:00-16:00",
+        "12:00-16:00",
         "18:00-20:00"
       ],
       "вівторок": [],
@@ -146,12 +127,10 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": [
-        "22:00-00:00"
-      ]
+      "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/rfmTaP-38nlpYCqB_KPeJr7iETh2MTOQP9Qa9c_5HeZ99fnqlrluRyHkJLgMg1Uk59q1QDw9PiSXz4hFbxpMuGdKZ_yhPiq1SIR77g-PzQ-yXtM1DFQU4d4_10mqyxG9PrIS9OPIG30zQFeO_1Gj_x1wbx3liFyQXOOsbT6Gdca_0dic2Nn7dNpvJxodqOdQHPe_VbSaAT0JUVqHn3EQv7jvS0ySWHuZoQLgQts2azgM-_yb3HPiFrcv00Egy3cGLVx-xhJqLVnkBCnfQpEUwyVdnqgAQvv1QSSJ8g2GQ3jOQ1WqC9DXiKbL7cYphhmN8qiWUCs3l6Z_0aaDh5gSlQ.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/tdLejajC8nXgV0y7f39F2NrTtksZF1MOyzzioEYXjocs6rkS1fxQ5vRMz5EXmRMAim3tZrIfBOHcQLTGcXkCLHCi8RKz0YR-nDohr8ROltvnay8EH6YEg7kN_bJ-Ncf3RI6ZKX43IfRMnGioQSdTmVA6LMpJ2CpW9nDaUmKDlgAL_bxTxmnAn-fzsVzjxu3rT8r5Z9wdBtvwMAQSzBozsOITTIObWT8QVe5orbNMS7wbelyw7rXIha9m1UpqmA2XJyZeemNGuEruZqqu4OzYAeL90UlG2NR5U9DvTsPrcbPNRb1hXqnweb5D5fTckqH_yvfpwRl74e8nVG1mRnIwyg.jpg",
   "last_processed_text": "Графіки відключень світла у Сумській області 12 жовтня.За оновленнями графіків вимкнення світла слідкуйте на Суспільному.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48545"
 }
