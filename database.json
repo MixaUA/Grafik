@@ -1,12 +1,11 @@
 {
-  "update_time": "14 жовтня 16:01",
+  "update_time": "14 жовтня 16:30",
   "queues": {
     "1.1": {
       "понеділок": [],
       "вівторок": [],
       "середа": [
-        "14:00-18:00",
-        "20:00-22:00"
+        "14:00-18:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -17,8 +16,7 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [
-        "12:00-16:00",
-        "18:00-22:00"
+        "12:00-16:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -30,7 +28,7 @@
       "вівторок": [],
       "середа": [
         "10:00-14:00",
-        "16:00-20:00"
+        "16:00-17:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -42,8 +40,7 @@
       "вівторок": [],
       "середа": [
         "08:00-12:00",
-        "14:00-16:00",
-        "17:00-18:00"
+        "14:00-16:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -130,8 +127,7 @@
       "понеділок": [],
       "вівторок": [],
       "середа": [
-        "16:00-20:00",
-        "22:00-00:00"
+        "16:00-20:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -139,7 +135,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/HXEKKqcHAit3PoNTVdIt-jQUw0V1zvQ1lozJKc_wVYdwhsmD1ZGym9c4tZXAx9fIGSQlUrUyjPFjJvzDPp83rEx9Q9SoqWPmgCvPIDSXCEZ3X2rdUUoD2H_jUCkzcQ3SxCu8RtcDuIYEgGb3cyNjO8oUMlOscC6Hoq_gQ7gwn69Fxkfe4c2awD_h_9VzJ8kejwD4ez2nEX_O_gWbBjb6M61chg6dCIN7t_IfTG5EvmiLH46x_zp2tYT2vtjbPInBNavKuL4gNES9l4iejtjAWZkU0RSF7WMmq1GswLQLEbMsSvBX-e2yFtyavxDhcR7eSMyeyc67108hS6hSTtP8_g.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/PEmt-KaAENo2O-I-FfxJprX1QkKPwwR4wo0LaHkFjqCna4PyNJuZobPoUZogp-uwTmpcJvGX6wrGaud9wzSLjvSM7v5IzNp71NyswMosXJurw8zsZSjosolUlZ5YQWQj04-NIGK6IcUwMLhUEL1mppPJC4MAwxkQ9BYi7u0iJhHcQclFgzno6ft0iLECuHElhI6ZmoMTmYCpm6r7_fwb1OSazX1TuiBaK1rnLDCbY_1hY5CcU2rAAiScqvnSC__HpZHAF1GIU8cdm-vbAA32EVNtK_kCkYYMQ1Idqs8Tes5yRvXA_rVRPeat6VcDSMNUDrJK0dpyOVayd0rqBXLk7Q.jpg",
   "last_processed_text": "ГПВ на Сумщині на 14 жовтня від обленерго. За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48575"
 }
