@@ -1,5 +1,5 @@
 {
-  "update_time": "13 жовтня 21:30",
+  "update_time": "14 жовтня 16:01",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -15,9 +15,7 @@
     },
     "1.2": {
       "понеділок": [],
-      "вівторок": [
-        "22:00-00:00"
-      ],
+      "вівторок": [],
       "середа": [
         "12:00-16:00",
         "18:00-22:00"
@@ -29,9 +27,7 @@
     },
     "2.1": {
       "понеділок": [],
-      "вівторок": [
-        "20:00-00:00"
-      ],
+      "вівторок": [],
       "середа": [
         "10:00-14:00",
         "16:00-20:00"
@@ -43,12 +39,11 @@
     },
     "2.2": {
       "понеділок": [],
-      "вівторок": [
-        "18:00-22:00"
-      ],
+      "вівторок": [],
       "середа": [
         "08:00-12:00",
-        "14:00-18:00"
+        "14:00-16:00",
+        "17:00-18:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -57,9 +52,7 @@
     },
     "3.1": {
       "понеділок": [],
-      "вівторок": [
-        "16:00-20:00"
-      ],
+      "вівторок": [],
       "середа": [
         "06:00-10:00",
         "12:00-14:00"
@@ -71,10 +64,7 @@
     },
     "3.2": {
       "понеділок": [],
-      "вівторок": [
-        "14:00-18:00",
-        "20:00-22:00"
-      ],
+      "вівторок": [],
       "середа": [
         "10:00-12:00"
       ],
@@ -85,10 +75,7 @@
     },
     "4.1": {
       "понеділок": [],
-      "вівторок": [
-        "12:00-16:00",
-        "18:00-20:00"
-      ],
+      "вівторок": [],
       "середа": [
         "08:00-10:00"
       ],
@@ -99,10 +86,7 @@
     },
     "4.2": {
       "понеділок": [],
-      "вівторок": [
-        "10:00-14:00",
-        "16:00-18:00"
-      ],
+      "вівторок": [],
       "середа": [],
       "четвер": [],
       "п'ятниця": [],
@@ -111,10 +95,7 @@
     },
     "5.1": {
       "понеділок": [],
-      "вівторок": [
-        "08:00-12:00",
-        "14:30-16:00"
-      ],
+      "вівторок": [],
       "середа": [
         "22:00-00:00"
       ],
@@ -125,9 +106,7 @@
     },
     "5.2": {
       "понеділок": [],
-      "вівторок": [
-        "06:00-10:00"
-      ],
+      "вівторок": [],
       "середа": [
         "20:00-00:00"
       ],
@@ -160,7 +139,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/bg8fHhJHL1o3uXtBiSpxtvXkp2okDDlDFfHL8MnpwuiC0oBLSI75qwQct-j6CaQPnA1xBjrg3z38n2SgtmzurXMZ_48pnhj4JLEK5G75ieO2CBNunuuwrp9i1GlNJWg_oznBLMbKrFvYaBvRCrzvNdmcrkEamd2Q45oFYv8-nQSP2vvvvPRqn-3tCwTHFvvTvRh069B1GaZEWBqrcYO8qEWEzUDBDHfynWioKTX2AcLkp02d5byIyH9wEW7lXZ3BJIpDgfkIIEqREJhVFu0JdxVBah3XGkzTO7_ibsIrjk2bQHaOpjtDLU6fvDay-q5PkMANOYB1Ka4ohEjfH4Kkzw.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/HXEKKqcHAit3PoNTVdIt-jQUw0V1zvQ1lozJKc_wVYdwhsmD1ZGym9c4tZXAx9fIGSQlUrUyjPFjJvzDPp83rEx9Q9SoqWPmgCvPIDSXCEZ3X2rdUUoD2H_jUCkzcQ3SxCu8RtcDuIYEgGb3cyNjO8oUMlOscC6Hoq_gQ7gwn69Fxkfe4c2awD_h_9VzJ8kejwD4ez2nEX_O_gWbBjb6M61chg6dCIN7t_IfTG5EvmiLH46x_zp2tYT2vtjbPInBNavKuL4gNES9l4iejtjAWZkU0RSF7WMmq1GswLQLEbMsSvBX-e2yFtyavxDhcR7eSMyeyc67108hS6hSTtP8_g.jpg",
   "last_processed_text": "ГПВ на Сумщині на 14 жовтня від обленерго. За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48575"
 }
