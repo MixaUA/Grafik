@@ -1,5 +1,5 @@
 {
-  "update_time": "16 жовтня 22:30",
+  "update_time": "16 жовтня 23:45",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -72,6 +72,7 @@
         "16:00-20:00"
       ],
       "субота": [
+        "00:00-01:00",
         "08:00-10:00",
         "12:00-14:00"
       ],
@@ -88,6 +89,7 @@
         "20:00-22:00"
       ],
       "субота": [
+        "00:00-01:00",
         "10:00-12:00",
         "22:00-00:00"
       ],
@@ -118,6 +120,7 @@
         "16:00-20:00"
       ],
       "субота": [
+        "00:00-01:00",
         "18:00-22:00"
       ],
       "неділя": []
@@ -133,6 +136,7 @@
         "17:00-18:00"
       ],
       "субота": [
+        "00:00-01:00",
         "16:00-20:00",
         "22:00-00:00"
       ],
@@ -162,6 +166,7 @@
         "22:00-00:00"
       ],
       "субота": [
+        "00:00-01:00",
         "12:00-16:00",
         "18:00-22:00"
       ],
@@ -176,13 +181,14 @@
         "20:00-00:00"
       ],
       "субота": [
+        "00:00-01:00",
         "10:00-14:00",
         "16:00-20:00"
       ],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/erN2RvJJioWlPy3iV0fc44Lv-IOK84PEcrnPBV5yplfMODQoqqbwlt1bUyZJdzVBPtIi5vFueELK84vLBsCzqf7lf8ca_7sX5aw1QPAGe93rzyTeMXtXAZb4hsIrJN0n0v6u8uOJlEfP3rdoflqGA7Qo1WatJqkcfvmUCTQxPvoaX5yoqx26JMdehW7WwmDzvLLN_BKeSLbT1BsFEvmmokuu3I2VgqSONTNQFVALuw3-x32gXRsAavA-IIBu1d0HBTWWxh6cOuJ_kJiWI9uhb8AIRanUs7k33rlu8v7vbcPsQY5TgdgWktyk4vhsjWD0zU4T6kPr3Nko1wiTan6A8g.jpg",
-  "last_processed_text": "ГПВ на Сумщині на 17 жовтня.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/r3FTiKZPEYjSehzlrw2atz1IY-vVtVRVXJKN0k-vLgO6DEt9AX0Xp6oa6dI1Bp1TvUJ85nmBgkxsIa1ohLTV4Z6DLTGzhJ4CXFlFVgrOHGcveLMESrJusb2SyYP853YNXAp-kyW9kbh3hIDL599RFrXTUlvFhhQmjAOhIZD8N3E9XlPbPn2uXCfGDiFccWbfkS7R_7mFD6-FGssuEq2SIYGHRF8EnEBq_F6_wAbPXxRpJPaQp_C_wm7CMOlDGVAxfhhh0mzgOo8TWwib0IpREZ1VEloUrhLoajdEY628JEoJLcNnrjmEweC3Sw6Bb6vaBAwXo_WOYLtMdV5s8xCNVw.jpg",
+  "last_processed_text": "Зміни у ГПВ на Сумщині на 17 жовтня.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48575"
 }
