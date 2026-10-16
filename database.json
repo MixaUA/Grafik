@@ -1,5 +1,5 @@
 {
-  "update_time": "16 жовтня 08:45",
+  "update_time": "16 жовтня 11:30",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -66,7 +66,8 @@
       "четвер": [],
       "п'ятниця": [
         "08:00-12:00",
-        "14:00-18:00"
+        "14:00-18:00",
+        "20:00-22:00"
       ],
       "субота": [],
       "неділя": []
@@ -78,7 +79,8 @@
       "четвер": [],
       "п'ятниця": [
         "06:00-10:00",
-        "12:00-16:00"
+        "12:00-16:00",
+        "18:00-20:00"
       ],
       "субота": [],
       "неділя": []
@@ -89,7 +91,8 @@
       "середа": [],
       "четвер": [],
       "п'ятниця": [
-        "10:00-14:00"
+        "10:00-14:00",
+        "16:00-18:00"
       ],
       "субота": [],
       "неділя": []
@@ -100,7 +103,8 @@
       "середа": [],
       "четвер": [],
       "п'ятниця": [
-        "08:00-12:00"
+        "08:00-12:00",
+        "14:00-16:00"
       ],
       "субота": [],
       "неділя": []
@@ -111,7 +115,8 @@
       "середа": [],
       "четвер": [],
       "п'ятниця": [
-        "09:00-10:00"
+        "09:00-10:00",
+        "12:00-14:00"
       ],
       "субота": [],
       "неділя": []
@@ -139,7 +144,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/KmJzRasSncIZh3RFGJTPqYKCDypDekzFAJGC6X5b7afL798zUho5B26TiWzHTg55WG7UthPfjW5VDUes8PKkiKMGfKX9hh_MuOelB9gDrIoDWrRkMpLGzRQG_0MDIKRB0ejEJ3OC2CPJ4DdVHFBv6F18-VJkNiGw7iJiuChOG9A86SyvEdjhydMJc6sboK3NK8pJgvYK1HlrS-cMs-jEOOxVNGGTIJp92mTmxvJblwBagOT2Rb3mCWw3u2xbj6t1wRSGLcgHCYjk52Z_yCiGhMGglaBQmhZsp75PvMOHI-Lf7KcLfGXUpROL-Pj3-YxzVN8uhh5_vPNMs9webfyFTQ.jpg",
-  "last_processed_text": "ГПВ на Сумщині на 16 жовтня — оновлений графік станом на ранок.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/i4y7v2YYMSB4fYVYYJOcJ4bOzKaGF4XK9iwqMxGe0aJCiN_JOUkudCU7MehNmClsFraVxn-tZZVc0Hz7U6w8ZmgwZ2ZT_POTCMBZRmHP-jlTdgS2eyOY80OrCJnUFNTZsDuBBNf2IAZn8-v6ZHaAD73z1SPbX7__GmumQnBxgS8I3hxmzLWyaeBVk4TYoH55V2QfEmUXmfstqqNt_VdE0Fw-wG8O1tswJ-dSjA1Eiw8xLeAb4wxcAgQhO7Aa6XVyO-W_yxZZOJO8B0wAe5TnRl19pr5xBWNUo9aXcqcI9eek9BCAH1vFLcNAfjEsyw4VxoMer9p8UBRpxpMLs4tYuQ.jpg",
+  "last_processed_text": "ГПВ на Сумщині на 16 жовтня — оновлений графік станом на 11:08.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48575"
 }
