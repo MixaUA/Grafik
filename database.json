@@ -1,5 +1,5 @@
 {
-  "update_time": "17 жовтня 14:15",
+  "update_time": "17 жовтня 20:45",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -11,7 +11,9 @@
         "08:00-12:00",
         "14:00-14:30"
       ],
-      "неділя": []
+      "неділя": [
+        "22:00-00:00"
+      ]
     },
     "1.2": {
       "понеділок": [],
@@ -23,7 +25,9 @@
         "06:00-10:00",
         "12:00-14:00"
       ],
-      "неділя": []
+      "неділя": [
+        "20:00-00:00"
+      ]
     },
     "2.1": {
       "понеділок": [],
@@ -35,7 +39,9 @@
         "06:00-08:00",
         "10:00-12:00"
       ],
-      "неділя": []
+      "неділя": [
+        "18:00-22:00"
+      ]
     },
     "2.2": {
       "понеділок": [],
@@ -47,7 +53,9 @@
         "02:00-04:00",
         "08:00-11:00"
       ],
-      "неділя": []
+      "неділя": [
+        "16:00-20:00"
+      ]
     },
     "3.1": {
       "понеділок": [],
@@ -59,7 +67,10 @@
         "00:00-04:00",
         "08:00-10:00"
       ],
-      "неділя": []
+      "неділя": [
+        "14:00-18:00",
+        "20:00-22:00"
+      ]
     },
     "3.2": {
       "понеділок": [],
@@ -71,7 +82,10 @@
         "00:00-02:00",
         "22:00-00:00"
       ],
-      "неділя": []
+      "неділя": [
+        "12:00-16:00",
+        "18:00-20:00"
+      ]
     },
     "4.1": {
       "понеділок": [],
@@ -83,7 +97,10 @@
         "02:00-03:00",
         "20:00-00:00"
       ],
-      "неділя": []
+      "неділя": [
+        "10:00-14:00",
+        "16:00-18:00"
+      ]
     },
     "4.2": {
       "понеділок": [],
@@ -95,7 +112,9 @@
         "00:00-03:00",
         "18:00-22:00"
       ],
-      "неділя": []
+      "неділя": [
+        "08:00-12:00"
+      ]
     },
     "5.1": {
       "понеділок": [],
@@ -108,7 +127,9 @@
         "16:00-20:00",
         "22:00-00:00"
       ],
-      "неділя": []
+      "неділя": [
+        "06:00-10:00"
+      ]
     },
     "5.2": {
       "понеділок": [],
@@ -149,7 +170,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/CiwA2l2ub37kqVzEVTnAPG3ownaLcFilUKAONmm4-Fdr4n0DQRzYRkACXQXT8m81tXHM-W-RN3t2dUrNHnhhHxwAt4xD7dI2G7f0zctcMXkSBTwbKB3nHQ1QHDJs_bcbWyEMNmgg8VaSthYysHhPSmOW41Y32sxlPEoU04pBnnhtjke8YKFLwBTCyVtv25Y_kNQHQkI7axq036O0ROU5qeFSxiidW8CU6tY34EVIj3hnr0sjFtat9EdkpugMdQxvOBQhIoqUES9dFqCREfI41BIwOiDcBiiN9hwaifQadggEVVxf7lmsoxZo4bq_68m_7VHsUgN2Wk3CG748uRqOFQ.jpg",
-  "last_processed_text": "Знову зміни у ГПВ на Сумщині на 17 жовтня. За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/LwInvIwF7wbUg0gL1VxPSC-mJSYBLHk8CEK5H6U9chW5e4Qv5HFXi97oxIs702zjeDonVBHIgIgxTvXUMqF0YJHmm0hz47lqoSqLRux-9tMI5aigLJCfFhYANvH0oYm3SogiUIX7f3lk3LY9b0Fo1dB2cNDSZrOlJwA5BU3Lv6A08yM-Y1lZ9bTV0tz3a-YR8tEKc02Hk7Q-KHS_CXpH5S2LATUBX2cz5ESpzJsMerWNUePRjmmYUjR9NHP68R_Psnhb9RNcdrX4lwI80btVVm_iL6j2RCe3DgExqenyMnyslf6koWPdNdzSTs3E5-XZQ7wXvGsib2abeeX_q-jbdA.jpg",
+  "last_processed_text": "ГПВ на Сумщині на 18 жовтня.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48575"
 }
