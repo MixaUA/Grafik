@@ -1,5 +1,5 @@
 {
-  "update_time": "17 жовтня 09:45",
+  "update_time": "17 жовтня 11:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -9,7 +9,7 @@
       "п'ятниця": [],
       "субота": [
         "08:00-12:00",
-        "14:00-18:00"
+        "14:00-16:00"
       ],
       "неділя": []
     },
@@ -21,7 +21,7 @@
       "п'ятниця": [],
       "субота": [
         "06:00-10:00",
-        "12:00-16:00"
+        "12:00-14:00"
       ],
       "неділя": []
     },
@@ -33,7 +33,7 @@
       "п'ятниця": [],
       "субота": [
         "06:00-08:00",
-        "10:00-14:00"
+        "10:00-12:00"
       ],
       "неділя": []
     },
@@ -45,7 +45,7 @@
       "п'ятниця": [],
       "субота": [
         "02:00-04:00",
-        "08:00-12:00"
+        "08:00-11:00"
       ],
       "неділя": []
     },
@@ -131,7 +131,7 @@
       "субота": [
         "00:00-02:00",
         "12:00-16:00",
-        "18:00-22:00"
+        "18:00-20:00"
       ],
       "неділя": []
     },
@@ -144,12 +144,12 @@
       "субота": [
         "00:00-02:00",
         "10:00-14:00",
-        "16:00-20:00"
+        "16:00-18:00"
       ],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/tV7iD79VPiR-M4TyuwyswaJtqcVZc8TbrimRjvk2aGKbxAqORmgjVvf5RrlTF3_zaL5fq7KBuwPqfzE85zK99ozGNI-OJGgJniG7jLoolm0lv2yOaFLYK1vnu8_jQmCDJ8nRVoGjLdrlsFBZfvvQ5KnYhlSy8Xfo__tubPxQMSOktlWaoOLQxYXvarx2NylzAPZT70nv-9msMUQxeBPRD_e-58n-kC8edVSdEvSf804JD-JjlJlExdI0pqcee8nz4TMPnPmttcywFvru480n_9oXEfG49VQuJvNufxTt72FEX43VFE2MWQbm4Xa8dzJQZBwrUvPdQ9Q0R4R7PYtp5g.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/XaNzGwnZUwFPjLwfSSldfDN42lDAmnpxcEhgSrcCqF1eEPvHpIG-BA8yTxVqPS9gwYHhjLJzxH0CfHCsPzqEnLwVqvQjcTvACrz8ojvU8U9GeCr6UyOXdgtwzQULjX1Bf5VHKxdwtwaZAGV-0Z63VVe1fkKA3idotiVwiSZZ_O4bievuSbkxC0LlfhfX9Ozs3seZ1sKgOYyR2QpiLU__5ZEq03lmanWGcgSQRB7RaEX0tz6AtXg6ByiXENTl7cNsEDioJkVXEa_WomDi9MagqackX7niPyw9ASzcXRFcL4nFDTyLWIJphaLOuKMjeOUpRawm8O9JMdKyFaOLOJwMMA.jpg",
   "last_processed_text": "Знову зміни у ГПВ на Сумщині на 17 жовтня. За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48575"
 }
