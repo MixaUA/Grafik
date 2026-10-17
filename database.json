@@ -1,5 +1,5 @@
 {
-  "update_time": "17 жовтня 11:15",
+  "update_time": "17 жовтня 14:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -9,7 +9,7 @@
       "п'ятниця": [],
       "субота": [
         "08:00-12:00",
-        "14:00-16:00"
+        "14:00-14:30"
       ],
       "неділя": []
     },
@@ -144,12 +144,12 @@
       "субота": [
         "00:00-02:00",
         "10:00-14:00",
-        "16:00-18:00"
+        "17:00-18:00"
       ],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/XaNzGwnZUwFPjLwfSSldfDN42lDAmnpxcEhgSrcCqF1eEPvHpIG-BA8yTxVqPS9gwYHhjLJzxH0CfHCsPzqEnLwVqvQjcTvACrz8ojvU8U9GeCr6UyOXdgtwzQULjX1Bf5VHKxdwtwaZAGV-0Z63VVe1fkKA3idotiVwiSZZ_O4bievuSbkxC0LlfhfX9Ozs3seZ1sKgOYyR2QpiLU__5ZEq03lmanWGcgSQRB7RaEX0tz6AtXg6ByiXENTl7cNsEDioJkVXEa_WomDi9MagqackX7niPyw9ASzcXRFcL4nFDTyLWIJphaLOuKMjeOUpRawm8O9JMdKyFaOLOJwMMA.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/CiwA2l2ub37kqVzEVTnAPG3ownaLcFilUKAONmm4-Fdr4n0DQRzYRkACXQXT8m81tXHM-W-RN3t2dUrNHnhhHxwAt4xD7dI2G7f0zctcMXkSBTwbKB3nHQ1QHDJs_bcbWyEMNmgg8VaSthYysHhPSmOW41Y32sxlPEoU04pBnnhtjke8YKFLwBTCyVtv25Y_kNQHQkI7axq036O0ROU5qeFSxiidW8CU6tY34EVIj3hnr0sjFtat9EdkpugMdQxvOBQhIoqUES9dFqCREfI41BIwOiDcBiiN9hwaifQadggEVVxf7lmsoxZo4bq_68m_7VHsUgN2Wk3CG748uRqOFQ.jpg",
   "last_processed_text": "Знову зміни у ГПВ на Сумщині на 17 жовтня. За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48575"
 }
