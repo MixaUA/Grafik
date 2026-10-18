@@ -1,5 +1,5 @@
 {
-  "update_time": "18 жовтня 14:45",
+  "update_time": "18 жовтня 20:30",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -20,7 +20,7 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "20:00-00:00"
+        "20:30-00:00"
       ]
     },
     "2.1": {
@@ -31,7 +31,8 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "18:00-22:00"
+        "18:00-20:00",
+        "20:30-22:00"
       ]
     },
     "2.2": {
@@ -54,7 +55,7 @@
       "субота": [],
       "неділя": [
         "14:00-18:00",
-        "20:00-22:00"
+        "20:30-22:00"
       ]
     },
     "3.2": {
@@ -66,7 +67,7 @@
       "субота": [],
       "неділя": [
         "12:00-16:00",
-        "18:00-22:00"
+        "18:00-20:00"
       ]
     },
     "4.1": {
@@ -90,8 +91,7 @@
       "субота": [],
       "неділя": [
         "09:30-12:00",
-        "14:00-18:00",
-        "20:00-22:00"
+        "14:00-18:00"
       ]
     },
     "5.1": {
@@ -143,7 +143,7 @@
       ]
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/bl6k86DA1MYRb-YYtPXQ-BexJvrYcKbzS-IljWWSV4tjGxwymcwb3sa9vaN21CWRa2j6bYSjs3lIWtKcse-LMQJ6uBQlwKRYOEnAo4hMuo29YnTgnd2CkTDW7hFj164-WQn2A9IsNY0Q1f46WgaYGnbmufnVMb-N0XTSXhaHJ1dYlR_2h0ghpJ3UtaOKmzBg_8n0fjhzkGgMbIcd3PhQdi8lKlRzf5yNUNnCX9YMTZe7gXT0Xk26uqAK4D9guK1tm3IkPc3qU2weBQWkdc7KmnThdkH8Wh8Fz6cc2j_RPCg_0sQE0Er3-Rc-_zRqIQnyTxXs-G3xOLD5ghhg4nfatw.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/IUvEbgg4mZCuL9u12zeGwmcLirX0_G26MxQ2lRPlrtSY2FvUIAf5WbENoNmczTVPFttDcaSUsmuU8eR9vPU808rFszaoboMzRjggTc8Aua0vvNtWktk1-1QE26tVqGmOnYcSacoLtozR0PTtrcCmV3rBwLzA9mfso23Q_x7c-wq54d7vz0hXvfTA51Mt9dxNPz7aTJlucM4CWqZg24fSBA5XtYy5xng4eHgEPMuMtJcyyxoIrEe0jjp9Xm012N5NyC7XLTROhqhgOcQwUqLDwOYTjBYTPoDBvp_uLuq4NF39EP1SHpNYKxOszLZ9KCQ4coL6chK-Z4sITS54xi8a0g.jpg",
   "last_processed_text": "Зміни на 14:31 у ГПВ на Сумщині на 18 жовтня.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48680"
 }
