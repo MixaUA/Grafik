@@ -1,5 +1,5 @@
 {
-  "update_time": "20 жовтня 17:00",
+  "update_time": "20 жовтня 18:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -68,8 +68,7 @@
     "4.1": {
       "понеділок": [],
       "вівторок": [
-        "14:00-16:00",
-        "20:00-22:00"
+        "14:00-16:00"
       ],
       "середа": [],
       "четвер": [],
@@ -80,8 +79,7 @@
     "4.2": {
       "понеділок": [],
       "вівторок": [
-        "12:00-14:00",
-        "19:00-22:00"
+        "12:00-14:00"
       ],
       "середа": [],
       "четвер": [],
@@ -92,8 +90,7 @@
     "5.1": {
       "понеділок": [],
       "вівторок": [
-        "10:00-13:00",
-        "19:00-20:00"
+        "10:00-13:00"
       ],
       "середа": [],
       "четвер": [],
@@ -136,7 +133,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/uCvaK8P51XKh84YROEY6BnaGbnzWcWg8x84wDtdPJad_S5XKdN4nDihczzVorG59nKFhMc4KKUw8PsFjLMZlUAFhnMd0CZ54aj2mySH9dymgU7r953wdN3tOPaDEs5a1JBubkSbaGVXBWFSDbgJPP05UuuJ7ZKaQY5N2jt9-Nj6QDsNEHLL2Qa6orodSLuVknbfm8doD9ut7O4eJq4lMBFnPA1jKEH-JF6GpIrIE6tI5beFFavzRaWSkYnSxpJX8TYtTyfHfNtN8_QEAINKkwIbs-jOWrDcnk1yg7YoLyjayuD0hE1hko1QXdUvHn1HM-mHBigFOshe17me-xQK1MQ.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/LgaS2N5Rtc3pvaxzGmdJzNfDaNIJGwyEq1LKRpHam0aZV_UEZ8tmPdJMeeWads5eEOG3KtJ7gfP8HiXmtB-IQ8m12wWED-Geoia1oxUgpFLCXyM9Te-oGgGIel_bDOugx4IF2clOeDektGwAGDQV73CuR2jNHgrqFgZJq_900DtTl6fbqUkc39CWoGG2P_322Bec6SCLagrAPjN_7fYyOg_u-W3jp2FI7AODJ4ANIErt4q9WhL440oAz0Ig8d7ewBPWyHRt9jhG1thmAgwe9NqseeshdoCebVq5HIQzPpvzDYtWp1RFGdgrTroRxRjnJR_oGMvEGDWViuj6sFWarxw.jpg",
   "last_processed_text": "ГПВ на Сумщині на 20 жовтня.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48685"
 }
