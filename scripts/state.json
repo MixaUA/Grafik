@@ -75,5 +75,6 @@
             "hour_end": 22
         }
     ],
-    "weather_day_report_2026-10-23": true
+    "weather_day_report_2026-10-23": true,
+    "weather_night_report_2026-10-23": true
 }
