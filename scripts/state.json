@@ -5,32 +5,6 @@
     },
     "OFF_event_index": 6,
     "ON_event_index": 3,
-    "forecast_2026-10-22": [
-        {
-            "hour": 6,
-            "code": 3,
-            "temp": 10,
-            "wind": 8,
-            "cloud": 96,
-            "hour_end": 13
-        },
-        {
-            "hour": 13,
-            "code": 80,
-            "temp": 12,
-            "wind": 6,
-            "cloud": 98,
-            "hour_end": 21
-        },
-        {
-            "hour": 21,
-            "code": 2,
-            "temp": 11,
-            "wind": 7,
-            "cloud": 69,
-            "hour_end": 22
-        }
-    ],
     "forecast_2026-10-23": [
         {
             "hour": 6,
@@ -75,6 +49,71 @@
             "hour_end": 22
         }
     ],
-    "weather_day_report_2026-10-23": true,
-    "weather_night_report_2026-10-23": true
+    "forecast_2026-10-25": [
+        {
+            "hour": 6,
+            "code": 1,
+            "temp": 7,
+            "wind": 9,
+            "cloud": 7,
+            "hour_end": 7
+        },
+        {
+            "hour": 7,
+            "code": 0,
+            "temp": 7,
+            "wind": 10,
+            "cloud": 0,
+            "hour_end": 9
+        },
+        {
+            "hour": 9,
+            "code": 1,
+            "temp": 9,
+            "wind": 12,
+            "cloud": 23,
+            "hour_end": 12
+        },
+        {
+            "hour": 12,
+            "code": 0,
+            "temp": 12,
+            "wind": 14,
+            "cloud": 0,
+            "hour_end": 14
+        },
+        {
+            "hour": 14,
+            "code": 1,
+            "temp": 14,
+            "wind": 14,
+            "cloud": 19,
+            "hour_end": 15
+        },
+        {
+            "hour": 15,
+            "code": 0,
+            "temp": 11,
+            "wind": 12,
+            "cloud": 0,
+            "hour_end": 20
+        },
+        {
+            "hour": 20,
+            "code": 1,
+            "temp": 10,
+            "wind": 13,
+            "cloud": 10,
+            "hour_end": 21
+        },
+        {
+            "hour": 21,
+            "code": 3,
+            "temp": 9,
+            "wind": 12,
+            "cloud": 100,
+            "hour_end": 22
+        }
+    ],
+    "weather_day_report_2026-10-24": true
 }
