@@ -1,5 +1,5 @@
 {
-  "update_time": "27 жовтня 10:15",
+  "update_time": "27 жовтня 14:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -96,7 +96,7 @@
       "понеділок": [],
       "вівторок": [
         "12:00-16:00",
-        "18:00-20:00"
+        "18:00-22:00"
       ],
       "середа": [],
       "четвер": [],
@@ -108,7 +108,7 @@
       "понеділок": [],
       "вівторок": [
         "10:00-14:00",
-        "16:00-18:00"
+        "16:00-20:00"
       ],
       "середа": [],
       "четвер": [],
@@ -120,7 +120,7 @@
       "понеділок": [],
       "вівторок": [
         "08:00-12:00",
-        "14:00-16:00"
+        "14:00-18:00"
       ],
       "середа": [],
       "четвер": [],
@@ -132,7 +132,7 @@
       "понеділок": [],
       "вівторок": [
         "06:00-10:00",
-        "12:00-14:00"
+        "12:00-16:00"
       ],
       "середа": [],
       "четвер": [],
@@ -141,7 +141,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/rw3GXNibbVyjvjDtn1w92j3LQsl77HIRF7vHvw0LjRrkdsMMHY4C-mmGgIMgZUdy4rG8Be4_sJoBQV2yAuLOEJpVIQbYcjrkVyTrUkqTUnYPhGTLHOScsu_Zz1efxDq081qL_K8ZPZ5L5Y5nUrFzIIsSnyTVNHTDzhtKIjwX5Vh23vmVjFZBtsw2UuR9mpliN49I1sZ9K5uA6OKd9CeTaJmMiyu5vgJKSI6wkBq3f3gpMIrlenQCwxfZYHuhvdQKloX7S6B6MDGuzEVkvDATdgUGofimLv2Qg4meL_I9Q6EurFMC2gyYal6ZubZmWN6NtqCefaZqZCmoAHs5UsWYYQ.jpg",
-  "last_processed_text": "ГПВ на 27 жовтня.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/R_E_alRnoixoDsDamQmhErW0mW81JRIurnOo_jfTLpMqsTO041klyl68YUsb9L74lbZspChGTSJNCAcJZ9OYecWJOi5jyHJOHRDNYwoV5NFWVWSWd93oDqbRqbU6lw5xcpx0eKbVoyrWuU3X3Y4T7KoYMnG5xZOwrsWZENhEmS1iaFX3uWsdyLlfFVc6moXcZUYDshndIdGRGyUKLBB0gKhDrSAmEj9NiWymRFB3GtiE0Nu_ATZtWz_45JEZy0mP4JA0UYOr-WlMwU7gcwUwphfM0Pu6BiNMaWux4IN94It0Yq6j4K4EwLKYy8TjvNdly4W9-m2KX1ouRG98MBhOvg.jpg",
+  "last_processed_text": "Оновлені ГПВ на 27 жовтня, станом на 14:00.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48826"
 }
