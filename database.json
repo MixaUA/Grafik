@@ -1,5 +1,5 @@
 {
-  "update_time": "28 жовтня 21:01",
+  "update_time": "28 жовтня 21:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -37,7 +37,7 @@
       "вівторок": [],
       "середа": [
         "14:00-18:00",
-        "20:00-22:00"
+        "20:00-00:00"
       ],
       "четвер": [
         "06:00-08:00",
@@ -53,7 +53,7 @@
       "вівторок": [],
       "середа": [
         "12:00-16:00",
-        "18:00-21:00"
+        "18:00-22:00"
       ],
       "четвер": [
         "08:00-12:00",
@@ -68,7 +68,8 @@
       "вівторок": [],
       "середа": [
         "10:00-14:00",
-        "16:00-20:00"
+        "16:00-20:00",
+        "22:00-00:00"
       ],
       "четвер": [
         "06:00-08:00",
@@ -85,7 +86,7 @@
       "середа": [
         "08:00-12:00",
         "14:00-18:00",
-        "20:00-21:00"
+        "20:00-00:00"
       ],
       "четвер": [
         "22:00-00:00"
@@ -100,7 +101,7 @@
       "середа": [
         "06:00-10:00",
         "12:00-16:00",
-        "18:00-20:00"
+        "18:00-22:00"
       ],
       "четвер": [
         "20:00-00:00"
@@ -115,7 +116,7 @@
       "середа": [
         "06:00-08:00",
         "10:00-14:00",
-        "16:00-18:00"
+        "16:00-20:00"
       ],
       "четвер": [
         "18:00-22:00"
@@ -129,7 +130,8 @@
       "вівторок": [],
       "середа": [
         "08:00-12:00",
-        "14:00-16:00"
+        "14:00-16:00",
+        "17:00-18:00"
       ],
       "четвер": [
         "16:00-20:00",
@@ -183,7 +185,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/AoF_1byeypT2UNlQWN4L0u9q-O3WKxVB9UXdTu7bsZyxx5662p4sGkLHKBo5rk2ZO_9PNUvTH981t7ErHoDSAr3rcJXMqLaJB0ezC3tRn-fI1BbYfSF7kY8EWhtjkbBOBKlapLH0o7OQSoKibcQi2SkxN3ysIiCDhAkStszwc1o9XpECAgcW8wX12ynk7JDlG5Gl68WYv8qXM5Js6CxA32B_gjGGJ0s2B3LPkC4C3DZypCjCJcDr30C3_7D3ekjy3ONjVz8Iy5WQXWvd7k0hgf1XqDYudIRWuBB_ajghwyr_1Sy0EmOyiQlAHxtr5qXzHbSzr1enIcVSVHNPJKP3mQ.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/Lbgu14Ajkr8pX8vUKnzk1nfUgoAZtWKBi5IMUsLzNt5j230DcBH0mY2LdtgGg5TgJQafj9IGpklwj8HU3gSsRtZwwYFEAhilO313KWW1E4x3FbuOXuHKSvMjcjLgHELudT3ygQmzsgnVWlVQNTYuIBEwlyleaJyHsIEHm5kHoDBpcRfTwOP920OdaLsQjhIDXciMmHxQ02Q2cVjij2pbse9Ngj2LyZu9B7kEOhgbvQdUh-af6AK-MAHN7G_Im6mhr7DK4vXhtVfbU-nnEF57n_1McaX8L1aq-KOBD4pOcswTV8vq6Dy9fLP8Acz3AK49y1vtrEwS-vm3NpmVwz7MzQ.jpg",
   "last_processed_text": "ГПВ на 29 жовтня.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48905"
 }
