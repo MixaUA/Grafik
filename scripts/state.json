@@ -5,32 +5,6 @@
     },
     "OFF_event_index": 15,
     "ON_event_index": 12,
-    "forecast_2026-10-31": [
-        {
-            "hour": 6,
-            "code": 61,
-            "temp": 8,
-            "wind": 8,
-            "cloud": 100,
-            "hour_end": 18
-        },
-        {
-            "hour": 18,
-            "code": 3,
-            "temp": 7,
-            "wind": 8,
-            "cloud": 100,
-            "hour_end": 19
-        },
-        {
-            "hour": 19,
-            "code": 61,
-            "temp": 7,
-            "wind": 6,
-            "cloud": 100,
-            "hour_end": 22
-        }
-    ],
     "forecast_2026-11-01": [
         {
             "hour": 6,
@@ -123,6 +97,39 @@
             "hour_end": 22
         }
     ],
-    "weather_day_report_2026-11-01": true,
-    "weather_night_report_2026-11-01": true
+    "forecast_2026-11-03": [
+        {
+            "hour": 6,
+            "code": 45,
+            "temp": 6,
+            "wind": 4,
+            "cloud": 100,
+            "hour_end": 8
+        },
+        {
+            "hour": 8,
+            "code": 3,
+            "temp": 7,
+            "wind": 4,
+            "cloud": 100,
+            "hour_end": 9
+        },
+        {
+            "hour": 9,
+            "code": 45,
+            "temp": 8,
+            "wind": 4,
+            "cloud": 95,
+            "hour_end": 12
+        },
+        {
+            "hour": 12,
+            "code": 3,
+            "temp": 8,
+            "wind": 4,
+            "cloud": 96,
+            "hour_end": 22
+        }
+    ],
+    "weather_day_report_2026-11-02": true
 }
