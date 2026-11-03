@@ -1,5 +1,5 @@
 {
-  "update_time": "3 листопада 00:15",
+  "update_time": "3 листопада 10:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -19,7 +19,8 @@
       "вівторок": [
         "02:00-06:00",
         "08:00-12:00",
-        "14:00-18:00"
+        "14:00-18:00",
+        "20:00-22:00"
       ],
       "середа": [],
       "четвер": [],
@@ -32,7 +33,8 @@
       "вівторок": [
         "00:00-04:00",
         "06:00-10:00",
-        "12:00-16:00"
+        "12:00-16:00",
+        "18:00-22:00"
       ],
       "середа": [],
       "четвер": [],
@@ -46,6 +48,7 @@
         "00:00-02:00",
         "04:00-08:00",
         "10:00-14:00",
+        "16:00-20:00",
         "22:00-00:00"
       ],
       "середа": [],
@@ -57,8 +60,9 @@
     "3.1": {
       "понеділок": [],
       "вівторок": [
-        "02:00-04:00",
+        "02:00-06:00",
         "08:00-12:00",
+        "14:00-18:00",
         "20:00-00:00"
       ],
       "середа": [],
@@ -71,7 +75,9 @@
       "понеділок": [],
       "вівторок": [
         "00:00-02:00",
-        "08:00-10:00",
+        "03:00-04:00",
+        "06:00-10:00",
+        "12:00-16:00",
         "18:00-22:00"
       ],
       "середа": [],
@@ -83,6 +89,8 @@
     "4.1": {
       "понеділок": [],
       "вівторок": [
+        "04:00-08:00",
+        "10:00-14:00",
         "16:00-20:00",
         "22:00-00:00"
       ],
@@ -95,6 +103,8 @@
     "4.2": {
       "понеділок": [],
       "вівторок": [
+        "03:00-06:00",
+        "10:00-12:00",
         "14:00-18:00",
         "20:00-00:00"
       ],
@@ -107,6 +117,7 @@
     "5.1": {
       "понеділок": [],
       "вівторок": [
+        "03:00-04:00",
         "12:00-16:00",
         "18:00-22:00"
       ],
@@ -156,7 +167,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/tKSgj4mc1rBVI1W1OWusDUzNbV7k0Em71Ljz7S0pYQ8s9VH0qHtfZUmuIgaWRsXgsWPMCCtmUAAVh1aa7kOtDRG3Z6rjab7ywKcLw07SgNNmz4dfTAMMMWeLZyar9Fw1s4nOUFmfJzj5pFdj-cKc9jmfRdG6Mqmn3b5FLzvOtRp3QUpCit6UX_3uNfYD21eHihOUfIK10zKlNalQaeCdpNhBPq-mAoRZcMyrMTnHn5p0QwLXQz2Eo_dHVg8VEInbdCPzA35UtVt_M-QtoKK5i8dolRjiZfQ3OpeTBjdGmzTDKXslzuiC-QM8cvGj8Arncrd1EoxWck-_gBSHo_mLnA.jpg",
-  "last_processed_text": "Графіки погодинних відключень на Сумщині.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/tqG1yUUKBL0i3SYV3ZwP37RkWJ0LK_2jYFGua8Ydwb-lf0a89_cLRCdS8cjZDrScstSvmR5dyBKXcaEpPN6FY07nRPSONVSFl-RuV0JS7x-OrxQFvrWzSxZs9VSD0D0arkOnt786j0WPhyExQlw6uMlo_XWO5CQu2hGxQ6_KymFpZRZqU207VEneHI83dQyzjzeZMmNeu8gBKkNQ3Tq1wg0G-2EAkFUKYoJ531TUDEMxVFysVQTLseYhKAj48_iNsWWnQDeAsvgJ2mAqLHehGugLqZ8_diGbzryolklFi6sxGHw69NwbLrR-A-TuqXJIWAroT5B7gNth7yAI5N7ytg.jpg",
+  "last_processed_text": "Графіки погодинних відключень на Сумщині (оновлено 3 листопада о 10:10 )",
   "last_processed_news_url": "https://t.me/suspilnesumy/48916"
 }
