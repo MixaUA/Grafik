@@ -1,5 +1,5 @@
 {
-  "update_time": "4 листопада 00:00",
+  "update_time": "4 листопада 07:45",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -63,7 +63,7 @@
       "вівторок": [],
       "середа": [
         "00:00-02:00",
-        "04:00-08:00",
+        "04:00-06:30",
         "10:00-14:00",
         "16:00-20:00",
         "22:00-00:00"
@@ -123,7 +123,7 @@
         "02:00-06:00",
         "08:00-12:00",
         "14:00-18:00",
-        "20:00-00:00"
+        "20:00-22:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -174,7 +174,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/t_AqetmfyRFZiej2cnsmY2tmQ0SHUk9Lj8DvqQSZaErqJ_wPDp2DkwWqXqup9MZ8iQz_FwNuKlSAH9ikYnFyFRIT8OT-5dL2bcIoIYczJQXupKd_w5-F9NDOZg0yUyDK2g_7vtlElIQ3jm0xX1BWIy3HcShgBlOjXCK6ycrfGKgKLg77xFmt0W5mhYykgIt4JkiTK2XSUUwA91lSXjI9k3_Q3ezFs8Yd3a9V2KL2EqL8z4VModHIfml4NkdhTyUKJkVEsPzWYgp9036eUlHyk4jGeaNVcN1lbGERkVVq3BGzwCQTA6SjSoH87e2ykvu6KRKvtHfr3JEGN2UB3nBpSA.jpg",
-  "last_processed_text": "ГПВ на 4 листопада на Сумщині станом на 23:42За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/bSBny-M4zcU8xinWabC--n-Pqss12X2sJUjs-lfLdPUkR5JGB_W3aeqKzikewiSO4gc-vU4Yk6WKiDhoinM8lWi_jTJni1bYP_KwwC7eZ_Ee6QmzJUgXpo7iCHS9tAp1aAtZeznVlY4fHO6NopYxyuZEJbpACAIBQ2T1nJooi7dsaRINEkw4v3Yqm2cCna48TUgR8CuWfw5bynnND7ValJIkeVraCJtGX50Au-Vn94832L6pONopgBfz7Nd_zWc5p_leubFu6t2YV_6FUvV0BZeuPKw2Nn7Y_rTqRyi_Xsv9KCMVFuZx0FT1EtOUqCK5LbgS_gsfGjUIUNkD7raOTg.jpg",
+  "last_processed_text": "ГПВ на 4 листопада на Сумщині станом на 7:10.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/48916"
 }
