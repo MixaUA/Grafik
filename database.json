@@ -1,5 +1,5 @@
 {
-  "update_time": "7 листопада 10:15",
+  "update_time": "7 листопада 10:45",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -133,7 +133,7 @@
       "субота": [
         "00:00-04:00",
         "06:00-10:00",
-        "14:00-16:00",
+        "12:00-16:00",
         "18:00-22:00"
       ],
       "неділя": []
@@ -147,6 +147,7 @@
       "субота": [
         "00:00-02:00",
         "04:00-08:00",
+        "10:30-14:00",
         "16:00-20:00",
         "22:00-00:00"
       ],
@@ -161,13 +162,14 @@
       "субота": [
         "02:00-04:00",
         "08:00-10:00",
+        "10:30-12:00",
         "14:00-18:00",
         "20:00-00:00"
       ],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/h6ZFGmikVQmnTxCO8kO2xsiAtXX6se8DeRbD2-lMXYJT2YXfwiLis18aiad5kSPsa8xe7h6ZUUb1G8sLTZbMAht2xFu--NCC2G6ZxfNfgJDbzIACcdkFLzBe_8kfuTiBRJrUBc20YfoucnlXyY2zz2VWgGrcytVzKKB2IqBnqclvZpBiociADHsAwbMJ-x-xDxuhME5Okq8jtqU_DopHjLyLTjSKjjEN5alZuqXFKYXdPaXg9KQennDVQC32TtnaXFJ5lMJ_V05tm4OXvgucPNPXtcjxrziCbci8Gi9YBQ8ZzsPj280X2g7y06z9-_EJXpo1ui4rveFo_h1rsWv8hg.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/V57kWjgHm6xDeot2apO1Kay8E6axIxqd45eh11-rolRwyfEPxwNBVIAqdUaAWR1KD_gZQjTobPoQADqrl9syXQWkWwQilXdypDbyW8Zob_NrqFvhGuAiFN8YVbgzvn_upmCEjsmrqiA5Z-TyMF5Ekd-gTPievo7P80LS-xgd9n6Gi3dR4mrw20pt1_HJCaK2szoDHHjlxTWsbZodUiG6GWU0IYflSsWINnQ5u1OmJVwkeJjqy3j7K1rDndZB7WvG1-jDdOV05oqzjxhLB9-Dc6wR6F-8p5X6jx-foclDL4FPu4oHBhX--LeD34rqywuVcO8NpJvl8piBGJPLwQmxKw.jpg",
   "last_processed_text": "ГПВ на 7 листопада на Сумщині.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/49074"
 }
