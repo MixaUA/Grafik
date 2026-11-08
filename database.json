@@ -1,5 +1,5 @@
 {
-  "update_time": "8 листопада 20:00",
+  "update_time": "8 листопада 21:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -12,7 +12,7 @@
         "02:00-06:00",
         "08:00-12:00",
         "14:00-18:00",
-        "20:00-22:00"
+        "20:00-00:00"
       ]
     },
     "1.2": {
@@ -81,8 +81,7 @@
       "субота": [],
       "неділя": [
         "00:00-02:00",
-        "04:00-06:00",
-        "07:00-08:00",
+        "04:00-08:00",
         "10:00-14:00",
         "16:00-20:00",
         "22:00-00:00"
@@ -96,7 +95,7 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "02:00-04:00",
+        "02:00-06:00",
         "09:00-12:00",
         "14:00-18:00",
         "20:00-00:00"
@@ -110,7 +109,7 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "00:00-02:00",
+        "00:00-04:00",
         "09:00-10:00",
         "12:00-16:00",
         "18:00-22:00"
@@ -124,6 +123,7 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
+        "00:00-02:00",
         "10:00-14:00",
         "16:00-20:00",
         "22:00-00:00"
@@ -165,11 +165,12 @@
       "неділя": [
         "04:00-08:00",
         "10:00-14:00",
-        "16:00-20:00"
+        "16:00-20:00",
+        "22:00-00:00"
       ]
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/ffniimEADbRzQFfSOplkA86ZAsukEFMP6rPjN6vP-_GZJlpwbsXrLO7EGDh2wKBNVvpWm9i865hv4S9aga2TiqHkZbsmhvoH1WJzMxsaW01LmdA7_sRpAhap-Ylliwoir_cJ9n9zp9pHa8r1QFtne0kqTNgA40msLt0kYOLBmS0376XmqtAtEXbybIfl3U-EKbgGIZzXVPWrp8SQHoPNecvAYweq_v7U3kKVQs9HDNOLVVGmkG_h5uoM4oMdNWvhlQEAa39VH20VIHfwFYl2Yvk8dYOYqj2HUQGzA0vk4SMY1ZPtTejM_FeLG3z9UurNXbp_g4A_iqgjEklV2EjTXw.jpg",
-  "last_processed_text": "ГПВ на 8 листопада на Сумщині.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/PNXH1KbO8kaWZTZ_7vTgM6gJnwBdfuvd8OK7cSxfu8oR_f9TxpQYEhe-8bvpX0QmxsjPGR9CyU3RFCVbJJ98946b94uBXsy51k0wDP8BE5s_woY6qSfPWzZqfcybNCTwkGo6bj5c34w7ad7ANpPQW2EMZVFKE-Op8uZW3UDlvt2zu8hUt9VsIesJibkC2tBmf5-j9s2-ru1MvkskX6PhgDftjFmFhhVFYTfp2--wRaX9QMB7DPAso3imga-kAKMc4QvWhRfNOXAaOLY5jOEoqu6bCYPyq_HWND6mHWoWy12I8raFklGlxr9ey8vhZGR_KlAIOFyYddsRJP6Y84rGVg.jpg",
+  "last_processed_text": "Зміни у ГПВ на 8 листопада на Сумщині станом на 21.08.За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/49171"
 }
