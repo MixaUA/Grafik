@@ -3,114 +3,8 @@
         "today": "Ранок у Миколаївці буде прохолодним та хмарним, з легким вітерцем, тож не поспішайте скидати теплий одяг. Вдень помітно потеплішає, стане досить приємно, але хмари залишаться, а вітер трохи посилиться. Вечір обіцяє бути лагідним, лише вітер відчутніший. Тож сміливо виходьте на прогулянку, але зранку не забудьте легку курточку.",
         "tomorrow": "Завтрашній ранок принесе прохолоду та хмарність, не виключений невеличкий дощик. Протягом дня буде свіжо, і мокрий настрій може тривати, адже можливі опади. Обов'язково візьміть з собою парасольку, щоб негода не застала вас зненацька."
     },
-    "OFF_event_index": 16,
+    "OFF_event_index": 17,
     "ON_event_index": 14,
-    "forecast_2026-11-07": [
-        {
-            "hour": 6,
-            "code": 3,
-            "temp": 0,
-            "wind": 10,
-            "cloud": 96,
-            "hour_end": 7
-        },
-        {
-            "hour": 7,
-            "code": 85,
-            "temp": 0,
-            "wind": 11,
-            "cloud": 72,
-            "hour_end": 9
-        },
-        {
-            "hour": 9,
-            "code": 2,
-            "temp": 1,
-            "wind": 13,
-            "cloud": 66,
-            "hour_end": 10
-        },
-        {
-            "hour": 10,
-            "code": 3,
-            "temp": 1,
-            "wind": 15,
-            "cloud": 94,
-            "hour_end": 11
-        },
-        {
-            "hour": 11,
-            "code": 85,
-            "temp": 1,
-            "wind": 14,
-            "cloud": 89,
-            "hour_end": 12
-        },
-        {
-            "hour": 12,
-            "code": 3,
-            "temp": 2,
-            "wind": 14,
-            "cloud": 92,
-            "hour_end": 13
-        },
-        {
-            "hour": 13,
-            "code": 1,
-            "temp": 2,
-            "wind": 14,
-            "cloud": 35,
-            "hour_end": 14
-        },
-        {
-            "hour": 14,
-            "code": 2,
-            "temp": 2,
-            "wind": 14,
-            "cloud": 67,
-            "hour_end": 16
-        },
-        {
-            "hour": 16,
-            "code": 1,
-            "temp": 1,
-            "wind": 10,
-            "cloud": 42,
-            "hour_end": 17
-        },
-        {
-            "hour": 17,
-            "code": 2,
-            "temp": 0,
-            "wind": 8,
-            "cloud": 48,
-            "hour_end": 18
-        },
-        {
-            "hour": 18,
-            "code": 1,
-            "temp": 0,
-            "wind": 7,
-            "cloud": 27,
-            "hour_end": 20
-        },
-        {
-            "hour": 20,
-            "code": 2,
-            "temp": -1,
-            "wind": 5,
-            "cloud": 71,
-            "hour_end": 21
-        },
-        {
-            "hour": 21,
-            "code": 1,
-            "temp": -1,
-            "wind": 5,
-            "cloud": 44,
-            "hour_end": 22
-        }
-    ],
     "forecast_2026-11-08": [
         {
             "hour": 6,
@@ -179,6 +73,47 @@
             "hour_end": 22
         }
     ],
-    "weather_day_report_2026-11-08": true,
-    "weather_night_report_2026-11-08": true
+    "forecast_2026-11-10": [
+        {
+            "hour": 6,
+            "code": 3,
+            "temp": 3,
+            "wind": 4,
+            "cloud": 86,
+            "hour_end": 9
+        },
+        {
+            "hour": 9,
+            "code": 2,
+            "temp": 6,
+            "wind": 8,
+            "cloud": 64,
+            "hour_end": 15
+        },
+        {
+            "hour": 15,
+            "code": 3,
+            "temp": 5,
+            "wind": 9,
+            "cloud": 91,
+            "hour_end": 16
+        },
+        {
+            "hour": 16,
+            "code": 2,
+            "temp": 3,
+            "wind": 8,
+            "cloud": 60,
+            "hour_end": 21
+        },
+        {
+            "hour": 21,
+            "code": 3,
+            "temp": 2,
+            "wind": 8,
+            "cloud": 82,
+            "hour_end": 22
+        }
+    ],
+    "weather_day_report_2026-11-09": true
 }
