@@ -5,16 +5,6 @@
     },
     "OFF_event_index": 2,
     "ON_event_index": 0,
-    "forecast_2026-11-09": [
-        {
-            "hour": 6,
-            "code": 3,
-            "temp": 4,
-            "wind": 2,
-            "cloud": 86,
-            "hour_end": 22
-        }
-    ],
     "forecast_2026-11-10": [
         {
             "hour": 6,
@@ -123,6 +113,15 @@
             "hour_end": 22
         }
     ],
-    "weather_day_report_2026-11-10": true,
-    "weather_night_report_2026-11-10": true
+    "forecast_2026-11-12": [
+        {
+            "hour": 6,
+            "code": 3,
+            "temp": 4,
+            "wind": 9,
+            "cloud": 93,
+            "hour_end": 22
+        }
+    ],
+    "weather_day_report_2026-11-11": true
 }
