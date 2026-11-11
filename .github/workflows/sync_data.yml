@@ -7,7 +7,7 @@ on:
 
 concurrency:
   group: scheduler-data-sync
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   # Цей рядок примусово переводить всі кроки на Node 24 і приховує попередження про Node 20
