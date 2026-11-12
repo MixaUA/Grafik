@@ -31,7 +31,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install google-genai requests beautifulsoup4
+          pip install google-genai requests beautifulsoup4 tzdata
 
       - name: Run AI Processor
         env:
