@@ -1,5 +1,5 @@
 {
-  "update_time": "15 листопада 16:00",
+  "update_time": "15 листопада 16:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -73,7 +73,8 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "16:00-20:00"
+        "16:00-20:00",
+        "22:00-00:00"
       ]
     },
     "4.2": {
@@ -84,7 +85,8 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "14:00-18:00"
+        "14:00-18:00",
+        "20:00-00:00"
       ]
     },
     "5.1": {
@@ -95,7 +97,8 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "12:00-16:00"
+        "12:00-16:00",
+        "18:00-22:00"
       ]
     },
     "5.2": {
@@ -106,7 +109,8 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "10:00-14:00"
+        "10:00-14:00",
+        "17:00-20:00"
       ]
     },
     "6.1": {
@@ -118,7 +122,8 @@
       "субота": [],
       "неділя": [
         "08:00-12:00",
-        "14:00-16:00"
+        "14:00-16:00",
+        "17:00-18:00"
       ]
     },
     "6.2": {
@@ -134,7 +139,7 @@
       ]
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/mp0bf1n8HqxRZmaygLo2ieatEBoCDMBmIdB7VzPe9QEAxojb3xvEf1i2_QcwL22IYeO-LYtJ2cJD9uG6Ho2w6P4sdjaHOja5tuUl_M9Sq6_FpUj46WuLQGIA3N7_iO6mxKEFWQS7kJTdsz7y9wEBFhukvBV1ziIYN5eGkYA2Gp40kPKhq1moSfSVpygXr23XTEMeuNFp0qOZX2bTUcV-gv8rZz99VJ1Qx8Pwx0-Mv5_3ddi5OPAj1RsLn97h1n8k1a6ct-s5N0lofwBv3QD4wiNqIZ575tcABw3RupXj57_2TKQh_5UK_GoN1OmnDYBFqA-c0sXYZMC3IBsp8sVwRQ.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/kn6CL31iWgbSqgCm_JsISlDj-eY2BlDWbDy5wJD6PWmgVj-2X9tlJ6oken3b3ROm21oqE_cGspJbEQXS_frtXllKWBNuN2du4-kgQPwGvaDPogBpEZ99qAB5EZp3mQt5folVGZxHlVtFGX8F0yraLLiBXwqENu92DiBqapawAfOE9QuHvXnb-POGvpdzH-iXDZLFnCjR70ObDCxHwPPKJfAkyZLbxnBo8WY7pxVM5MUuKvJq-irgfXQBxRo4z66sL-RHGCDpt26O6123SWabmJu0L_Fx7R2S18JvekcPpeNq8UcvNupXICFQrxNG42kxUvyatNMbqAOCsZd1sr5z8g.jpg",
   "last_processed_text": "ГПВ на Сумщині на 15 листопада  — \"Сумиобленерго\" (оновлення о 15:48).За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/49306"
 }
