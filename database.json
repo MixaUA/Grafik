@@ -1,5 +1,5 @@
 {
-  "update_time": "18 листопада 08:30",
+  "update_time": "18 листопада 15:45",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -8,6 +8,7 @@
         "00:00-02:00",
         "04:00-08:00",
         "10:00-12:00",
+        "16:00-20:00",
         "22:00-00:00"
       ],
       "четвер": [],
@@ -21,6 +22,7 @@
       "середа": [
         "02:00-06:00",
         "09:00-10:00",
+        "16:00-18:00",
         "20:00-00:00"
       ],
       "четвер": [],
@@ -96,7 +98,7 @@
       "середа": [
         "08:00-12:00",
         "14:00-18:00",
-        "20:00-22:00"
+        "20:00-00:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -122,7 +124,8 @@
       "середа": [
         "04:00-08:00",
         "10:00-14:00",
-        "16:00-20:00"
+        "16:00-20:00",
+        "22:00-00:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -135,7 +138,8 @@
       "середа": [
         "02:00-06:00",
         "08:00-12:00",
-        "14:00-18:00"
+        "14:00-18:00",
+        "20:00-00:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -148,7 +152,8 @@
       "середа": [
         "00:00-04:00",
         "06:00-10:00",
-        "12:00-14:00"
+        "12:00-14:00",
+        "18:00-22:00"
       ],
       "четвер": [],
       "п'ятниця": [],
@@ -156,7 +161,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/CMFFq6oXr0ohuf-331SCNxVQaHzUlGfgeg3-_DEnx1Brlz65IopKSPFBidVfzjJiDffAajeSjn0wo2q_EOZj664G5fH9dxh_Kckq2Xdki9X5DVk3N6HaMoMJfHQ0GvrXDLY_5p76RMAuDwLinL_NQNublFlQBTkc_Eg8jej-Bsq6pqxumFb9S7x5saG4kOXOdI7NZuVp3ZgFfklqz8LTG1XCvyPb0PTuaKO17B6Uy94Itjh8WqwFP050N3BBpK6nousiyyIfYnW46B9ufftwoH8jwmKNEpUghBApYaXonjeKHLq37OKjD-f0VRz9K7p5ViyBRnCGv70eBQ3FGZRqoQ.jpg",
-  "last_processed_text": "ГПВ на Сумщині на 18 листопада,  — \"Сумиобленерго\".За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/O2msrnGhSvWKVOOMu-2rXx4f8noDXz4ar3OZ9zCzHUiJF7DUCGXiE7BNa3uBMXBGAc6bft1NfgJ49p2dvEOz_968Uh8w069mJmfePgaZ99VrlE2EUU2bx0XM2MzBj0lSw5MgnEUBOpqeI5TtyYmo39f5G-PvZvlvbKYrLbeyROOfMBAX9-i92t-Dssn81YGwLtOOltANYliejZ-VV85AmqPsma6gop8GRq_weixlmtydyJna6EzBxo5_C81UwtKC-v7V9z7cW2Qicyfg_YVKFgviEHjICsvBYVJbXWVPS6kx4yLeSIGczz7EmWEvTq_3v6yFpEY2oxVR-rzgqeVDtw.jpg",
+  "last_processed_text": "ГПВ на Сумщині на 18 листопада,  — \"Сумиобленерго\" (оновлено 15:00)За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/49312"
 }
