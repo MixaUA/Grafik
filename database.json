@@ -1,5 +1,5 @@
 {
-  "update_time": "20 листопада 07:15",
+  "update_time": "20 листопада 07:45",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -8,7 +8,8 @@
       "четвер": [],
       "п'ятниця": [
         "02:00-06:00",
-        "08:00-10:00"
+        "08:00-12:00",
+        "16:00-18:00"
       ],
       "субота": [],
       "неділя": []
@@ -20,7 +21,7 @@
       "четвер": [],
       "п'ятниця": [
         "00:00-04:00",
-        "06:00-08:00"
+        "06:00-10:00"
       ],
       "субота": [],
       "неділя": []
@@ -81,7 +82,7 @@
       "четвер": [],
       "п'ятниця": [
         "14:00-18:00",
-        "20:00-22:00"
+        "20:00-00:00"
       ],
       "субота": [],
       "неділя": []
@@ -93,7 +94,7 @@
       "четвер": [],
       "п'ятниця": [
         "12:00-16:00",
-        "18:00-20:00"
+        "18:00-22:00"
       ],
       "субота": [],
       "неділя": []
@@ -105,7 +106,7 @@
       "четвер": [],
       "п'ятниця": [
         "10:00-14:00",
-        "16:00-18:00"
+        "16:00-20:00"
       ],
       "субота": [],
       "неділя": []
@@ -117,7 +118,8 @@
       "четвер": [],
       "п'ятниця": [
         "08:00-12:00",
-        "14:00-16:00"
+        "14:00-18:00",
+        "20:00-22:00"
       ],
       "субота": [],
       "неділя": []
@@ -129,7 +131,8 @@
       "четвер": [],
       "п'ятниця": [
         "06:00-10:00",
-        "12:00-14:00"
+        "12:00-16:00",
+        "18:00-22:00"
       ],
       "субота": [],
       "неділя": []
@@ -141,13 +144,14 @@
       "четвер": [],
       "п'ятниця": [
         "04:00-08:00",
-        "10:00-12:00"
+        "10:00-14:00",
+        "16:00-20:00"
       ],
       "субота": [],
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/IfMLe9QbQKrzBsYM5Ro-5lR1oQtD8hfBuqssAzlDtLATQH55GqqVuIyCbOOwVRLw33wV5K5w5fSKHAipzgo6k8ONZ4HwsUIQoGZaUOsCi62BIkqstyveVM0lM_ZkaG_6U4Fy1BEwFV0J7ODG_-6JEErP5UG8zjGDhf_KczztChB1I9tWIckdt-JFIm-w4c8QJtWB7EodkSFVnD52J3_Euo_ty_u52Ecyb08UfFKJC5AhTucYZOI-vwfNNlJHWvMCupnXt7F5Hr2nOF_QEjdArVrBLFw0VxvjDQ3jLLFf55VEGa-FKsLuAxFDkh9SuQTLC6MPuBVMLWvdV3Vj9S9ylw.jpg",
-  "last_processed_text": "ГПВ на 20 листопада, — АТ \"Сумиобленерго\" (оновлено).За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/MHI2jNTyCY3tfC5Evakv7iJ0D1OE_B7_vsQn3H-SEnLyIHH-QXMI7PwqTv4_G0gkUHGrmErdX_HlWLK2ZBwDMxXOHi4aRbxaxcbhryieAWiDQrjhjyyGU70_d7hhhqq4rptynQ5G-w5rGqCzxZzsK1b773Z_urwXOom-9yMb-j7qLMYLgC0eud2ARmNfNDRzce13sqP6UENFFv7moH9uBx3fftj6w-3E20p1N5botfZ71gi43OC3XdvpGhAih_Yhr5VUQi_35QOuFe7b3MTFK8CRdd1EVfjYk4OPA2Fg3B0dtCKKzKHsdFlUXgTOIIDl2CZGmpBpHfVKxLKYIWWagg.jpg",
+  "last_processed_text": "ГПВ на 20 листопада, — АТ \"Сумиобленерго\" (оновлено 07:43).За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/49312"
 }
