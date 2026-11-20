@@ -1,5 +1,5 @@
 {
-  "update_time": "20 листопада 07:45",
+  "update_time": "20 листопада 10:30",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -9,7 +9,7 @@
       "п'ятниця": [
         "02:00-06:00",
         "08:00-12:00",
-        "16:00-18:00"
+        "14:00-18:00"
       ],
       "субота": [],
       "неділя": []
@@ -21,7 +21,8 @@
       "четвер": [],
       "п'ятниця": [
         "00:00-04:00",
-        "06:00-10:00"
+        "06:00-10:00",
+        "12:00-16:00"
       ],
       "субота": [],
       "неділя": []
@@ -34,6 +35,7 @@
       "п'ятниця": [
         "00:00-02:00",
         "04:00-06:00",
+        "10:30-14:00",
         "22:00-00:00"
       ],
       "субота": [],
@@ -46,6 +48,7 @@
       "четвер": [],
       "п'ятниця": [
         "02:00-04:00",
+        "10:30-12:00",
         "20:00-00:00"
       ],
       "субота": [],
@@ -151,7 +154,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/MHI2jNTyCY3tfC5Evakv7iJ0D1OE_B7_vsQn3H-SEnLyIHH-QXMI7PwqTv4_G0gkUHGrmErdX_HlWLK2ZBwDMxXOHi4aRbxaxcbhryieAWiDQrjhjyyGU70_d7hhhqq4rptynQ5G-w5rGqCzxZzsK1b773Z_urwXOom-9yMb-j7qLMYLgC0eud2ARmNfNDRzce13sqP6UENFFv7moH9uBx3fftj6w-3E20p1N5botfZ71gi43OC3XdvpGhAih_Yhr5VUQi_35QOuFe7b3MTFK8CRdd1EVfjYk4OPA2Fg3B0dtCKKzKHsdFlUXgTOIIDl2CZGmpBpHfVKxLKYIWWagg.jpg",
-  "last_processed_text": "ГПВ на 20 листопада, — АТ \"Сумиобленерго\" (оновлено 07:43).За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/DxXkxsKZDPsVFy4FkbCf-RDNL8MMCQwW6IoNydXmiQIFs2PKgk7lIaJGs6dI2N1xsudLeBEYljNMYLspZgbYrArSPl9UmMDVl23L6dTlQBYod-eFx_zmt-ankURbydgwVYuwznRgLP6m6twlZAwKS3N5jsPHFKHdV2iB2b2lriSKD8Wg9VG8HGFCmL9OWQ4cKOSZrP_fOBsciLUoC8--6gD2p0vMYVlNdnncBu-gv3ydkrmJ6wBuTw8EIj9P2N4LSVzYxLa3w37VDNSrvOgW-Pcy680NvUQ4aHZ3_3mpWYrCD6QJbQ84TPG3yIYngAxUa_uYny9chb-2SMPVLko5LQ.jpg",
+  "last_processed_text": "ГПВ на 20 листопада, — АТ \"Сумиобленерго\" (оновлено 10:22).За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/49312"
 }
