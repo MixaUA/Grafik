@@ -1,5 +1,5 @@
 {
-  "update_time": "22 листопада 15:15",
+  "update_time": "22 листопада 15:30",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -78,7 +78,8 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "16:00-20:00"
+        "16:00-20:00",
+        "22:00-00:00"
       ]
     },
     "5.1": {
@@ -89,7 +90,8 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "15:30-18:00"
+        "15:30-18:00",
+        "20:00-00:00"
       ]
     },
     "5.2": {
@@ -100,7 +102,8 @@
       "п'ятниця": [],
       "субота": [],
       "неділя": [
-        "15:30-16:00"
+        "15:30-16:00",
+        "18:00-22:00"
       ]
     },
     "6.1": {
@@ -110,7 +113,9 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": []
+      "неділя": [
+        "16:00-20:00"
+      ]
     },
     "6.2": {
       "понеділок": [],
@@ -119,10 +124,12 @@
       "четвер": [],
       "п'ятниця": [],
       "субота": [],
-      "неділя": []
+      "неділя": [
+        "16:00-18:00"
+      ]
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/Yx6tcP0WEL2u6UxrBILg3uoQoXX2nWKHJojgNhGVIfBV3aM-KOFHwH5BfxivHjgGESRdrfC-Azekx45o8HG1Sq2jXrwA5h_FkpAYg3Mao4ec07q2iz2DZqjnkoLPSeRHuEOqlaVMA9IjDhklTumGC1FjmaenOod0UNTmrHmK-KsGz5wJ98cQeheNgy0X0140LhLpAzUibHNCs20BfzQ9Z0j97_tHhBsckVUSLVOTSUM1cY8U7gEHJgmmZxHCggmPRE59GrQQurfmkjBKtI5bVMUp2AXUBcHO7j7aWodaU3LEPV1K2HQddXAZfMScYRdKSqhHPgJAS2BldUg3nImL4g.jpg",
+  "last_processed_url": "https://cdn4.telesco.pe/file/urY83BsvYyV7dyPigZoKFkoSX7S37LxmT080DTbFZT7Iusyb1iGhtF02ogsLekcv2YOPuVv4nSUkXQH2a50Kp-6yb6eSu-d7V7pMNCH-fTFV729hCsnMTXJEBaimOOPfDojt1uJ9g_9x6EUYYuqL1AKjKFgRw5wNyQk7daau8ts23J788Skk1yQZZLbJOnsaGlegC4b9l-iqQEqQcSq2cf0v0yjNkxJuXygG3erK5mn1ZU5oU-tvAuC8bZkfuBFbix-9LbK75e_2SXHIp4S0B2mdRXo_tqAHLNTiMhYmg01FyvOWWL5U8G0WvVkNqc8EjPMLVwgZ_GvASIo5aYHKDw.jpg",
   "last_processed_text": "ГПВ на сьогодні, — АТ «Сумиобленерго»",
   "last_processed_news_url": "https://t.me/suspilnesumy/49398"
 }
