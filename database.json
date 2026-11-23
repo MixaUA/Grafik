@@ -1,9 +1,10 @@
 {
-  "update_time": "23 листопада 07:15",
+  "update_time": "23 листопада 10:30",
   "queues": {
     "1.1": {
       "понеділок": [
         "08:00-10:00",
+        "11:00-12:00",
         "14:00-16:00",
         "20:00-00:00"
       ],
@@ -17,7 +18,7 @@
     "1.2": {
       "понеділок": [
         "07:00-08:00",
-        "13:00-14:00",
+        "12:00-14:00",
         "18:00-22:00"
       ],
       "вівторок": [],
@@ -29,6 +30,7 @@
     },
     "2.1": {
       "понеділок": [
+        "11:00-12:00",
         "16:00-20:00",
         "22:00-00:00"
       ],
@@ -93,7 +95,7 @@
       "понеділок": [
         "06:00-10:00",
         "12:00-16:00",
-        "18:00-20:00"
+        "18:00-22:00"
       ],
       "вівторок": [],
       "середа": [],
@@ -119,7 +121,8 @@
       "понеділок": [
         "02:00-06:00",
         "08:00-12:00",
-        "14:00-18:00"
+        "14:00-18:00",
+        "20:00-22:00"
       ],
       "вівторок": [],
       "середа": [],
@@ -146,8 +149,7 @@
       "понеділок": [
         "00:00-02:00",
         "07:00-08:00",
-        "10:00-12:00",
-        "13:00-14:00",
+        "10:00-14:00",
         "16:00-18:00",
         "22:00-00:00"
       ],
@@ -159,7 +161,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/vKKM2hOsoOarHO4fS_AKfgDh3pwOQrZadSNhxhXPPxMdy1G7iGzoRazFMrlsjHi3Zv4_cdpcqhNNeAtXsO8NcSOLDQGubiblrmzUPzplT66oB4DZU32B4mq-nhto3IQV_DVYjSWMuPVQs1JR3ugKDXH2sW2SkmO-pxPBlSuubY_lKIqshhlXUPWFf3h2Ef83UQsEG3sOfDqtoh3uvTggl36PoZt_J0c8p6B0pTWuMNDHoHW_5Yxc1kAN1OuDwY6zw9ATfaSeTSblQdZMr_5T32LFdten7d6EpTYVqUJ2NlWXsozr2JsCL5-ooPi5kNuRynkZMDKvbzHK116dWLOkFg.jpg",
-  "last_processed_text": "ГПВ на 23 листопада, — \"Сумиобленерго\" (оновлення 05:50). За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/lsdt62Qn2ziT4xh0Qa7PLN5m2rGmLoiJiBh-1Wr8Ius4Ga7BK-vGz3cC1sY-NGUnuEprPXa7dM4v97hHfB831vlcOQTkx-uE3Fo4ReqrRfASJwiSg1wBUJO6_dpugw3LJ2eOoosrQ7_1CVj2Os7AjkhgUaRi6t3bNtoonUcOEDEzq42nyjZGTi38TTBfHuqEIfQ8voxHLWtrX2mIYYhapzuC-54RZ1wzFljpv_UlBhbE5kzaH9myg2CMe_dggedCdIFRTZ0OX20h6IK9p3LlEMR4LYDBIyhiUpE4MAaUWT2J9lTjJEP-KT6aEyqQcCSo_TU8SxE-AaFf2bYBokmsqg.jpg",
+  "last_processed_text": "ГПВ на 23 листопада, — \"Сумиобленерго\" (оновлення 10:20). За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/49398"
 }
