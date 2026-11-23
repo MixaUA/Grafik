@@ -1,10 +1,11 @@
 {
-  "update_time": "23 листопада 12:15",
+  "update_time": "23 листопада 19:45",
   "queues": {
     "1.1": {
       "понеділок": [
         "08:00-10:00",
         "11:00-12:00",
+        "14:00-16:00",
         "20:00-00:00"
       ],
       "вівторок": [],
@@ -17,6 +18,7 @@
     "1.2": {
       "понеділок": [
         "07:00-08:00",
+        "13:00-14:00",
         "18:00-22:00"
       ],
       "вівторок": [],
@@ -132,7 +134,8 @@
       "понеділок": [
         "00:00-04:00",
         "07:00-10:00",
-        "12:00-16:00"
+        "12:00-16:00",
+        "18:00-20:00"
       ],
       "вівторок": [],
       "середа": [],
@@ -146,6 +149,7 @@
         "00:00-02:00",
         "07:00-08:00",
         "10:00-14:00",
+        "16:00-18:00",
         "22:00-00:00"
       ],
       "вівторок": [],
@@ -156,7 +160,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/CdB7LfOsMK-J4zCCO4MnMfQkwTOuCtaBTTtYnZXe-UoFNmDHMGKZfIyHFnXTHMqn10SUNhUcRbla07DbeAEK8c2mAWPh_dFrmS9ufwgJtI2099OSzLaVhVybYeNEarnx48ct3VuIE1zyDbrB_eUBUxV1g1jzECHioArofKSi3DAlgIknwESjXVsftrWILhP2AOu5XhIVopf2V80wHQJ4A6EEIYy6eBRZ9IPkb8p5mtrUEeH0fGG0ifbsTDuay7kJMC7u2S6Uw7scSE4O74f0Eo5BVtQ1IVqkuIIrMHPJ2-CQsGntlS4xLPMGnx-BIdihW7WGFDocwCEDuqe1uo-xuA.jpg",
-  "last_processed_text": "ГПВ на 23 листопада, — \"Сумиобленерго\" (оновлення 11:47). За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/tbsqicEnN31hAype-bx8Va25devhmaHUeuOlh6ZFC12xvnuvp9J_P9pjoD9KtuTpjNPf_fbQWwfNcOYVGyADeeNImEPjFg-gFPQtMjRQGN0WQHxFPwuUmofrPBoZMvKAHN7FL6vEehd1pYOqArl14TLdsR9Ml_SoxKD_S_zVZ-IxLBBP1L_-fWlPSMJD6faFJDhHyZQldrBW2zTLJ-K5-4rCBVqUdtcpRJT7cap4k8SQixL6gWTmwmq3rA2pvFr8G4I0euJBL8lgSRC4pP4o1N-5-OI6qe2tR0am-zI1nrbqBkoGoU8bI1qHSEqv5uPe-SHVnH_wXi36_u5HNYw9Ng.jpg",
+  "last_processed_text": "ГПВ на 23 листопада, — \"Сумиобленерго\" (оновлення 19:29). За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/49398"
 }
