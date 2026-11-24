@@ -1,5 +1,5 @@
 {
-  "update_time": "24 листопада 14:15",
+  "update_time": "24 листопада 19:15",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -44,8 +44,8 @@
       "понеділок": [],
       "вівторок": [
         "04:00-08:00",
-        "10:00-14:00",
-        "16:00-20:00"
+        "12:00-14:00",
+        "16:00-19:00"
       ],
       "середа": [],
       "четвер": [],
@@ -73,7 +73,7 @@
         "06:00-10:00",
         "12:00-14:00",
         "14:30-16:00",
-        "18:00-20:00"
+        "18:00-19:00"
       ],
       "середа": [],
       "четвер": [],
@@ -160,7 +160,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/gihftcyr2KYvm1mLowGRA8leUzr0m56UaabZsP5OmrxIWgQMxEH6l3n7Lzy-bOMFLfM0-jMkPG4ri13X2YCOvMPe4jF4AHkwxB01mPsvyrAOyAGoBbaRTAxJwWnJ7tIFiEDeLGpC0nEe5w9nYVTIRXSTXNw2ENc1_JaIvM3LoRiQB5SHQ8JfTmFFyAz8mLcexdL6a73EX6V7NBlslrmnOfsb-i7Eik_3fixtLAiDsOkPF-qPQhaSAVZxyxWid-3Zmj0vApCY5JZI0kQSswWSCfcAYQ4i-4WaJPpi279kIlcUWG9tDOmGZGo7y6SuBWbZcS995TWe9XgHWL0BeSpWFg.jpg",
-  "last_processed_text": "ГПВ на 24 листопада, — \"Сумиобленерго\". (ОНОВЛЕНО станом на 14:11)За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/mbW2aQA3YG7Bnz8NXEaXkHt3lieNR6zvO9-yRXmBfYE3nJMLlzKfQCqr5QxdJOsbqytOLbQQxErhjzjJ5avRyZa5E-i7Vjkb11GsHj2IgB8eyfUA04puMWWRVb2njS19urboqgLKdXb96yp_gOS1HzOppx1UQmihFv_Fy97ThYbrOqCAYjz-wJI_0211osMf1ZqtIeckcLSn9zVf__rCJNDMsticqwkteadcPhwQFUlyxfP8G4KLHMf8vsKy0K3EBZTAvJibhG8R99ZXCXNUoyKWEw9HWH-qf_lXN4Vblyw684qi1p1F3jUY9qi_8s-2aLKWJsbXulygbSwKAJsq8g.jpg",
+  "last_processed_text": "ГПВ на 24 листопада, — \"Сумиобленерго\". (ОНОВЛЕНО станом на 18:59)За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/49445"
 }
