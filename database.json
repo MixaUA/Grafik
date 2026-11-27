@@ -1,5 +1,5 @@
 {
-  "update_time": "27 листопада 07:30",
+  "update_time": "27 листопада 12:30",
   "queues": {
     "1.1": {
       "понеділок": [],
@@ -48,6 +48,7 @@
       "п'ятниця": [
         "06:00-08:00",
         "10:00-12:00",
+        "13:00-14:00",
         "16:00-18:00",
         "22:00-00:00"
       ],
@@ -153,7 +154,7 @@
       "неділя": []
     }
   },
-  "last_processed_url": "https://cdn4.telesco.pe/file/nwRZEcoC81wNUj3hTg3P62USExhtufYwACMihsH51QrPXusjC9SpNqtvTYx6Zyh68PvZfZCybr0IRyLOxu9EYP-1msnS23oLL91-XGKPp2RQAjPEkVYIzZ5j5FyPEgo0QkqeNbzY2mBbSbrZ8YL5owfKR8tWHhaqfACFMs6wx0L5XgBayJMqqbFVwBxS_ReXUkjUGZfCzbtBDt9RQugL5xBnElyZB9oiCu6p8QDthoqackmWLTLwHfR5tF7nR7d0AlSOUCzdWKvz5PH2MceqztcQr6ga18qBQBU43dFUcNNg-RgFLfGSgx5Lm-povxfJ7xCwJ1qTdnLq-NM3ZBZ2JA.jpg",
-  "last_processed_text": "ГПВ на 27 листопада (оновлено), — АТ \"Сумиобленерго\". За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
+  "last_processed_url": "https://cdn4.telesco.pe/file/bkaEZL3u6d5sOltpddoL7OK9EMPSs1Xno5owO_fPYPTydHXNRqbIwLronVvAS8uqLLKsLQ7LuvoxEamB-RIy27OHNFW5EheTcKadpx4mCQTHEtyVGuWEjjineZivnGsqayrZkBYAvI_E-AOVQ_hqcjAuFBxf6q8c_coqWnDgMN0o7PStnB26B6n5eprAfliwNB5329tNNmuN4qRbFwNRItp8KA9Ta5tiPF7si9okYOo7x2DgqNuiRtNMM5GyewQDVkB3kLohGyCXUXCo3Esmg81h0wUUNjR-12cceKGyw2aT17gyr1rGYEEirs4-lEpblDVxtYuFAICoghNQyGNd2g.jpg",
+  "last_processed_text": "ГПВ на 27 листопада (оновлено 12:20), — АТ \"Сумиобленерго\". За оновленнями графіків вимкнення світла слідкуйте на сайті Суспільного.",
   "last_processed_news_url": "https://t.me/suspilnesumy/49445"
 }
